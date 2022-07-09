@@ -8,6 +8,10 @@ import java.net.http.HttpResponse.BodyHandlers;
 import org.ibm.model.dto.GetReposOfUserDTO;
 import org.ibm.model.dto.IGitDto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public class GitHubConnectionService implements IGitConnectionService {
 	public String URL;
@@ -52,8 +56,19 @@ public class GitHubConnectionService implements IGitConnectionService {
 	public IGitDto getUserDetails(String userName) {
 		String response = this.sendGETRequest(userName); // todo analyze API.
 		GetReposOfUserDTO responseDTO = new GetReposOfUserDTO(response); // or use builder pattern.
-		responseDTO.id = 1;
-		return null;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			responseDTO = mapper.readValue(response, GetReposOfUserDTO.class);
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return (IGitDto) responseDTO;
 	}
 
 	@Override
