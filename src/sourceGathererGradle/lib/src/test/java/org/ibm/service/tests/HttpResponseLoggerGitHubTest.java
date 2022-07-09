@@ -16,7 +16,7 @@ public class HttpResponseLoggerGitHubTest {
 
 	public static void main(String[] args) {
 		IGitConnectionService service = new GitHubConnectionService("https://api.github.com/users");
-		IGitDto response = service.getUserDetails("p0licat");
+		IGitDto response = service.getUserDetails("p0licat").orElse(null);
 		System.out.println(response);
 		File f = new File("request_out.txt");
 		if (!f.exists()) {

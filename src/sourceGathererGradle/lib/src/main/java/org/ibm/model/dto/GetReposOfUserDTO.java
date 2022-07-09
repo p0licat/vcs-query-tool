@@ -10,7 +10,7 @@ public class GetReposOfUserDTO {
 	public String subscriptionsUrl;
 	public String reposUrl;
 	
-	public GetReposOfUserDTO(String response) {
-		
+	public GetReposOfUserDTO(long id) {
+		this.id = id;
 	}
 }

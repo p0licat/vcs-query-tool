@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.Optional;
 
+import org.ibm.model.deserializers.GetReposOfUserDeserializer;
 import org.ibm.model.dto.GetReposOfUserDTO;
 import org.ibm.model.dto.IGitDto;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 
 public class GitHubConnectionService implements IGitConnectionService {
@@ -53,27 +56,30 @@ public class GitHubConnectionService implements IGitConnectionService {
 	}
 
 	@Override
-	public IGitDto getUserDetails(String userName) {
+	// use Nullable/optional wrapper / facade
+	public Optional<IGitDto> getUserDetails(String userName) {
 		String response = this.sendGETRequest(userName); // todo analyze API.
-		GetReposOfUserDTO responseDTO = new GetReposOfUserDTO(response); // or use builder pattern.
+		GetReposOfUserDTO responseDTO = null; // or use builder pattern.
 		
 		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(GetReposOfUserDTO.class, new GetReposOfUserDeserializer());
+		mapper.registerModule(module);
+		
 		try {
 			responseDTO = mapper.readValue(response, GetReposOfUserDTO.class);
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return (IGitDto) responseDTO;
+		Optional<IGitDto> returnValue = Optional.ofNullable((IGitDto) responseDTO);
+		return returnValue;
 	}
 
 	@Override
 	public String getRepositoriesOfUser(String userName) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
