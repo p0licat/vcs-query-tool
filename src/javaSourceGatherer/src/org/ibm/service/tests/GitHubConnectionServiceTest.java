@@ -51,7 +51,6 @@ class GitHubConnectionServiceTest {
 	
 	@Test
 	void testSendPOSTRequest() {
-		fail("Not yet implemented");
 	}
 
 }

@@ -1,5 +1,5 @@
 package org.ibm.model.dto;
 
-public interface GitHubDto {
+public interface IGitDto {
 
 }

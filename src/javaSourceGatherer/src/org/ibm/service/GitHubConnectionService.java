@@ -5,6 +5,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
 
+import org.ibm.model.dto.IGitDto;
+
 
 public class GitHubConnectionService implements IGitConnectionService {
 	public String URL;
@@ -46,7 +48,7 @@ public class GitHubConnectionService implements IGitConnectionService {
 	}
 
 	@Override
-	public String getUserDetails(String userName) {
+	public IGitDto getUserDetails(String userName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
