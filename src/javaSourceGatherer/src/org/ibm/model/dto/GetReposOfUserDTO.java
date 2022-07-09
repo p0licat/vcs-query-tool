@@ -4,9 +4,13 @@ package org.ibm.model.dto;
 // or JsonBuilder
 // or Serialization options
 public class GetReposOfUserDTO {
-	String userLogin;
-	long id;
-	String nodeId;
-	String subscriptionsUrl;
-	String reposUrl;
+	public String userLogin;
+	public long id;
+	public String nodeId;
+	public String subscriptionsUrl;
+	public String reposUrl;
+	
+	public GetReposOfUserDTO(String response) {
+		
+	}
 }
