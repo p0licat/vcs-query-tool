@@ -44,4 +44,28 @@ public class GitHubConnectionService implements IGitConnectionService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String getUserDetails(String userName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getRepositoriesOfUser(String userName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getCommitsOfRepository(String userName, String repositoryName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getRepositoryContentsAtPath(String userName, String repositoryName, String path) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
