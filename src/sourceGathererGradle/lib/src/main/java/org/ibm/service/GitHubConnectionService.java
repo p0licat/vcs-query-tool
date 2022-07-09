@@ -54,7 +54,8 @@ public class GitHubConnectionService {
 
 	// use Nullable/optional wrapper / facade
 	public Optional<GetUserDetailsDTO> getUserDetails(String userName) {
-		String response = this.sendGETRequest(userName); // todo analyze API.
+		String getUserURI = "users";
+		String response = this.sendGETRequest(getUserURI + '/' + userName); // todo analyze API.
 		GetUserDetailsDTO responseDTO = null; // or use builder pattern.
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -75,6 +76,7 @@ public class GitHubConnectionService {
 	}
 
 	public String getRepositoriesOfUser(String userName) {
+		String response = this.sendGETRequest(userName);
 		return null;
 	}
 

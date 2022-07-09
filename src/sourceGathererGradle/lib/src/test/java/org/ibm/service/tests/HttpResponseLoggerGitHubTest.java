@@ -12,7 +12,7 @@ import org.ibm.service.GitHubConnectionService;
 public class HttpResponseLoggerGitHubTest {
 
 	public static void main(String[] args) {
-		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com/users");
+		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
 		GetUserDetailsDTO response = service.getUserDetails("p0licat").orElse(null);
 		System.out.println(response);
 		File f = new File("request_out.txt");
