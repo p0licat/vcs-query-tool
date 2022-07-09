@@ -12,8 +12,6 @@ plugins {
     id "application"
 }
 
-sourceSets.main.java.srcDirs = ['src/main/java']
-sourceSets.test.java.srcDirs = ['src/test/java']
 ext {
 	javaMainClass = "org.ibm.service.tests.HttpResponseLoggerGitHubTest"
 }

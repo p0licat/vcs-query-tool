@@ -13,4 +13,5 @@ Tests work, figuring out gradle runs.
 
 I should check the mapping logic used in .NET a while ago.
 
-Downcasting is strange with return types.
+Downcasting is strange with return types. 
+When downcasting, the pointer type should be a child of the stored parent object. Cannot have a parent store a child.

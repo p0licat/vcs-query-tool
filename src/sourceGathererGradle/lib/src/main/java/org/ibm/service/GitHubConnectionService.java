@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 
-public class GitHubConnectionService implements IGitConnectionService {
+public class GitHubConnectionService {
 	public String URL;
 	public HttpClient httpClient;
 	
@@ -26,7 +26,6 @@ public class GitHubConnectionService implements IGitConnectionService {
 				.build();
 	}
 	
-	@Override
 	public String sendGETRequest(String URI) {
 		String path = URL + '/' + URI;
 		HttpRequest request = HttpRequest.newBuilder()
@@ -49,15 +48,13 @@ public class GitHubConnectionService implements IGitConnectionService {
 		return response;
 	}
 
-	@Override
 	public String sendPOSTRequest(String URI) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	// use Nullable/optional wrapper / facade
-	public Optional<IGitDto> getUserDetails(String userName) {
+	public Optional<GetReposOfUserDTO> getUserDetails(String userName) {
 		String response = this.sendGETRequest(userName); // todo analyze API.
 		GetReposOfUserDTO responseDTO = null; // or use builder pattern.
 		
@@ -74,22 +71,19 @@ public class GitHubConnectionService implements IGitConnectionService {
 			e.printStackTrace();
 		}
 		
-		Optional<IGitDto> returnValue = Optional.ofNullable((IGitDto) responseDTO);
+		Optional<GetReposOfUserDTO> returnValue = Optional.ofNullable((GetReposOfUserDTO) responseDTO);
 		return returnValue;
 	}
 
-	@Override
 	public String getRepositoriesOfUser(String userName) {
 		return null;
 	}
 
-	@Override
 	public String getCommitsOfRepository(String userName, String repositoryName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public String getRepositoryContentsAtPath(String userName, String repositoryName, String path) {
 		// TODO Auto-generated method stub
 		return null;

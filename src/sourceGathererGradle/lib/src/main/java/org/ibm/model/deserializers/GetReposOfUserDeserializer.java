@@ -25,9 +25,9 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetReposOfUserDT
 			throws IOException, JacksonException {
 		JsonNode node = jp.getCodec().readTree(jp);
 		long id = (Integer) ((IntNode) node.get("id")).numberValue();
+		String reposUrl = node.get("repos_url").asText();
 		
-		
-		return new GetReposOfUserDTO(id);
+		return new GetReposOfUserDTO(id, reposUrl);
 	}
 
 }

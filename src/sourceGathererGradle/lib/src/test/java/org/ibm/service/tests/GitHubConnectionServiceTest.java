@@ -41,14 +41,14 @@ class GitHubConnectionServiceTest {
 	
 	@Test
 	void testSendGETRequest() {
-		IGitConnectionService service = new GitHubConnectionService("http://127.0.0.1:8080");
+		GitHubConnectionService service = new GitHubConnectionService("http://127.0.0.1:8080");
 		String response = service.sendGETRequest("/testcase/one");
 		Assertions.assertEquals(response, "Response.".toString());
 	}
 
 	@Test
 	void testSendGETRequestMultiple() {
-		IGitConnectionService service = new GitHubConnectionService("http://127.0.0.1:8080");
+		GitHubConnectionService service = new GitHubConnectionService("http://127.0.0.1:8080");
 		String response = service.sendGETRequest("/testcase/one");
 		Assertions.assertEquals(response, "Response.".toString());
 

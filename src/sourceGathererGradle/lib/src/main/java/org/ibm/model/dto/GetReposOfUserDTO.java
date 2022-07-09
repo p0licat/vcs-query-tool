@@ -10,7 +10,18 @@ public class GetReposOfUserDTO {
 	public String subscriptionsUrl;
 	public String reposUrl;
 	
-	public GetReposOfUserDTO(long id) {
+	public GetReposOfUserDTO(long id, String reposUrl) {
 		this.id = id;
+		this.reposUrl = reposUrl;
+	}
+	
+	public String toString() {
+		String returnValue = "";
+		returnValue += "{";
+		returnValue += "id=" + this.id + ",";
+		returnValue += "reposUrl=" + this.reposUrl;
+		//returnValue += ",";
+		returnValue += "}";
+		return returnValue;
 	}
 }
