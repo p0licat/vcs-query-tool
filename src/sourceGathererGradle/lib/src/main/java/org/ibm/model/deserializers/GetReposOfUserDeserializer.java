@@ -28,6 +28,13 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositor
 		ArrayList<RepositoryDTO> result = new ArrayList<RepositoryDTO>();
 		
 		for (JsonNode child : node) {
+			
+			String name = child.get("name").asText();
+			long id = (Integer) child.get("id").intValue();
+			String nodeId = child.get("node_id").asText();
+			String description = child.get("description").asText();
+			String language = child.get("language").asText();
+			
 			String contentsUrl = child.get("contents_url").asText();
 			String commitsUrl = child.get("commits_url").asText();
 			String branchesUrl = child.get("branches_url").asText();
@@ -36,7 +43,7 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositor
 			String updatedAt = child.get("updated_at").asText();
 			String pushedAt = child.get("pushed_at").asText();
 
-			result.add(new RepositoryDTO(contentsUrl, commitsUrl, branchesUrl, createdAt, updatedAt, pushedAt));
+			result.add(new RepositoryDTO(name, nodeId, id, description, language, contentsUrl, commitsUrl, branchesUrl, createdAt, updatedAt, pushedAt));
 		}
 		
 		
