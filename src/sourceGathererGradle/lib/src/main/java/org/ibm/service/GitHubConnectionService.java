@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import org.ibm.model.deserializers.GetReposOfUserDeserializer;
 import org.ibm.model.dto.GetUserDetailsDTO;
-import org.ibm.model.dto.IGitDto;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;

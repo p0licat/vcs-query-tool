@@ -17,7 +17,6 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetUserDetailsDT
 	
 	protected GetReposOfUserDeserializer(Class<?> vc) {
 		super(vc);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
