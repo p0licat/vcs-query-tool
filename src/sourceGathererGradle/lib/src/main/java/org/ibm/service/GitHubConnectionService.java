@@ -7,7 +7,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Optional;
 
 import org.ibm.model.deserializers.GetReposOfUserDeserializer;
-import org.ibm.model.dto.GetReposOfUserDTO;
+import org.ibm.model.dto.GetUserDetailsDTO;
 import org.ibm.model.dto.IGitDto;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -54,24 +54,24 @@ public class GitHubConnectionService {
 	}
 
 	// use Nullable/optional wrapper / facade
-	public Optional<GetReposOfUserDTO> getUserDetails(String userName) {
+	public Optional<GetUserDetailsDTO> getUserDetails(String userName) {
 		String response = this.sendGETRequest(userName); // todo analyze API.
-		GetReposOfUserDTO responseDTO = null; // or use builder pattern.
+		GetUserDetailsDTO responseDTO = null; // or use builder pattern.
 		
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetReposOfUserDTO.class, new GetReposOfUserDeserializer());
+		module.addDeserializer(GetUserDetailsDTO.class, new GetReposOfUserDeserializer());
 		mapper.registerModule(module);
 		
 		try {
-			responseDTO = mapper.readValue(response, GetReposOfUserDTO.class);
+			responseDTO = mapper.readValue(response, GetUserDetailsDTO.class);
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		
-		Optional<GetReposOfUserDTO> returnValue = Optional.ofNullable((GetReposOfUserDTO) responseDTO);
+		Optional<GetUserDetailsDTO> returnValue = Optional.ofNullable((GetUserDetailsDTO) responseDTO);
 		return returnValue;
 	}
 
