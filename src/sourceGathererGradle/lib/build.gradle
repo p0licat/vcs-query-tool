@@ -9,11 +9,29 @@
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
+    id "application"
+}
+
+sourceSets.main.java.srcDirs = ['src/main/java']
+sourceSets.test.java.srcDirs = ['src/test/java']
+ext {
+	javaMainClass = "org.ibm.service.tests.HttpResponseLoggerGitHubTest"
+}
+
+application {
+	mainClassName = javaMainClass
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+}
+
+task runWithJavaExec(type: JavaExec) {
+	group = "Execution"
+	description = "Run main of HTTP test debuggable."
+	classpath = sourceSets.main.runtimeClasspath
+	main = javaMainClass 
 }
 
 dependencies {

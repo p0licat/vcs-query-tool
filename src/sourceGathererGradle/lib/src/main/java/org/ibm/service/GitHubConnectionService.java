@@ -21,7 +21,7 @@ public class GitHubConnectionService implements IGitConnectionService {
 	
 	@Override
 	public String sendGETRequest(String URI) {
-		String path = URL + URI;
+		String path = URL + '/' + URI;
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(java.net.URI.create(path))
 				.header("Content-Type", "application/json")
