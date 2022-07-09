@@ -1,13 +1,13 @@
 package org.ibm.service.tests;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.io.IOException;
+import java.net.BindException;
 import java.net.InetSocketAddress;
 
 import org.ibm.service.GitHubConnectionService;
 import org.ibm.service.IGitConnectionService;
 import org.ibm.tests.fixtures.model.HttpServerFixtureHandler;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,10 +27,17 @@ class GitHubConnectionServiceTest {
 			this.server.setExecutor(null);
 			this.server.start();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Assertions.fail();
 			e.printStackTrace();
 		}
 	}
+	
+	
+	@AfterEach
+	void tearDown() {
+		this.server.stop(0); this.server = null; 
+	}
+
 	
 	@Test
 	void testSendGETRequest() {
@@ -44,7 +51,7 @@ class GitHubConnectionServiceTest {
 		IGitConnectionService service = new GitHubConnectionService("http://127.0.0.1:8080");
 		String response = service.sendGETRequest("/testcase/one");
 		Assertions.assertEquals(response, "Response.".toString());
-		
+
 		response = service.sendGETRequest("/testcase/one");
 		Assertions.assertEquals(response, "Response.".toString());
 	}

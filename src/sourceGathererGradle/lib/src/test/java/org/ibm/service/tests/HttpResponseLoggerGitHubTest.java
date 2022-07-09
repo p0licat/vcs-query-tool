@@ -9,7 +9,7 @@ public class HttpResponseLoggerGitHubTest {
 	public static void main(String[] args) {
 		IGitConnectionService service = new GitHubConnectionService("https://api.github.com/users");
 		IGitDto response = service.getUserDetails("p0licat");
-		
+		System.out.println(response);
 	}
 
 }

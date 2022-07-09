@@ -5,7 +5,7 @@ package sourceGathererGradle;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import com.fasterxml.*;
+import com.fasterxml.jackson.core.*;
 
 class LibraryTest {
     @Test void someLibraryMethodReturnsTrue() {
