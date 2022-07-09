@@ -6,8 +6,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Optional;
 
+import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
 import org.ibm.model.deserializers.GetReposOfUserDeserializer;
 import org.ibm.model.dto.GetUserDetailsDTO;
+import org.ibm.model.dto.GetUserRepositoriesDTO;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -48,7 +50,6 @@ public class GitHubConnectionService {
 	}
 
 	public String sendPOSTRequest(String URI) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -60,7 +61,7 @@ public class GitHubConnectionService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetUserDetailsDTO.class, new GetReposOfUserDeserializer());
+		module.addDeserializer(GetUserDetailsDTO.class, new GetDetailsOfUserDeserializer());
 		mapper.registerModule(module);
 		
 		try {
@@ -75,18 +76,36 @@ public class GitHubConnectionService {
 		return returnValue;
 	}
 
-	public String getRepositoriesOfUser(String userName) {
-		String response = this.sendGETRequest(userName);
-		return null;
+	// refactor this and method above using generics and java.lang.reflect awareness
+	// this business logic depends only on referencing the right deserializer. if that is passed as
+	// an argument, only one method is necessary.
+	public Optional<GetUserRepositoriesDTO> getRepositoriesOfUser(String userName) {
+		String getRepositoriesOfUsersURI = "users" + '/' + userName + '/' + "repos";
+		String response = this.sendGETRequest(getRepositoriesOfUsersURI);
+		GetUserRepositoriesDTO responseDTO = null;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializer());
+		mapper.registerModule(module);
+		
+		try {
+			responseDTO = mapper.readValue(response, GetUserRepositoriesDTO.class);
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
+		Optional<GetUserRepositoriesDTO> returnValue = Optional.ofNullable((GetUserRepositoriesDTO) responseDTO);
+		return returnValue;
 	}
 
 	public String getCommitsOfRepository(String userName, String repositoryName) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String getRepositoryContentsAtPath(String userName, String repositoryName, String path) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

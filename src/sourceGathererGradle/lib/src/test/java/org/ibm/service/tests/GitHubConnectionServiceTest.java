@@ -1,11 +1,9 @@
 package org.ibm.service.tests;
 
 import java.io.IOException;
-import java.net.BindException;
 import java.net.InetSocketAddress;
 
 import org.ibm.service.GitHubConnectionService;
-import org.ibm.service.IGitConnectionService;
 import org.ibm.tests.fixtures.model.HttpServerFixtureHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
