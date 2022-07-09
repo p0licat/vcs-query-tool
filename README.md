@@ -12,3 +12,5 @@ Will have to copy all files from the old monolith to the Gradle project. Tests a
 Tests work, figuring out gradle runs.
 
 I should check the mapping logic used in .NET a while ago.
+
+Downcasting is strange with return types.
