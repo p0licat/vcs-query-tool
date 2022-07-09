@@ -10,3 +10,5 @@ Started a Gradle project. At first glance, the structure is better.
 Will have to copy all files from the old monolith to the Gradle project. Tests are restructured on //fs but have the same logic (code).
 
 Tests work, figuring out gradle runs.
+
+I should check the mapping logic used in .NET a while ago.
