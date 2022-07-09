@@ -1,24 +1,26 @@
 package org.ibm.model.dto;
 
+import java.util.ArrayList;
+
+import org.ibm.model.RepositoryDTO;
+
 public class GetUserRepositoriesDTO {
 
-	String contentsUrl;
-	String commitsUrl;
-	String branchesUrl;
-	
-	//datetime
-	String createdAt;
-	String updatedAt;
-	String pushedAt;
-	
-	public GetUserRepositoriesDTO(String contentsUrl, String commitsUrl, String branchesUrl, String createdAt,
-			String updatedAt, String pushedAt) {
+	public GetUserRepositoriesDTO(ArrayList<RepositoryDTO> repositories) {
 		super();
-		this.contentsUrl = contentsUrl;
-		this.commitsUrl = commitsUrl;
-		this.branchesUrl = branchesUrl;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.pushedAt = pushedAt;
+		this.repositories = (ArrayList<RepositoryDTO>) repositories.clone();
+	}
+
+	ArrayList<RepositoryDTO> repositories;
+	
+	@Override
+	public String toString() {
+		String result = "{";
+		for (RepositoryDTO d : this.repositories) {
+			result += d.toString();
+			result += '\n';
+		}
+		result += "}";
+		return result;
 	}
 }

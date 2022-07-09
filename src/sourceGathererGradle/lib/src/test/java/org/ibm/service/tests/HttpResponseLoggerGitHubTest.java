@@ -11,9 +11,8 @@ import org.ibm.service.GitHubConnectionService;
 
 
 public class HttpResponseLoggerGitHubTest {
-
-	public static void main(String[] args) {
-		
+	
+	private void testOne() {
 		{
 			GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
 			GetUserDetailsDTO response = service.getUserDetails("p0licat").orElse(null);
@@ -40,33 +39,37 @@ public class HttpResponseLoggerGitHubTest {
 			}
 			
 		}
-		
-		{
-			GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
-			GetUserRepositoriesDTO response = service.getRepositoriesOfUser("p0licat").orElse(null);
-			System.out.println(response);
-			File f = new File("request_out_repos.txt");
-			if (!f.exists()) {
-				try {
-					f.createNewFile();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+	}
+
+	private void testTwo() {
+		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
+		GetUserRepositoriesDTO response = service.getRepositoriesOfUser("p0licat").orElse(null);
+		System.out.println(response);
+		File f = new File("request_out_repos.txt");
+		if (!f.exists()) {
 			try {
-				FileOutputStream s = new FileOutputStream(f);
-				s.write(response.toString().getBytes());
-				s.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				f.createNewFile();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+		try {
+			FileOutputStream s = new FileOutputStream(f);
+			s.write(response.toString().getBytes());
+			s.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		HttpResponseLoggerGitHubTest mainObj = new HttpResponseLoggerGitHubTest();
+		mainObj.testTwo();
 	}
 	
 	
