@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class ApplicationUserDbConfig {
 	@Primary
 	@Bean(name="datasource")
-	@ConfigurationProperties(prefix="datasource")
+	@ConfigurationProperties(prefix="spring.datasource")
 	public DataSource dataSource() {
 		return DataSourceBuilder.create().build();
 	}
