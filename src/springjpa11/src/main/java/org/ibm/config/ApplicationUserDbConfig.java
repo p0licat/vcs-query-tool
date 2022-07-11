@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
@@ -21,7 +22,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory", basePackages={"org.ibm.applicationuser.repository.ApplicationUserRepository"})
+@EntityScan("org.ibm.*")
+@EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory", basePackages={"org.ibm.applicationuser.repository"})
 public class ApplicationUserDbConfig {
 	@Primary
 	@Bean(name="datasource")
@@ -34,8 +36,10 @@ public class ApplicationUserDbConfig {
 	@Bean(name="entityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder, @Qualifier("datasource") DataSource dataSource) {
 		Map<String, Object> properties = new HashMap<>();
-		properties.put("hibernate.hbm2ddl.auto", "update");
-		properties.put("hibernate.dialect", "org.hibernate.dialect.SQLServer2012Dialect");
+		properties.put("hibernate.hbm2ddl.auto", "create");
+		properties.put("hibernate.show_sql", "true");
+		properties.put("hibernate.dialect", "org.hibernate.dialect.SQLServer2008Dialect");
+		
 		return builder.dataSource(dataSource).properties(properties).packages("org.ibm.model.applicationuser").persistenceUnit("ApplicationUser").build();
 	}
 
