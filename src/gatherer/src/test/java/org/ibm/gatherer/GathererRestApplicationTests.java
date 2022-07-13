@@ -2,7 +2,6 @@ package org.ibm.gatherer;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +9,7 @@ import java.nio.file.Files;
 
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
 import org.ibm.model.dto.GetUserDetailsDTO;
+import org.ibm.service.rest.github.GitHubConnectionService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,21 @@ class GathererRestApplicationTests {
 	@Test
 	void testDtoConverterDetailsOfUser() throws IOException, JsonMappingException, JsonProcessingException {		
 		
-		String contents = this.getResponseFromResouces(); 
+		String contents = this.getResponseFromResouces("response1.txt"); 
+		ObjectMapper mapper = this.getMapperFor__getDetailsOfUserDeserializer();
+
+		try {
+		GetUserDetailsDTO dto = mapper.readValue(contents, GetUserDetailsDTO.class);
+		} catch (JsonProcessingException e) {
+			Assertions.fail();
+		}
+	}
+		
+	@Order(1)
+	@Test
+	void testDtoConverterDetailsOfUserAsList() throws IOException, JsonMappingException, JsonProcessingException {		
+		
+		String contents = this.getResponseFromResouces("responseList.txt"); 
 		ObjectMapper mapper = this.getMapperFor__getDetailsOfUserDeserializer();
 
 		try {
@@ -58,9 +72,12 @@ class GathererRestApplicationTests {
 		return mapper;
 	}
 	
+	
 	// alternatively use REST mock.
 	private String getResponseFromEndpoint() {
-		
+		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
+		String response = service.getRawUserDetails("p0licat");
+		return response;
 	}
 	
 	@Order(2)
@@ -68,7 +85,7 @@ class GathererRestApplicationTests {
 	void getResponseFromEndpointTest() {
 		String compareTo = null;
 		try {
-			compareTo = this.getResponseFromResouces();
+			compareTo = this.getResponseFromResouces("response1.txt");
 		} catch (Exception e) {
 			Assertions.fail();
 		}
@@ -85,12 +102,12 @@ class GathererRestApplicationTests {
 			Assertions.fail();
 		}
 		
-		Assertions.assertTrue(dto_web.getReposUrl() == dto_res.getReposUrl());
+		Assertions.assertTrue(dto_web.getReposUrl().compareTo(dto_res.getReposUrl()) == 0);
 		Assertions.assertTrue(dto_web.getNodeId().equals(dto_res.getNodeId()));
 	}
 	
-	private String getResponseFromResouces() throws IOException {
-		File file = new File(ClassLoader.getSystemResource("./test_data/response1.txt").getPath().toString());
+	private String getResponseFromResouces(String resourceName) throws IOException {
+		File file = new File(ClassLoader.getSystemResource("./test_data/" + resourceName).getPath().toString());
 		FileReader input = new FileReader(file);		
 		BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
 		char[] buffer = new char[65535]; // seach const

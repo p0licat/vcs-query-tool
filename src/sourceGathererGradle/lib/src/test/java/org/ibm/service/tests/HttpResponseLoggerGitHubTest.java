@@ -50,7 +50,6 @@ public class HttpResponseLoggerGitHubTest {
 			try {
 				f.createNewFile();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -59,10 +58,8 @@ public class HttpResponseLoggerGitHubTest {
 			s.write(response.toString().getBytes());
 			s.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

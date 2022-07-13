@@ -74,12 +74,17 @@ public class GitHubConnectionService {
 		return returnValue;
 	}
 
+	
+	public String getRawRepositoriesOfUser(String userName) {
+		String getRepositoriesOfUsersURI = "users" + '/' + userName + '/' + "repos";
+		String response = this.sendGETRequest(getRepositoriesOfUsersURI);
+		return response;
+	}
 	// refactor this and method above using generics and java.lang.reflect awareness
 	// this business logic depends only on referencing the right deserializer. if that is passed as
 	// an argument, only one method is necessary.
 	public Optional<GetUserRepositoriesDTO> getRepositoriesOfUser(String userName) {
-		String getRepositoriesOfUsersURI = "users" + '/' + userName + '/' + "repos";
-		String response = this.sendGETRequest(getRepositoriesOfUsersURI);
+		String response = this.getRawRepositoriesOfUser(userName);
 		GetUserRepositoriesDTO responseDTO = null;
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -105,5 +110,11 @@ public class GitHubConnectionService {
 
 	public String getRepositoryContentsAtPath(String userName, String repositoryName, String path) {
 		return null;
+	}
+
+	public String getRawUserDetails(String userName) {
+		String getUserURI = "users";
+		String response = this.sendGETRequest(getUserURI + '/' + userName); // todo analyze API.
+		return response;
 	}
 }

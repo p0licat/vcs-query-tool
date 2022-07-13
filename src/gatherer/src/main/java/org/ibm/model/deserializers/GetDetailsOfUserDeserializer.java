@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.IntNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 public class GetDetailsOfUserDeserializer extends StdDeserializer<GetUserDetailsDTO> {
 
@@ -22,7 +23,16 @@ public class GetDetailsOfUserDeserializer extends StdDeserializer<GetUserDetails
 	@Override
 	public GetUserDetailsDTO deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException, JacksonException {
+		
 		JsonNode node = jp.getCodec().readTree(jp);
+		
+		// sometimes the endpoint wraps Object into list
+		// like [{Object}] instead of "{Object}"
+		if (node.getNodeType() == JsonNodeType.ARRAY) {
+			node = node.get(0); 
+		}
+		
+		
 		long id = (Integer) ((IntNode) node.get("id")).numberValue();
 		String reposUrl = node.get("repos_url").asText();
 		
