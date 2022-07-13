@@ -9,5 +9,4 @@ public interface IGitConnectionService {
 	public String getRepositoriesOfUser(String userName);
 	public String getCommitsOfRepository(String userName, String repositoryName);
 	public String getRepositoryContentsAtPath(String userName, String repositoryName, String path);
-	
 }

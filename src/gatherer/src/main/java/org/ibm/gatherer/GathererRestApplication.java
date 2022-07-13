@@ -2,33 +2,41 @@ package org.ibm.gatherer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.ibm.service.rest.github.GitHubConnectionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.json.JacksonJsonParser;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.logging.Logger;
-
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"org.ibm.service.*", "org.ibm.*"})
 @RestController
+//@ComponentScan(basePackages = "{org.ibm.service.rest.*}")
 public class GathererRestApplication {
 
 	Logger logger = Logger.getLogger(getClass().getName());
+	
+	@Autowired
+	GitHubConnectionService gitHubConnectionService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(GathererRestApplication.class, args);
 	}
 
 	@GetMapping("/scanReposOfUser")
+	// return implements Serializable
 	public List<String> scanReposOfUser(String username) {
 		JacksonJsonParser p = new JacksonJsonParser();
 		List<String> res = new ArrayList<String>();
-		res.add("{}");
+		res.add("rando");
 		try {
-			res = p.parseList("{"+username+"}").stream().map(s -> {return s.toString();}).collect(Collectors.toList());
+			List<String> objects = p.parseList("{username:"+username+"}").stream().map(s -> {return s.toString();}).collect(Collectors.toList());
+			objects.forEach(e -> {res.add(e);});
 		} catch (Exception io) {
 			logger.info(io.toString());
 		}

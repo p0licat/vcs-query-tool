@@ -1,0 +1,811 @@
+2022-07-13 15:30:33,939 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 4076 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 15:30:33,949 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 15:30:37,586 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 15:30:37,607 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 15:30:37,609 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 15:30:37,610 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 15:30:37,777 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 15:30:37,778 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3625 ms
+2022-07-13 15:30:37,876 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 15:30:37,880 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 15:30:37,908 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 15:30:37,952 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 15:44:36,912 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 8328 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 15:44:36,920 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 15:44:38,834 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 15:44:38,854 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 15:44:38,855 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 15:44:38,856 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 15:44:39,031 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 15:44:39,031 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1941 ms
+2022-07-13 15:44:39,146 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 15:44:39,153 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 15:44:39,185 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 15:44:39,257 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 15:47:29,498 ERROR org.springframework.boot.SpringApplication [main] Application run failed
+java.lang.IllegalStateException: java.lang.IllegalStateException: Logback configuration error detected: 
+ERROR in ch.qos.logback.classic.PatternLayout("null") - Empty or null pattern.
+	at org.springframework.boot.context.logging.LoggingApplicationListener.initializeSystem(LoggingApplicationListener.java:328)
+	at org.springframework.boot.context.logging.LoggingApplicationListener.initialize(LoggingApplicationListener.java:282)
+	at org.springframework.boot.context.logging.LoggingApplicationListener.onApplicationEnvironmentPreparedEvent(LoggingApplicationListener.java:240)
+	at org.springframework.boot.context.logging.LoggingApplicationListener.onApplicationEvent(LoggingApplicationListener.java:216)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.doInvokeListener(SimpleApplicationEventMulticaster.java:176)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.invokeListener(SimpleApplicationEventMulticaster.java:169)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:143)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:131)
+	at org.springframework.boot.context.event.EventPublishingRunListener.environmentPrepared(EventPublishingRunListener.java:85)
+	at org.springframework.boot.SpringApplicationRunListeners.lambda$environmentPrepared$2(SpringApplicationRunListeners.java:66)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+	at org.springframework.boot.SpringApplicationRunListeners.doWithListeners(SpringApplicationRunListeners.java:120)
+	at org.springframework.boot.SpringApplicationRunListeners.doWithListeners(SpringApplicationRunListeners.java:114)
+	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:65)
+	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:344)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:302)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1295)
+	at org.ibm.gatherer.GathererRestApplication.main(GathererRestApplication.java:28)
+Caused by: java.lang.IllegalStateException: Logback configuration error detected: 
+ERROR in ch.qos.logback.classic.PatternLayout("null") - Empty or null pattern.
+	at org.springframework.boot.logging.logback.LogbackLoggingSystem.loadConfiguration(LogbackLoggingSystem.java:179)
+	at org.springframework.boot.logging.AbstractLoggingSystem.initializeWithConventions(AbstractLoggingSystem.java:80)
+	at org.springframework.boot.logging.AbstractLoggingSystem.initialize(AbstractLoggingSystem.java:60)
+	at org.springframework.boot.logging.logback.LogbackLoggingSystem.initialize(LogbackLoggingSystem.java:132)
+	at org.springframework.boot.context.logging.LoggingApplicationListener.initializeSystem(LoggingApplicationListener.java:313)
+	... 18 common frames omitted
+2022-07-13 15:47:43,602 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 13980 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 15:47:43,613 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 15:47:45,581 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 15:47:45,604 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 15:47:45,606 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 15:47:45,607 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 15:47:45,789 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 15:47:45,789 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2005 ms
+2022-07-13 15:47:45,898 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 15:47:45,904 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 15:47:45,951 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 15:47:45,989 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 15:48:12,922 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 16080 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 15:48:12,932 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 15:48:14,914 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 15:48:14,936 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 15:48:14,937 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 15:48:14,938 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 15:48:15,114 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 15:48:15,115 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1989 ms
+2022-07-13 15:48:15,216 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 15:48:15,222 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 15:48:15,271 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 15:48:15,326 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 15:50:31,858 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 12092 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 15:50:31,869 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 15:50:33,912 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 15:50:33,936 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 15:50:33,938 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 15:50:33,939 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 15:50:34,112 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 15:50:34,113 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2089 ms
+2022-07-13 15:50:34,193 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 15:50:34,197 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 15:50:34,238 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 15:50:34,277 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 15:50:49,272 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 6908 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 15:50:49,287 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 15:50:53,279 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 15:50:53,308 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 15:50:53,310 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 15:50:53,311 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 15:50:53,474 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 15:50:53,475 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3992 ms
+2022-07-13 15:50:53,578 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 15:50:53,583 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 15:50:53,630 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 15:50:53,684 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 15:56:53,056 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 16360 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 15:56:53,067 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 15:56:54,892 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 15:56:54,914 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 15:56:54,916 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 15:56:54,917 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 15:56:55,125 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 15:56:55,126 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1910 ms
+2022-07-13 15:56:55,245 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 15:56:55,250 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 15:56:55,290 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 15:56:55,350 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 15:59:59,163 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 15764 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 15:59:59,174 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 16:00:00,980 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 16:00:00,997 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 16:00:00,998 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 16:00:00,998 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 16:00:01,141 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 16:00:01,143 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1822 ms
+2022-07-13 16:00:01,256 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 16:00:01,271 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 16:00:01,322 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 16:00:01,369 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 16:03:09,245 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 10372 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 16:03:09,261 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 16:03:13,558 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 16:03:13,576 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 16:03:13,577 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 16:03:13,577 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 16:03:13,731 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 16:03:13,732 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 4083 ms
+2022-07-13 16:03:13,847 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 16:03:13,854 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 16:03:13,893 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 16:03:13,935 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 16:04:19,921 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 7364 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 16:04:19,929 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 16:04:21,702 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 16:04:21,727 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 16:04:21,728 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 16:04:21,730 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 16:04:21,913 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 16:04:21,913 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1834 ms
+2022-07-13 16:04:22,015 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 16:04:22,020 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 16:04:22,052 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 16:04:22,121 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 16:06:15,574 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 3640 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 16:06:15,583 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.7.1, Spring v5.3.21
+2022-07-13 16:06:15,584 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 16:06:17,611 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 16:06:17,628 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 16:06:17,628 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 16:06:17,629 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 16:06:17,773 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 16:06:17,774 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2035 ms
+2022-07-13 16:06:17,846 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 16:06:17,854 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 16:06:17,892 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 16:06:17,938 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 16:07:04,772 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 60 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 16:07:04,782 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 16:07:07,005 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 16:07:07,030 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 16:07:07,032 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 16:07:07,032 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 16:07:07,208 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 16:07:07,209 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2259 ms
+2022-07-13 16:07:07,344 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 16:07:07,361 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 16:07:07,415 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 16:07:07,484 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 16:07:14,941 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.ApplicationContextFactory] names: [org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebServerApplicationContext.Factory, org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext.Factory]
+2022-07-13 16:07:15,113 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+2022-07-13 16:07:15,160 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 6232 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 16:07:15,166 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 16:07:15,193 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+2022-07-13 16:07:15,402 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.beans.BeanInfoFactory] names: [org.springframework.beans.ExtendedBeanInfoFactory]
+2022-07-13 16:07:15,463 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+2022-07-13 16:07:15,467 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved classpath location [{org/ibm/service/rest/] to resources []
+2022-07-13 16:07:15,468 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved location pattern [classpath*:{org/ibm/service/rest/*}/**/*.class] to resources []
+2022-07-13 16:07:15,519 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.AutoConfigurationImportFilter] names: [org.springframework.boot.autoconfigure.condition.OnBeanCondition, org.springframework.boot.autoconfigure.condition.OnClassCondition, org.springframework.boot.autoconfigure.condition.OnWebApplicationCondition]
+2022-07-13 16:07:15,662 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.AutoConfigurationImportListener] names: [org.springframework.boot.autoconfigure.condition.ConditionEvaluationReportAutoConfigurationImportListener]
+2022-07-13 16:07:15,742 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved classpath location [messages.properties] to resources []
+2022-07-13 16:07:15,830 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider] names: [org.springframework.boot.autoconfigure.freemarker.FreeMarkerTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.mustache.MustacheTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.groovy.template.GroovyTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.thymeleaf.ThymeleafTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.web.servlet.JspTemplateAvailabilityProvider]
+2022-07-13 16:07:15,982 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration'
+2022-07-13 16:07:15,993 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration.propertySourcesPlaceholderConfigurer()
+2022-07-13 16:07:15,996 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration$TomcatWebSocketConfiguration'
+2022-07-13 16:07:15,998 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration$TomcatWebSocketConfiguration.websocketServletWebServerCustomizer()
+2022-07-13 16:07:16,002 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration'
+2022-07-13 16:07:16,012 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryConfiguration$EmbeddedTomcat'
+2022-07-13 16:07:16,013 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryConfiguration$EmbeddedTomcat.tomcatServletWebServerFactory()
+2022-07-13 16:07:16,017 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration'
+2022-07-13 16:07:16,018 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration.servletWebServerFactoryCustomizer()
+2022-07-13 16:07:16,020 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration.tomcatServletWebServerFactoryCustomizer()
+2022-07-13 16:07:16,046 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration$DispatcherServletConfiguration'
+2022-07-13 16:07:16,047 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration$DispatcherServletConfiguration.dispatcherServlet()
+2022-07-13 16:07:16,053 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration$DispatcherServletRegistrationConfiguration'
+2022-07-13 16:07:16,058 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration$DispatcherServletRegistrationConfiguration.dispatcherServletRegistration()
+2022-07-13 16:07:16,061 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration'
+2022-07-13 16:07:16,062 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration'
+2022-07-13 16:07:16,070 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration.taskExecutorBuilder()
+2022-07-13 16:07:16,073 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration.applicationTaskExecutor()
+2022-07-13 16:07:16,076 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider] names: [org.springframework.boot.autoconfigure.freemarker.FreeMarkerTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.mustache.MustacheTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.groovy.template.GroovyTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.thymeleaf.ThymeleafTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.web.servlet.JspTemplateAvailabilityProvider]
+2022-07-13 16:07:16,079 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration'
+2022-07-13 16:07:16,080 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration.error()
+2022-07-13 16:07:16,088 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration.beanNameViewResolver()
+2022-07-13 16:07:16,090 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration$DefaultErrorViewResolverConfiguration'
+2022-07-13 16:07:16,098 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration$DefaultErrorViewResolverConfiguration.conventionErrorViewResolver()
+2022-07-13 16:07:16,100 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration'
+2022-07-13 16:07:16,104 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration.errorAttributes()
+2022-07-13 16:07:16,111 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration.basicErrorController()
+2022-07-13 16:07:16,112 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration.errorPageCustomizer()
+2022-07-13 16:07:16,113 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration.preserveErrorControllerTargetClassPostProcessor()
+2022-07-13 16:07:16,121 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration'
+2022-07-13 16:07:16,122 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.requestMappingHandlerAdapter()
+2022-07-13 16:07:16,123 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.welcomePageHandlerMapping()
+2022-07-13 16:07:16,124 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.localeResolver()
+2022-07-13 16:07:16,125 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.themeResolver()
+2022-07-13 16:07:16,126 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.flashMapManager()
+2022-07-13 16:07:16,127 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcConversionService()
+2022-07-13 16:07:16,128 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcValidator()
+2022-07-13 16:07:16,130 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcContentNegotiationManager()
+2022-07-13 16:07:16,131 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.requestMappingHandlerMapping()
+2022-07-13 16:07:16,132 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcPatternParser()
+2022-07-13 16:07:16,133 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcUrlPathHelper()
+2022-07-13 16:07:16,134 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcPathMatcher()
+2022-07-13 16:07:16,135 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.viewControllerHandlerMapping()
+2022-07-13 16:07:16,135 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.beanNameHandlerMapping()
+2022-07-13 16:07:16,136 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.routerFunctionMapping()
+2022-07-13 16:07:16,137 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.resourceHandlerMapping()
+2022-07-13 16:07:16,138 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcResourceUrlProvider()
+2022-07-13 16:07:16,139 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.defaultServletHandlerMapping()
+2022-07-13 16:07:16,140 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.handlerFunctionAdapter()
+2022-07-13 16:07:16,141 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcUriComponentsContributor()
+2022-07-13 16:07:16,142 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.httpRequestHandlerAdapter()
+2022-07-13 16:07:16,143 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.simpleControllerHandlerAdapter()
+2022-07-13 16:07:16,144 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.handlerExceptionResolver()
+2022-07-13 16:07:16,145 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcViewResolver()
+2022-07-13 16:07:16,146 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcHandlerMappingIntrospector()
+2022-07-13 16:07:16,147 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.viewNameTranslator()
+2022-07-13 16:07:16,150 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter'
+2022-07-13 16:07:16,208 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter.defaultViewResolver()
+2022-07-13 16:07:16,221 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter.viewResolver()
+2022-07-13 16:07:16,234 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter.requestContextFilter()
+2022-07-13 16:07:16,236 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration'
+2022-07-13 16:07:16,243 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration.formContentFilter()
+2022-07-13 16:07:16,246 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.aop.AopAutoConfiguration$ClassProxyingConfiguration'
+2022-07-13 16:07:16,247 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.aop.AopAutoConfiguration$ClassProxyingConfiguration.forceAutoProxyCreatorToUseClassProxying()
+2022-07-13 16:07:16,249 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.aop.AopAutoConfiguration'
+2022-07-13 16:07:16,250 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration'
+2022-07-13 16:07:16,251 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration.applicationAvailability()
+2022-07-13 16:07:16,252 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$Jackson2ObjectMapperBuilderCustomizerConfiguration'
+2022-07-13 16:07:16,253 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$Jackson2ObjectMapperBuilderCustomizerConfiguration.standardJacksonObjectMapperBuilderCustomizer()
+2022-07-13 16:07:16,255 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$JacksonObjectMapperBuilderConfiguration'
+2022-07-13 16:07:16,268 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$JacksonObjectMapperBuilderConfiguration.jacksonObjectMapperBuilder()
+2022-07-13 16:07:16,269 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$ParameterNamesModuleConfiguration'
+2022-07-13 16:07:16,274 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$ParameterNamesModuleConfiguration.parameterNamesModule()
+2022-07-13 16:07:16,275 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$JacksonObjectMapperConfiguration'
+2022-07-13 16:07:16,282 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$JacksonObjectMapperConfiguration.jacksonObjectMapper()
+2022-07-13 16:07:16,283 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration'
+2022-07-13 16:07:16,286 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration.jsonComponentModule()
+2022-07-13 16:07:16,287 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration.jsonMixinModule()
+2022-07-13 16:07:16,300 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration'
+2022-07-13 16:07:16,302 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration'
+2022-07-13 16:07:16,303 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration.lifecycleProcessor()
+2022-07-13 16:07:16,305 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration$StringHttpMessageConverterConfiguration'
+2022-07-13 16:07:16,310 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration$StringHttpMessageConverterConfiguration.stringHttpMessageConverter()
+2022-07-13 16:07:16,313 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.http.JacksonHttpMessageConvertersConfiguration$MappingJackson2HttpMessageConverterConfiguration'
+2022-07-13 16:07:16,317 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.http.JacksonHttpMessageConvertersConfiguration$MappingJackson2HttpMessageConverterConfiguration.mappingJackson2HttpMessageConverter()
+2022-07-13 16:07:16,317 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.http.JacksonHttpMessageConvertersConfiguration'
+2022-07-13 16:07:16,320 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration'
+2022-07-13 16:07:16,323 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration.messageConverters()
+2022-07-13 16:07:16,324 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration'
+2022-07-13 16:07:16,336 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.sql.init.SqlInitializationAutoConfiguration'
+2022-07-13 16:07:16,341 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration'
+2022-07-13 16:07:16,343 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration.scheduledBeanLazyInitializationExcludeFilter()
+2022-07-13 16:07:16,351 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration.taskSchedulerBuilder()
+2022-07-13 16:07:16,353 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration'
+2022-07-13 16:07:16,357 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration.restTemplateBuilderConfigurer()
+2022-07-13 16:07:16,361 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration.restTemplateBuilder()
+2022-07-13 16:07:16,362 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration$TomcatWebServerFactoryCustomizerConfiguration'
+2022-07-13 16:07:16,363 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration$TomcatWebServerFactoryCustomizerConfiguration.tomcatWebServerFactoryCustomizer()
+2022-07-13 16:07:16,364 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration'
+2022-07-13 16:07:16,370 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration'
+2022-07-13 16:07:16,377 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration.characterEncodingFilter()
+2022-07-13 16:07:16,378 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration.localeCharsetMappingsCustomizer()
+2022-07-13 16:07:16,382 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration'
+2022-07-13 16:07:16,389 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration.multipartConfigElement()
+2022-07-13 16:07:16,392 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration.multipartResolver()
+2022-07-13 16:07:16,533 TRACE org.springframework.context.annotation.ConfigurationClassEnhancer [main] Successfully enhanced org.ibm.gatherer.GathererRestApplication; enhanced class name is: org.ibm.gatherer.GathererRestApplication$$EnhancerBySpringCGLIB$$69a3ef67
+2022-07-13 16:07:16,533 TRACE org.springframework.context.annotation.ConfigurationClassPostProcessor [main] Replacing bean definition 'gathererRestApplication' existing class 'org.ibm.gatherer.GathererRestApplication' with enhanced class 'org.ibm.gatherer.GathererRestApplication$$EnhancerBySpringCGLIB$$69a3ef67'
+2022-07-13 16:07:17,444 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 16:07:17,468 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 16:07:17,486 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 16:07:17,488 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 16:07:17,677 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 16:07:17,677 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2359 ms
+2022-07-13 16:07:17,776 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'gathererRestApplication': Unsatisfied dependency expressed through field 'gitHubConnectionService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.ibm.service.rest.github.GitHubConnectionService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2022-07-13 16:07:17,781 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
+2022-07-13 16:07:17,825 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 16:07:17,872 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.diagnostics.FailureAnalysisReporter] names: [org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter]
+2022-07-13 16:07:17,875 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field gitHubConnectionService in org.ibm.gatherer.GathererRestApplication required a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'org.ibm.service.rest.github.GitHubConnectionService' in your configuration.
+
+2022-07-13 16:09:50,147 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.ApplicationContextFactory] names: [org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebServerApplicationContext.Factory, org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext.Factory]
+2022-07-13 16:09:50,313 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+2022-07-13 16:09:50,363 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 13872 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 16:09:50,366 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 16:09:50,397 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+2022-07-13 16:09:50,641 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.beans.BeanInfoFactory] names: [org.springframework.beans.ExtendedBeanInfoFactory]
+2022-07-13 16:09:50,711 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+2022-07-13 16:09:50,719 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved classpath location [org/ibm/service/] to resources [URL [file:/C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/]]
+2022-07-13 16:09:50,720 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Looking for matching resources in directory tree [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service]
+2022-07-13 16:09:50,722 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/*/**/*.class]
+2022-07-13 16:09:50,725 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/*/**/*.class]
+2022-07-13 16:09:50,728 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/*/**/*.class]
+2022-07-13 16:09:50,732 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved location pattern [classpath*:org/ibm/service/*/**/*.class] to resources [file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\RestServiceConfigurationFactory.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]]
+2022-07-13 16:09:50,733 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\RestServiceConfigurationFactory.class]
+2022-07-13 16:09:50,778 DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Identified candidate component class: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\RestServiceConfigurationFactory.class]
+2022-07-13 16:09:50,779 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]
+2022-07-13 16:09:50,783 DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Identified candidate component class: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]
+2022-07-13 16:09:50,794 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved classpath location [org/ibm/] to resources [URL [file:/C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/]]
+2022-07-13 16:09:50,795 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Looking for matching resources in directory tree [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm]
+2022-07-13 16:09:50,796 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:09:50,798 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\gatherer] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:09:50,802 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:09:50,805 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:09:50,808 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:09:50,811 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:09:50,813 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:09:50,816 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:09:50,820 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved location pattern [classpath*:org/ibm/*/**/*.class] to resources [file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\gatherer\GathererRestApplication.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\RepositoryDTO.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers\GetDetailsOfUserDeserializer.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers\GetReposOfUserDeserializer.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto\GetUserDetailsDTO.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto\GetUserRepositoriesDTO.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\RestServiceConfigurationFactory.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]]
+2022-07-13 16:09:50,821 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\gatherer\GathererRestApplication.class]
+2022-07-13 16:09:50,840 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\gatherer\GathererRestApplication.class]
+2022-07-13 16:09:50,841 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\RepositoryDTO.class]
+2022-07-13 16:09:50,842 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\RepositoryDTO.class]
+2022-07-13 16:09:50,843 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers\GetDetailsOfUserDeserializer.class]
+2022-07-13 16:09:50,844 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers\GetDetailsOfUserDeserializer.class]
+2022-07-13 16:09:50,844 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers\GetReposOfUserDeserializer.class]
+2022-07-13 16:09:50,845 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers\GetReposOfUserDeserializer.class]
+2022-07-13 16:09:50,846 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto\GetUserDetailsDTO.class]
+2022-07-13 16:09:50,847 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto\GetUserDetailsDTO.class]
+2022-07-13 16:09:50,847 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto\GetUserRepositoriesDTO.class]
+2022-07-13 16:09:50,848 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto\GetUserRepositoriesDTO.class]
+2022-07-13 16:09:50,849 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\RestServiceConfigurationFactory.class]
+2022-07-13 16:09:50,849 DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Identified candidate component class: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\RestServiceConfigurationFactory.class]
+2022-07-13 16:09:50,849 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]
+2022-07-13 16:09:50,850 DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Identified candidate component class: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]
+2022-07-13 16:09:50,854 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+2022-07-13 16:09:50,856 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved classpath location [org/ibm/service/rest/] to resources [URL [file:/C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/rest/]]
+2022-07-13 16:09:50,858 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Looking for matching resources in directory tree [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest]
+2022-07-13 16:09:50,859 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/rest/*/**/*.class]
+2022-07-13 16:09:50,860 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/rest/*/**/*.class]
+2022-07-13 16:09:50,861 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved location pattern [classpath*:org/ibm/service/rest/*/**/*.class] to resources [file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]]
+2022-07-13 16:09:50,862 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]
+2022-07-13 16:09:50,862 DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Identified candidate component class: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]
+2022-07-13 16:09:50,906 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.AutoConfigurationImportFilter] names: [org.springframework.boot.autoconfigure.condition.OnBeanCondition, org.springframework.boot.autoconfigure.condition.OnClassCondition, org.springframework.boot.autoconfigure.condition.OnWebApplicationCondition]
+2022-07-13 16:09:51,047 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.AutoConfigurationImportListener] names: [org.springframework.boot.autoconfigure.condition.ConditionEvaluationReportAutoConfigurationImportListener]
+2022-07-13 16:09:51,124 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved classpath location [messages.properties] to resources []
+2022-07-13 16:09:51,256 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider] names: [org.springframework.boot.autoconfigure.freemarker.FreeMarkerTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.mustache.MustacheTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.groovy.template.GroovyTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.thymeleaf.ThymeleafTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.web.servlet.JspTemplateAvailabilityProvider]
+2022-07-13 16:09:51,516 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.ibm.service.rest.RestServiceConfigurationFactory.gitHubConnectionService()
+2022-07-13 16:09:51,518 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'gitHubConnectionService' defined in class path resource [org/ibm/service/rest/RestServiceConfigurationFactory.class]: Cannot register bean definition [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=restServiceConfigurationFactory; factoryMethodName=gitHubConnectionService; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/ibm/service/rest/RestServiceConfigurationFactory.class]] for bean 'gitHubConnectionService': There is already [Generic bean: class [org.ibm.service.rest.github.GitHubConnectionService]; scope=singleton; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]] bound.
+2022-07-13 16:09:51,548 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-13 16:09:51,603 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.diagnostics.FailureAnalysisReporter] names: [org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter]
+2022-07-13 16:09:51,612 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [main] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The bean 'gitHubConnectionService', defined in class path resource [org/ibm/service/rest/RestServiceConfigurationFactory.class], could not be registered. A bean with that name has already been defined in file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class] and overriding is disabled.
+
+Action:
+
+Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+
+2022-07-13 16:10:48,878 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.ApplicationContextFactory] names: [org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebServerApplicationContext.Factory, org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext.Factory]
+2022-07-13 16:10:49,039 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+2022-07-13 16:10:49,115 INFO org.springframework.boot.StartupInfoLogger [main] Starting GathererRestApplication using Java 11.0.15 on DESKTOP-218398Q with PID 15972 (C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes started by tbodi in C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer)
+2022-07-13 16:10:49,118 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-07-13 16:10:49,151 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+2022-07-13 16:10:49,382 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.beans.BeanInfoFactory] names: [org.springframework.beans.ExtendedBeanInfoFactory]
+2022-07-13 16:10:49,472 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+2022-07-13 16:10:49,480 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved classpath location [org/ibm/service/] to resources [URL [file:/C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/]]
+2022-07-13 16:10:49,483 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Looking for matching resources in directory tree [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service]
+2022-07-13 16:10:49,484 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/*/**/*.class]
+2022-07-13 16:10:49,488 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/*/**/*.class]
+2022-07-13 16:10:49,493 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/*/**/*.class]
+2022-07-13 16:10:49,514 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved location pattern [classpath*:org/ibm/service/*/**/*.class] to resources [file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\RestServiceConfigurationFactory.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]]
+2022-07-13 16:10:49,514 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\RestServiceConfigurationFactory.class]
+2022-07-13 16:10:49,566 DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Identified candidate component class: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\RestServiceConfigurationFactory.class]
+2022-07-13 16:10:49,566 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]
+2022-07-13 16:10:49,568 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]
+2022-07-13 16:10:49,572 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved classpath location [org/ibm/] to resources [URL [file:/C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/]]
+2022-07-13 16:10:49,575 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Looking for matching resources in directory tree [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm]
+2022-07-13 16:10:49,576 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:10:49,578 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\gatherer] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:10:49,581 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:10:49,583 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:10:49,586 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:10:49,589 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:10:49,592 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:10:49,594 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/*/**/*.class]
+2022-07-13 16:10:49,600 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved location pattern [classpath*:org/ibm/*/**/*.class] to resources [file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\gatherer\GathererRestApplication.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\RepositoryDTO.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers\GetDetailsOfUserDeserializer.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers\GetReposOfUserDeserializer.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto\GetUserDetailsDTO.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto\GetUserRepositoriesDTO.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\RestServiceConfigurationFactory.class], file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]]
+2022-07-13 16:10:49,601 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\gatherer\GathererRestApplication.class]
+2022-07-13 16:10:49,621 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\gatherer\GathererRestApplication.class]
+2022-07-13 16:10:49,622 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\RepositoryDTO.class]
+2022-07-13 16:10:49,625 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\RepositoryDTO.class]
+2022-07-13 16:10:49,627 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers\GetDetailsOfUserDeserializer.class]
+2022-07-13 16:10:49,627 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers\GetDetailsOfUserDeserializer.class]
+2022-07-13 16:10:49,628 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers\GetReposOfUserDeserializer.class]
+2022-07-13 16:10:49,629 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\deserializers\GetReposOfUserDeserializer.class]
+2022-07-13 16:10:49,630 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto\GetUserDetailsDTO.class]
+2022-07-13 16:10:49,632 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto\GetUserDetailsDTO.class]
+2022-07-13 16:10:49,632 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto\GetUserRepositoriesDTO.class]
+2022-07-13 16:10:49,634 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\model\dto\GetUserRepositoriesDTO.class]
+2022-07-13 16:10:49,634 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\RestServiceConfigurationFactory.class]
+2022-07-13 16:10:49,635 DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Identified candidate component class: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\RestServiceConfigurationFactory.class]
+2022-07-13 16:10:49,635 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]
+2022-07-13 16:10:49,636 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]
+2022-07-13 16:10:49,640 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+2022-07-13 16:10:49,643 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved classpath location [org/ibm/service/rest/] to resources [URL [file:/C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/rest/]]
+2022-07-13 16:10:49,644 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Looking for matching resources in directory tree [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest]
+2022-07-13 16:10:49,647 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/rest/*/**/*.class]
+2022-07-13 16:10:49,649 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/service/rest/*/**/*.class]
+2022-07-13 16:10:49,651 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved location pattern [classpath*:org/ibm/service/rest/*/**/*.class] to resources [file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]]
+2022-07-13 16:10:49,651 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Scanning file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]
+2022-07-13 16:10:49,652 TRACE org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider [main] Ignored because not matching any filter: file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\service\rest\github\GitHubConnectionService.class]
+2022-07-13 16:10:49,682 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.AutoConfigurationImportFilter] names: [org.springframework.boot.autoconfigure.condition.OnBeanCondition, org.springframework.boot.autoconfigure.condition.OnClassCondition, org.springframework.boot.autoconfigure.condition.OnWebApplicationCondition]
+2022-07-13 16:10:49,782 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.AutoConfigurationImportListener] names: [org.springframework.boot.autoconfigure.condition.ConditionEvaluationReportAutoConfigurationImportListener]
+2022-07-13 16:10:49,888 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved classpath location [messages.properties] to resources []
+2022-07-13 16:10:50,021 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider] names: [org.springframework.boot.autoconfigure.freemarker.FreeMarkerTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.mustache.MustacheTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.groovy.template.GroovyTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.thymeleaf.ThymeleafTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.web.servlet.JspTemplateAvailabilityProvider]
+2022-07-13 16:10:50,304 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.ibm.service.rest.RestServiceConfigurationFactory.gitHubConnectionService()
+2022-07-13 16:10:50,310 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration'
+2022-07-13 16:10:50,336 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration.propertySourcesPlaceholderConfigurer()
+2022-07-13 16:10:50,341 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration$TomcatWebSocketConfiguration'
+2022-07-13 16:10:50,344 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration$TomcatWebSocketConfiguration.websocketServletWebServerCustomizer()
+2022-07-13 16:10:50,346 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.websocket.servlet.WebSocketServletAutoConfiguration'
+2022-07-13 16:10:50,356 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryConfiguration$EmbeddedTomcat'
+2022-07-13 16:10:50,357 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryConfiguration$EmbeddedTomcat.tomcatServletWebServerFactory()
+2022-07-13 16:10:50,361 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration'
+2022-07-13 16:10:50,363 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration.servletWebServerFactoryCustomizer()
+2022-07-13 16:10:50,366 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration.tomcatServletWebServerFactoryCustomizer()
+2022-07-13 16:10:50,429 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration$DispatcherServletConfiguration'
+2022-07-13 16:10:50,433 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration$DispatcherServletConfiguration.dispatcherServlet()
+2022-07-13 16:10:50,441 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration$DispatcherServletRegistrationConfiguration'
+2022-07-13 16:10:50,454 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration$DispatcherServletRegistrationConfiguration.dispatcherServletRegistration()
+2022-07-13 16:10:50,456 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration'
+2022-07-13 16:10:50,459 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration'
+2022-07-13 16:10:50,472 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration.taskExecutorBuilder()
+2022-07-13 16:10:50,477 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration.applicationTaskExecutor()
+2022-07-13 16:10:50,482 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider] names: [org.springframework.boot.autoconfigure.freemarker.FreeMarkerTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.mustache.MustacheTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.groovy.template.GroovyTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.thymeleaf.ThymeleafTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.web.servlet.JspTemplateAvailabilityProvider]
+2022-07-13 16:10:50,485 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration'
+2022-07-13 16:10:50,487 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration.error()
+2022-07-13 16:10:50,500 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration.beanNameViewResolver()
+2022-07-13 16:10:50,502 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration$DefaultErrorViewResolverConfiguration'
+2022-07-13 16:10:50,511 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration$DefaultErrorViewResolverConfiguration.conventionErrorViewResolver()
+2022-07-13 16:10:50,515 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration'
+2022-07-13 16:10:50,525 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration.errorAttributes()
+2022-07-13 16:10:50,533 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration.basicErrorController()
+2022-07-13 16:10:50,535 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration.errorPageCustomizer()
+2022-07-13 16:10:50,536 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration.preserveErrorControllerTargetClassPostProcessor()
+2022-07-13 16:10:50,547 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration'
+2022-07-13 16:10:50,548 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.requestMappingHandlerAdapter()
+2022-07-13 16:10:50,549 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.welcomePageHandlerMapping()
+2022-07-13 16:10:50,550 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.localeResolver()
+2022-07-13 16:10:50,553 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.themeResolver()
+2022-07-13 16:10:50,555 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.flashMapManager()
+2022-07-13 16:10:50,556 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcConversionService()
+2022-07-13 16:10:50,558 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcValidator()
+2022-07-13 16:10:50,558 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcContentNegotiationManager()
+2022-07-13 16:10:50,559 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.requestMappingHandlerMapping()
+2022-07-13 16:10:50,560 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcPatternParser()
+2022-07-13 16:10:50,561 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcUrlPathHelper()
+2022-07-13 16:10:50,563 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcPathMatcher()
+2022-07-13 16:10:50,564 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.viewControllerHandlerMapping()
+2022-07-13 16:10:50,566 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.beanNameHandlerMapping()
+2022-07-13 16:10:50,567 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.routerFunctionMapping()
+2022-07-13 16:10:50,569 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.resourceHandlerMapping()
+2022-07-13 16:10:50,570 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcResourceUrlProvider()
+2022-07-13 16:10:50,572 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.defaultServletHandlerMapping()
+2022-07-13 16:10:50,573 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.handlerFunctionAdapter()
+2022-07-13 16:10:50,575 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcUriComponentsContributor()
+2022-07-13 16:10:50,576 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.httpRequestHandlerAdapter()
+2022-07-13 16:10:50,578 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.simpleControllerHandlerAdapter()
+2022-07-13 16:10:50,579 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.handlerExceptionResolver()
+2022-07-13 16:10:50,582 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcViewResolver()
+2022-07-13 16:10:50,583 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.mvcHandlerMappingIntrospector()
+2022-07-13 16:10:50,584 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration.viewNameTranslator()
+2022-07-13 16:10:50,588 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter'
+2022-07-13 16:10:50,657 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter.defaultViewResolver()
+2022-07-13 16:10:50,678 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter.viewResolver()
+2022-07-13 16:10:50,688 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter.requestContextFilter()
+2022-07-13 16:10:50,691 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration'
+2022-07-13 16:10:50,697 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration.formContentFilter()
+2022-07-13 16:10:50,701 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.aop.AopAutoConfiguration$ClassProxyingConfiguration'
+2022-07-13 16:10:50,702 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.aop.AopAutoConfiguration$ClassProxyingConfiguration.forceAutoProxyCreatorToUseClassProxying()
+2022-07-13 16:10:50,702 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.aop.AopAutoConfiguration'
+2022-07-13 16:10:50,703 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration'
+2022-07-13 16:10:50,704 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration.applicationAvailability()
+2022-07-13 16:10:50,706 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$Jackson2ObjectMapperBuilderCustomizerConfiguration'
+2022-07-13 16:10:50,707 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$Jackson2ObjectMapperBuilderCustomizerConfiguration.standardJacksonObjectMapperBuilderCustomizer()
+2022-07-13 16:10:50,708 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$JacksonObjectMapperBuilderConfiguration'
+2022-07-13 16:10:50,722 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$JacksonObjectMapperBuilderConfiguration.jacksonObjectMapperBuilder()
+2022-07-13 16:10:50,723 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$ParameterNamesModuleConfiguration'
+2022-07-13 16:10:50,727 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$ParameterNamesModuleConfiguration.parameterNamesModule()
+2022-07-13 16:10:50,728 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$JacksonObjectMapperConfiguration'
+2022-07-13 16:10:50,731 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration$JacksonObjectMapperConfiguration.jacksonObjectMapper()
+2022-07-13 16:10:50,732 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration'
+2022-07-13 16:10:50,733 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration.jsonComponentModule()
+2022-07-13 16:10:50,735 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration.jsonMixinModule()
+2022-07-13 16:10:50,742 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration'
+2022-07-13 16:10:50,743 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration'
+2022-07-13 16:10:50,744 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration.lifecycleProcessor()
+2022-07-13 16:10:50,750 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration$StringHttpMessageConverterConfiguration'
+2022-07-13 16:10:50,757 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration$StringHttpMessageConverterConfiguration.stringHttpMessageConverter()
+2022-07-13 16:10:50,761 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.http.JacksonHttpMessageConvertersConfiguration$MappingJackson2HttpMessageConverterConfiguration'
+2022-07-13 16:10:50,764 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.http.JacksonHttpMessageConvertersConfiguration$MappingJackson2HttpMessageConverterConfiguration.mappingJackson2HttpMessageConverter()
+2022-07-13 16:10:50,765 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.http.JacksonHttpMessageConvertersConfiguration'
+2022-07-13 16:10:50,769 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration'
+2022-07-13 16:10:50,773 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration.messageConverters()
+2022-07-13 16:10:50,775 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration'
+2022-07-13 16:10:50,784 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.sql.init.SqlInitializationAutoConfiguration'
+2022-07-13 16:10:50,786 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration'
+2022-07-13 16:10:50,789 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration.scheduledBeanLazyInitializationExcludeFilter()
+2022-07-13 16:10:50,797 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration.taskSchedulerBuilder()
+2022-07-13 16:10:50,801 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration'
+2022-07-13 16:10:50,805 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration.restTemplateBuilderConfigurer()
+2022-07-13 16:10:50,808 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration.restTemplateBuilder()
+2022-07-13 16:10:50,809 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration$TomcatWebServerFactoryCustomizerConfiguration'
+2022-07-13 16:10:50,810 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration$TomcatWebServerFactoryCustomizerConfiguration.tomcatWebServerFactoryCustomizer()
+2022-07-13 16:10:50,811 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration'
+2022-07-13 16:10:50,813 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration'
+2022-07-13 16:10:50,821 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration.characterEncodingFilter()
+2022-07-13 16:10:50,822 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration.localeCharsetMappingsCustomizer()
+2022-07-13 16:10:50,827 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registered bean definition for imported class 'org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration'
+2022-07-13 16:10:50,836 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration.multipartConfigElement()
+2022-07-13 16:10:50,837 TRACE org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader [main] Registering bean definition for @Bean method org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration.multipartResolver()
+2022-07-13 16:10:50,995 TRACE org.springframework.context.annotation.ConfigurationClassEnhancer [main] Successfully enhanced org.ibm.gatherer.GathererRestApplication; enhanced class name is: org.ibm.gatherer.GathererRestApplication$$EnhancerBySpringCGLIB$$284c1beb
+2022-07-13 16:10:50,996 TRACE org.springframework.context.annotation.ConfigurationClassPostProcessor [main] Replacing bean definition 'gathererRestApplication' existing class 'org.ibm.gatherer.GathererRestApplication' with enhanced class 'org.ibm.gatherer.GathererRestApplication$$EnhancerBySpringCGLIB$$284c1beb'
+2022-07-13 16:10:50,999 TRACE org.springframework.context.annotation.ConfigurationClassEnhancer [main] Successfully enhanced org.ibm.service.rest.RestServiceConfigurationFactory; enhanced class name is: org.ibm.service.rest.RestServiceConfigurationFactory$$EnhancerBySpringCGLIB$$c98a4371
+2022-07-13 16:10:51,000 TRACE org.springframework.context.annotation.ConfigurationClassPostProcessor [main] Replacing bean definition 'restServiceConfigurationFactory' existing class 'org.ibm.service.rest.RestServiceConfigurationFactory' with enhanced class 'org.ibm.service.rest.RestServiceConfigurationFactory$$EnhancerBySpringCGLIB$$c98a4371'
+2022-07-13 16:10:51,922 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2022-07-13 16:10:51,939 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2022-07-13 16:10:51,941 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-07-13 16:10:51,941 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-07-13 16:10:52,077 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-07-13 16:10:52,078 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2816 ms
+2022-07-13 16:10:52,176 INFO org.ibm.service.rest.RestServiceConfigurationFactory [main] Creating bean
+2022-07-13 16:10:52,408 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider] names: [org.springframework.boot.autoconfigure.freemarker.FreeMarkerTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.mustache.MustacheTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.groovy.template.GroovyTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.thymeleaf.ThymeleafTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.web.servlet.JspTemplateAvailabilityProvider]
+2022-07-13 16:10:52,554 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved classpath location [org/ibm/gatherer/] to resources [URL [file:/C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/gatherer/]]
+2022-07-13 16:10:52,554 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Looking for matching resources in directory tree [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\gatherer]
+2022-07-13 16:10:52,556 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Searching directory [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\gatherer] for files matching pattern [C:/Users/tbodi/eclipse-workspace/vcs-query-tool/src/gatherer/target/classes/org/ibm/gatherer/**/*.class]
+2022-07-13 16:10:52,557 TRACE org.springframework.core.io.support.PathMatchingResourcePatternResolver [main] Resolved location pattern [classpath*:org/ibm/gatherer/**/*.class] to resources [file [C:\Users\tbodi\eclipse-workspace\vcs-query-tool\src\gatherer\target\classes\org\ibm\gatherer\GathererRestApplication.class]]
+2022-07-13 16:10:52,683 TRACE org.springframework.core.io.support.SpringFactoriesLoader [main] Loaded [org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider] names: [org.springframework.boot.autoconfigure.freemarker.FreeMarkerTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.mustache.MustacheTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.groovy.template.GroovyTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.thymeleaf.ThymeleafTemplateAvailabilityProvider, org.springframework.boot.autoconfigure.web.servlet.JspTemplateAvailabilityProvider]
+2022-07-13 16:10:52,846 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2022-07-13 16:10:52,869 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2022-07-13 16:10:52,895 INFO org.springframework.boot.StartupInfoLogger [main] Started GathererRestApplication in 4.73 seconds (JVM running for 5.51)
