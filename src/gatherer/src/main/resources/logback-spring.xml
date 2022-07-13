@@ -45,5 +45,9 @@
 		<appender-ref ref="RollingFile" />
 		<appender-ref ref="Console" />
 	</logger>
+	
+	<springProfile name="logback-test1">
+        <logger name="org.ibm*" level="trace"/>
+    </springProfile>
 
 </configuration>
