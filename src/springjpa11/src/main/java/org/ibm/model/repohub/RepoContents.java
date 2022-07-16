@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,6 +26,9 @@ public class RepoContents {
 	@Id
 	private int id;
 	private String repoName;
+	
+	@ManyToOne
+	private GitRepository ownerRepo;
 	
 	@OneToMany(mappedBy = "childOfRepo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Map<String, ContentFile> files;

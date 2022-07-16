@@ -29,6 +29,6 @@ public class RepoHub {
 	@OneToOne
 	private ApplicationUser hubOwner;
 	
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "masterRepoHub", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<GitRepository> repositories;
 }

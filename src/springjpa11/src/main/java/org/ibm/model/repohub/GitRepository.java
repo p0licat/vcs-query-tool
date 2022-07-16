@@ -1,8 +1,12 @@
 package org.ibm.model.repohub;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.ibm.model.applicationuser.ApplicationUser;
@@ -22,7 +26,10 @@ public class GitRepository {
 	private String name;
 	
 	@ManyToOne
-	private ApplicationUser owner;
+	private RepoHub masterRepoHub;
+	
+	@OneToOne(mappedBy="ownerRepo", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	private RepoContents contentsNode;
 	
 	private String nodeId;
 	private long repoGitId;
