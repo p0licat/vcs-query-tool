@@ -34,6 +34,8 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositor
 		
 		ArrayList<RepositoryDTO> result = new ArrayList<>();
 		
+		// should have a custom exception here
+		// otherwise NPE
 		for (JsonNode child : node) {
 			
 			String name = child.get("name").asText();

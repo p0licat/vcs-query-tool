@@ -66,7 +66,12 @@ class SpringjpaApplicationTests {
 			HttpResponse<String> response = this.makeRequest(url);
 			Assertions.assertTrue(response.statusCode() == 200);
 			ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
-			GetUserRepositoriesDTO dto = mapper.readValue(response.body(), GetUserRepositoriesDTO.class);
+			GetUserRepositoriesDTO dto;
+			try {
+				dto = mapper.readValue(response.body(), GetUserRepositoriesDTO.class);
+			} catch (NullPointerException e) {
+				throw e;
+			}
 			Assertions.assertTrue(dto.toString().length() > 0);
 
 		} catch (IOException e) {
