@@ -2,10 +2,10 @@ package org.ibm.model.contents;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.ibm.model.applicationuser.ApplicationUser;
-import org.ibm.model.repohub.GitRepository;
+import org.ibm.model.repohub.RepoContents;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +25,9 @@ public class ContentDir implements Inode {
 	private String contentsUrl;
 	// for fileSize, make a setter... persist
 	private long fileSize; // make this public to move to interface
+	
+	@ManyToOne
+	private RepoContents childOfRepo;
 	
 	@Override
 	public String getFileHash() {

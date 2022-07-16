@@ -2,7 +2,9 @@ package org.ibm.model.repohub;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -27,6 +29,6 @@ public class RepoHub {
 	@OneToOne
 	private ApplicationUser hubOwner;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<GitRepository> repositories;
 }

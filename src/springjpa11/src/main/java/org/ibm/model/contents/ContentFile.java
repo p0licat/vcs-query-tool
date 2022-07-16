@@ -2,7 +2,10 @@ package org.ibm.model.contents;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.ibm.model.repohub.RepoContents;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +24,9 @@ public class ContentFile implements Inode {
 	private String shaSum;
 	private String downloadUrl;
 	private long fileSize;
+	
+	@ManyToOne
+	private RepoContents childOfRepo;
 	
 	@Override
 	public String getFileHash() {
