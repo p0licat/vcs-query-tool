@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@SuppressWarnings("serial")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,10 +18,6 @@ import lombok.ToString;
 @ToString
 public class RepositoryDTO implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Long id;
 	String nodeId;
 	String name;

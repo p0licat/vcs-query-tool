@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.catalina.startup.ClassLoaderFactory.Repository;
 import org.ibm.rest.dto.GetUserRepositoriesDTO;
 import org.ibm.rest.dto.RepositoryDTO;
 
@@ -25,6 +24,7 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositor
 		super(vc);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public GetUserRepositoriesDTO deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException, JacksonException {

@@ -8,11 +8,13 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
 import org.ibm.model.deserializers.GetReposOfUserDeserializer;
+import org.ibm.repository.GitRepoRepository;
 import org.ibm.rest.dto.GetUserRepositoriesDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -30,6 +32,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @WebAppConfiguration
+@DataJpaTest
 class SpringjpaApplicationTests {
 
 	
@@ -37,6 +40,9 @@ class SpringjpaApplicationTests {
 	// cannot use localhost or loopback to request application running as a different process
 	@Autowired
 	private WebApplicationContext webApplicationContext;
+	
+	@Autowired
+	private GitRepoRepository repository;
 	
 	@Test
 	void contextLoads() {
@@ -75,6 +81,32 @@ class SpringjpaApplicationTests {
 			}
 			Assertions.assertTrue(dto.toString().length() > 0);
 
+		} catch (IOException e) {
+			Assertions.fail();
+		} catch (InterruptedException e) {
+			Assertions.fail();
+		}
+		
+	}
+	
+	@Test
+	void testGetGitGathererServiceEndpoint_getRepositoriesAndPersist() {
+		String url = "http://127.0.0.1:8080/scanReposOfUser?username=p0licat";
+		try {
+			HttpResponse<String> response = this.makeRequest(url);
+			Assertions.assertTrue(response.statusCode() == 200);
+			ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
+			GetUserRepositoriesDTO dto;
+			try {
+				dto = mapper.readValue(response.body(), GetUserRepositoriesDTO.class);
+			} catch (NullPointerException e) {
+				throw e; // should be custom exception from Deserializer.
+				// otherwise refactor deserializers as a sort of external module
+			}
+			Assertions.assertTrue(dto.toString().length() > 0);
+			
+			this.repository.save(dto);
+			
 		} catch (IOException e) {
 			Assertions.fail();
 		} catch (InterruptedException e) {
