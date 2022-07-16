@@ -1,8 +1,12 @@
 package org.ibm.model.deserializers;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.catalina.startup.ClassLoaderFactory.Repository;
 import org.ibm.rest.dto.GetUserRepositoriesDTO;
 import org.ibm.rest.dto.RepositoryDTO;
 
@@ -31,30 +35,56 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositor
 		} catch (Exception e) {
 			throw e;
 		}
-		
+
 		ArrayList<RepositoryDTO> result = new ArrayList<>();
-		
+
 		// should have a custom exception here
 		// otherwise NPE
-		for (JsonNode child : node) {
+		for (JsonNode child : node.get("repositories")) {
 			
-			String name = child.get("name").asText();
-			Long id = (Long) child.get("id").longValue();
-			String nodeId = child.get("node_id").asText();
-			String description = child.get("description").asText();
-			String language = child.get("language").asText();
+			Map<String, Object> reflectiveMap = new HashMap<>();
 			
-			String contentsUrl = child.get("contents_url").asText();
-			String commitsUrl = child.get("commits_url").asText();
-			String branchesUrl = child.get("branches_url").asText();
+			for (Field f : RepositoryDTO.class.getDeclaredFields()) {
+				if (f.getName().contains("UID")) {
+					continue;
+				}
+				Object newObject = null;
+				if (f.getType().equals(Long.class)) {
+					newObject = new Integer(1).longValue();
+				}
+				if (f.getType().equals(String.class)) {
+					newObject = new String("");
+				}
+				if (newObject == null) {
+					throw new IOException("Type not present.");
+				}
+				reflectiveMap.put(f.getName(), newObject);
+			}
 			
-			String createdAt = child.get("created_at").asText();
-			String updatedAt = child.get("updated_at").asText();
-			String pushedAt = child.get("pushed_at").asText();
+			for (Field f : RepositoryDTO.class.getDeclaredFields()) {
+				if (f.getName().contains("UID")) {
+					continue;
+				}
+				if (f.getType().equals(Long.class)) {
+					 reflectiveMap.put(f.getName(), child.get(f.getName()).longValue());
+				} else if (f.getType().equals(String.class)) {
+					reflectiveMap.put(f.getName(), child.get(f.getName()).asText());
+				}
+			}
 			
-			result.add(new RepositoryDTO(id, nodeId, name, description, language, contentsUrl, commitsUrl, branchesUrl, createdAt, updatedAt, pushedAt));
+			result.add(new RepositoryDTO(
+					(Long)reflectiveMap.get("id"), 
+					(String)reflectiveMap.get("nodeId"), 
+					(String)reflectiveMap.get("name"), 
+					(String)reflectiveMap.get("description"), 
+					(String)reflectiveMap.get("language"), 
+					(String)reflectiveMap.get("contentsUrl"), 
+					(String)reflectiveMap.get("commitsUrl"), 
+					(String)reflectiveMap.get("branchesUrl"), 
+					(String)reflectiveMap.get("createdAt"), 
+					(String)reflectiveMap.get("updatedAt"), 
+					(String)reflectiveMap.get("pushedAt")));
 		}
-		
 		
 		return new GetUserRepositoriesDTO(result); 
 	}
