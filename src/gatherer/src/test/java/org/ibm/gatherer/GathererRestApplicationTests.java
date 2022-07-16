@@ -30,7 +30,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-logging-test.properties")
 class GathererRestApplicationTests {
 
 	@Test

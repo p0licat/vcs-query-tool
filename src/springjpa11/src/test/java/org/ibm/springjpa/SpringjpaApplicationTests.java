@@ -42,7 +42,7 @@ class SpringjpaApplicationTests {
 	void contextLoads() {
 	}
 
-	@Test
+	//@Test
 	void testGetGitGathererServiceEndpoint_UsingMock() throws Exception {
 		String addr = "127.0.0.1:8080";
 		String uri = "/scanReposOfUser?username=p0licat";
