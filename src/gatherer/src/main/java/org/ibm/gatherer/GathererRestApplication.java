@@ -42,6 +42,7 @@ public class GathererRestApplication {
 		} catch (Exception io) {
 			logger.info(io.toString());
 		}
+		logger.info("Ran first mapping");
 		return res;
 	}
 	
