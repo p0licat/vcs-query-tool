@@ -12,7 +12,7 @@ import org.ibm.service.GitHubConnectionService;
 
 public class HttpResponseLoggerGitHubTest {
 	
-	private void testOne() {
+	public void testOne() {
 		{
 			GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
 			GetUserDetailsDTO response = service.getUserDetails("p0licat").orElse(null);
@@ -41,7 +41,7 @@ public class HttpResponseLoggerGitHubTest {
 		}
 	}
 
-	private void testTwo() {
+	public void testTwo() {
 		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
 		GetUserRepositoriesDTO response = service.getRepositoriesOfUser("p0licat").orElse(null);
 		System.out.println(response);

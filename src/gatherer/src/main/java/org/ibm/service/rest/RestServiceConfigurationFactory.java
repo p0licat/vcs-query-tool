@@ -6,7 +6,6 @@ import org.ibm.service.rest.github.GitHubConnectionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 @Configuration
 @ComponentScan("org.ibm.service.rest.*")

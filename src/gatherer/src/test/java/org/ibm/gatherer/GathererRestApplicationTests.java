@@ -45,6 +45,7 @@ class GathererRestApplicationTests {
 		try {
 			GetUserRepositoriesDTO dto;
 			dto = mapper.readValue(contents, GetUserRepositoriesDTO.class);
+			Assertions.assertTrue(dto.toString().length() > 0);
 		} catch (JsonProcessingException e) {
 			Assertions.fail();
 		}
@@ -59,6 +60,7 @@ class GathererRestApplicationTests {
 
 		try {
 			GetUserDetailsDTO dto = mapper.readValue(contents, GetUserDetailsDTO.class);
+			Assertions.assertTrue(dto.toString().length() > 0);
 		} catch (JsonProcessingException e) {
 			Assertions.fail();
 		}
@@ -73,6 +75,7 @@ class GathererRestApplicationTests {
 
 		try {
 			GetUserDetailsDTO dto = mapper.readValue(contents, GetUserDetailsDTO.class);
+			Assertions.assertTrue(dto.toString().length() > 0);
 		} catch (JsonProcessingException e) {
 			Assertions.fail();
 		}
@@ -102,7 +105,7 @@ class GathererRestApplicationTests {
 		String response = service.getRawUserDetails("p0licat");
 		return response;
 	}
-	
+
 	private String getResponseFromEndpoint_userRepos() {
 		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
 		String response = service.getRawRepositoriesOfUser("p0licat");
@@ -118,13 +121,13 @@ class GathererRestApplicationTests {
 		} catch (Exception e) {
 			Assertions.fail();
 		}
-		
+
 		String result = this.getResponseFromEndpoint_userRepos();
 		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
-		
+
 		final GetUserRepositoriesDTO dto_web;
 		final GetUserRepositoriesDTO dto_res;
-		
+
 		try {
 			dto_web = mapper.readValue(result, GetUserRepositoriesDTO.class);
 			dto_res = mapper.readValue(compareTo, GetUserRepositoriesDTO.class);
@@ -132,19 +135,18 @@ class GathererRestApplicationTests {
 			Assertions.fail();
 			throw e;
 		}
-		
-		Assertions.assertTrue(dto_web.toString().compareTo(dto_res.toString())==0);
-		List<RepositoryDTO> matches =  dto_web.repositories.stream().filter(e -> e.getName().compareTo("Algorithms") == 0).collect(Collectors.toList());
+
+		Assertions.assertTrue(dto_web.toString().compareTo(dto_res.toString()) == 0);
+		List<RepositoryDTO> matches = dto_web.repositories.stream()
+				.filter(e -> e.getName().compareTo("Algorithms") == 0).collect(Collectors.toList());
 		// no duplicates check
 		Assertions.assertTrue(matches.stream().filter(
-				e -> 
-					dto_res.repositories.stream()
-					.filter(f -> f.getId().compareTo(e.getId()) == 0).count() == 1
-				).count() == 1);
+				e -> dto_res.repositories.stream().filter(f -> f.getId().compareTo(e.getId()) == 0).count() == 1)
+				.count() == 1);
 		Assertions.assertTrue(matches.size() > 0);
-		
+
 	}
-	
+
 	@Order(3)
 	@Test
 	void getResponseFromEndpointTest__userDetails() {

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
+@SuppressWarnings("serial")
 public class GetDetailsOfUserDeserializer extends StdDeserializer<GetUserDetailsDTO> {
 
 	public GetDetailsOfUserDeserializer() {this(null);}

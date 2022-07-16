@@ -8,7 +8,7 @@ public class GetUserRepositoriesDTO {
 
 	public GetUserRepositoriesDTO(ArrayList<RepositoryDTO> repositories) {
 		super();
-		this.repositories = (ArrayList<RepositoryDTO>) repositories.clone();
+		this.repositories = new ArrayList<>(repositories);
 	}
 
 	ArrayList<RepositoryDTO> repositories;
