@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication(scanBasePackages = {"org.ibm.service.*", "org.ibm.*"})
 @RestController
-//@ComponentScan(basePackages = "{org.ibm.service.rest.*}")
 public class GathererRestApplication {
 
 	Logger logger = Logger.getLogger(getClass().getName());
