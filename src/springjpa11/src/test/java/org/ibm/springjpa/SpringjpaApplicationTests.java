@@ -70,7 +70,8 @@ class SpringjpaApplicationTests {
 			try {
 				dto = mapper.readValue(response.body(), GetUserRepositoriesDTO.class);
 			} catch (NullPointerException e) {
-				throw e;
+				throw e; // should be custom exception from Deserializer.
+				// otherwise refactor deserializers as a sort of external module
 			}
 			Assertions.assertTrue(dto.toString().length() > 0);
 

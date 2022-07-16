@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -101,13 +100,13 @@ class GathererRestApplicationTests {
 	// alternatively use REST mock.
 	private String getResponseFromEndpoint_userDetails() {
 		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
-		String response = service.getRawUserDetails("p0licat");
+		String response = service.getRawUserDetails("p0licat").body();
 		return response;
 	}
 
 	private String getResponseFromEndpoint_userRepos() {
 		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
-		String response = service.getRawRepositoriesOfUser("p0licat");
+		String response = service.getRawRepositoriesOfUser("p0licat").body();
 		return response;
 	}
 

@@ -3,6 +3,7 @@ package org.ibm.service.rest.github;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class GitHubConnectionService {
 				.build();
 	}
 	
-	public String sendGETRequest(String URI) {
+	public HttpResponse<String> sendGETRequest(String URI) {
 		String path = URL + '/' + URI;
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(java.net.URI.create(path))
@@ -34,9 +35,9 @@ public class GitHubConnectionService {
 				.GET()
 				.build();
 		
-		String response = "";
+		HttpResponse<String> response = null;
 		try {
-			response = this.httpClient.send(request, BodyHandlers.ofString()).body();
+			response = this.httpClient.send(request, BodyHandlers.ofString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -53,7 +54,7 @@ public class GitHubConnectionService {
 	// use Nullable/optional wrapper / facade
 	public Optional<GetUserDetailsDTO> getUserDetails(String userName) {
 		String getUserURI = "users";
-		String response = this.sendGETRequest(getUserURI + '/' + userName); // todo analyze API.
+		String response = this.sendGETRequest(getUserURI + '/' + userName).body(); // todo analyze API.
 		GetUserDetailsDTO responseDTO = null; // or use builder pattern.
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -74,16 +75,16 @@ public class GitHubConnectionService {
 	}
 
 	
-	public String getRawRepositoriesOfUser(String userName) {
+	public HttpResponse<String> getRawRepositoriesOfUser(String userName) {
 		String getRepositoriesOfUsersURI = "users" + '/' + userName + '/' + "repos";
-		String response = this.sendGETRequest(getRepositoriesOfUsersURI);
+		HttpResponse<String> response = this.sendGETRequest(getRepositoriesOfUsersURI);
 		return response;
 	}
 	// refactor this and method above using generics and java.lang.reflect awareness
 	// this business logic depends only on referencing the right deserializer. if that is passed as
 	// an argument, only one method is necessary.
 	public Optional<GetUserRepositoriesDTO> getRepositoriesOfUser(String userName) {
-		String response = this.getRawRepositoriesOfUser(userName);
+		String response = this.getRawRepositoriesOfUser(userName).body();
 		GetUserRepositoriesDTO responseDTO = null;
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -111,9 +112,9 @@ public class GitHubConnectionService {
 		return null;
 	}
 
-	public String getRawUserDetails(String userName) {
+	public HttpResponse<String> getRawUserDetails(String userName) {
 		String getUserURI = "users";
-		String response = this.sendGETRequest(getUserURI + '/' + userName); // todo analyze API.
+		HttpResponse<String> response = this.sendGETRequest(getUserURI + '/' + userName); // todo analyze API.
 		return response;
 	}
 }
