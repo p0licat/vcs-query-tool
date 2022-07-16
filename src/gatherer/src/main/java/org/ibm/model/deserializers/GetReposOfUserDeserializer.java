@@ -23,9 +23,15 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositor
 	@Override
 	public GetUserRepositoriesDTO deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException, JacksonException {
-		JsonNode node = jp.getCodec().readTree(jp);
 		
-		ArrayList<RepositoryDTO> result = new ArrayList<RepositoryDTO>();
+		JsonNode node = null;
+		try { 
+			node = jp.getCodec().readTree(jp);
+		} catch (Exception e) {
+			throw e;
+		}
+		
+		ArrayList<RepositoryDTO> result = new ArrayList<>();
 		
 		for (JsonNode child : node) {
 			

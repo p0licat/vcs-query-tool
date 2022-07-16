@@ -4,23 +4,17 @@ import java.util.ArrayList;
 
 import org.ibm.model.RepositoryDTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class GetUserRepositoriesDTO {
-
-	public GetUserRepositoriesDTO(ArrayList<RepositoryDTO> repositories) {
-		super();
-		this.repositories = (ArrayList<RepositoryDTO>) repositories.clone();
-	}
-
-	ArrayList<RepositoryDTO> repositories;
 	
-	@Override
-	public String toString() {
-		String result = "{";
-		for (RepositoryDTO d : this.repositories) {
-			result += d.toString();
-			result += '\n';
-		}
-		result += "}";
-		return result;
-	}
+	public ArrayList<RepositoryDTO> repositories;
+	
 }

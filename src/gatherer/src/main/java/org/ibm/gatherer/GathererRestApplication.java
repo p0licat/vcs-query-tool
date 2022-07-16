@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.ibm.model.RepositoryDTO;
+import org.ibm.model.dto.GetUserRepositoriesDTO;
 import org.ibm.service.rest.github.GitHubConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -41,6 +43,21 @@ public class GathererRestApplication {
 			logger.info(io.toString());
 		}
 		return res;
+	}
+	
+	@GetMapping("/getReposOfUser")
+	public List<RepositoryDTO> getReposOfUser(String username, String repositoryName) {
+		GetUserRepositoriesDTO dto = null;
+		if (repositoryName.compareTo("github") == 0) {
+			dto = this.gitHubConnectionService.getRepositoriesOfUser(username).orElse(null);
+		}
+		if (dto == null) {
+			return new ArrayList<>();
+		} else {
+			ArrayList<RepositoryDTO> results = new ArrayList<>();
+			dto.repositories.forEach(e -> {results.add(e);});
+			return results;
+		}
 	}
 	
 	
