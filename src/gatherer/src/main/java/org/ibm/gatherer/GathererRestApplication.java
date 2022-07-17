@@ -4,9 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -73,15 +77,8 @@ public class GathererRestApplication {
 	
 	//region cached queries
 	private String getResponseFromResouces(String resourceName) throws IOException {
-		File file = new File(ClassLoader.getSystemResource("./test_data/" + resourceName).getPath().toString());
-		FileReader input = new FileReader(file);
-		BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
-		char[] buffer = new char[65535]; // seach const
-		reader.read(buffer, 0, 65534);
-		reader.close();
-		input.close();
-
-		String contents = new String(buffer);
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream(resourceName);
+		String contents = new String(is.readAllBytes(), StandardCharsets.UTF_8);
 		return contents;
 	}
 	//endregion

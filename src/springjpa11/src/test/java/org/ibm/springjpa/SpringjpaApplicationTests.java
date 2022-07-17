@@ -63,7 +63,7 @@ class SpringjpaApplicationTests {
 	@Rollback(false)
 	@Transactional
 	void testGetGitGathererServiceEndpoint_getRepositoriesAndPersist() {
-		String url = "http://127.0.0.1:8080/scanReposOfUser?username=p0licat";
+		String url = "http://127.0.0.1:8080/scanReposOfUserOffline?username=p0licat";
 		try {
 			HttpResponse<String> response = this.makeRequest(url);
 			Assertions.assertTrue(response.statusCode() == 200);
