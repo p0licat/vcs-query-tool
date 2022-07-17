@@ -6,6 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -89,17 +90,17 @@ public class SpringJpaInMemoryDatabaseTests {
 		user.setGitId("12345");
 		user.setReposUrl(url); // not the actual URL
 		
-		em.persist(user);
+		//em.persist(user);
 		userRepository.save(user);
-		em.flush();
+		//em.flush();
 		Long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf")==0).count();
 		Assertions.assertTrue(count > 0);
 		
 		RepoHub newRepoHub = new RepoHub();
-		em.persist(newRepoHub);
+		//em.persist(newRepoHub);
 		newRepoHub.setHubOwner(user);
-		hubRepository.save(newRepoHub);
-		em.flush();
+		newRepoHub = hubRepository.save(newRepoHub);
+		//em.flush();
 		
 		try {
 			HttpResponse<String> response = this.makeRequest(url);
@@ -118,25 +119,42 @@ public class SpringJpaInMemoryDatabaseTests {
 				GitRepository repo = new GitRepository();
 				repo.setRepoGitId(i.getId().intValue());
 				
-				em.persist(repo);
-				this.gitRepoRepository.save(repo); // need a DTO to Model converter
+				//em.persist(repo);
+				//this.gitRepoRepository.save(repo); // need a DTO to Model converter
 			}
 			
-			em.flush();
-			Set newSet = Set.copyOf(dto.getRepositories());
-			newRepoHub.setRepositories(newSet);
-			hubRepository.save(newRepoHub);
+			//em.flush();
+			Set<RepositoryDTO> newSet = Set.copyOf(dto.getRepositories());
+			Set<GitRepository> reposSet = new HashSet<>();
+			for (RepositoryDTO r : newSet) {
+				GitRepository g = new GitRepository();
+				g.setContentsNode(null);
+				g.setContentsUrl(r.getContentsUrl());
+				g.setDescription(r.getDescription());
+				g.setHtmlUrl(r.getContentsUrl()); // ??
+				g.setMasterRepoHub(newRepoHub);
+				g.setName(r.getName());
+				g.setNodeId(r.getNodeId());
+				g.setRepoGitId(r.getId());
+				
+				//em.persist(g);
+				reposSet.add(this.gitRepoRepository.save(g));
+			}
 			
-			
-			em.flush();
-			
+			//em.persist(newRepoHub);
+			newRepoHub = hubRepository.getById(newRepoHub.getId());
+			newRepoHub.setRepositories(reposSet);
+			newRepoHub = hubRepository.save(newRepoHub);
+			newRepoHub = hubRepository.getById(newRepoHub.getId());
+			//hubRepository.save(newRepoHub);
+			//em.merge(newRepoHub);
+			//em.flush();
 			
 		} catch (IOException e) {
 			Assertions.fail();
 		} catch (InterruptedException e) {
 			Assertions.fail();
 		}
-
 	}
 	
 	@Test
@@ -184,8 +202,24 @@ public class SpringJpaInMemoryDatabaseTests {
 			}
 			
 			em.flush();
-			Set newSet = Set.copyOf(dto.getRepositories());
-			newRepoHub.setRepositories(newSet);
+			Set<RepositoryDTO> newSet = Set.copyOf(dto.getRepositories());
+			Set<GitRepository> reposSet = new HashSet<>();
+			for (RepositoryDTO r : newSet) {
+				GitRepository g = new GitRepository();
+				g.setContentsNode(null);
+				g.setContentsUrl(r.getContentsUrl());
+				g.setDescription(r.getDescription());
+				g.setHtmlUrl(r.getContentsUrl()); // ??
+				g.setMasterRepoHub(newRepoHub);
+				g.setName(r.getName());
+				g.setNodeId(r.getNodeId());
+				g.setRepoGitId(r.getId());
+				
+				em.persist(g);
+				reposSet.add(g);
+			}
+			
+			newRepoHub.setRepositories(reposSet);
 			hubRepository.save(newRepoHub);
 			
 			
