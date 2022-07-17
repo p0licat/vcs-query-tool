@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.ibm.model.RepositoryDTO;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
 import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
+import org.ibm.model.deserializers.GetReposOfUserDeserializerFromGitReply;
 import org.ibm.model.dto.GetUserDetailsDTO;
 import org.ibm.model.dto.GetUserRepositoriesDTO;
 import org.ibm.service.rest.github.GitHubConnectionService;
@@ -39,7 +40,7 @@ class GathererRestApplicationTests {
 	@Test
 	void testDtoConverterRepositoriesOfUser() throws IOException {
 		String contents = this.getResponseFromResouces("response2.txt");
-		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
+		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromGitApi();
 		try {
 			GetUserRepositoriesDTO dto;
 			dto = mapper.readValue(contents, GetUserRepositoriesDTO.class);
@@ -88,11 +89,11 @@ class GathererRestApplicationTests {
 		mapper.registerModule(module);
 		return mapper;
 	}
-
-	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
+	
+	private ObjectMapper getMapperFor__getReposOfUserDeserializerFromGitApi() {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializerFromEndpointReply());
+		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializerFromGitReply());
 		mapper.registerModule(module);
 		return mapper;
 	}
@@ -120,7 +121,7 @@ class GathererRestApplicationTests {
 			Assertions.fail();
 		}
 
-		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
+		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromGitApi();
 
 		final GetUserRepositoriesDTO dto_res;
 
@@ -146,7 +147,7 @@ class GathererRestApplicationTests {
 		}
 
 		String result = this.getResponseFromEndpoint_userRepos();
-		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
+		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromGitApi();
 
 		final GetUserRepositoriesDTO dto_web;
 		final GetUserRepositoriesDTO dto_res;

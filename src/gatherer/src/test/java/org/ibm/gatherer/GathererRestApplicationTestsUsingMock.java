@@ -49,13 +49,13 @@ public class GathererRestApplicationTestsUsingMock {
 			throw e;
 		}
 		
-		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
+		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromEndpoint();
 		GetUserRepositoriesDTO dto_res = mapper.readValue(response, GetUserRepositoriesDTO.class);
 		Assertions.assertTrue(dto_res != null);
 		Assertions.assertTrue(dto_res.getRepositories().size() > 0);
 	}
 	
-	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
+	private ObjectMapper getMapperFor__getReposOfUserDeserializerFromEndpoint() {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
 		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializerFromEndpointReply());
