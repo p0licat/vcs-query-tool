@@ -1,6 +1,7 @@
 package org.ibm.model.repohub;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -32,6 +33,7 @@ public class GitRepository {
 	private RepoContents contentsNode;
 	
 	private String nodeId;
+	@Column(unique=true)
 	private long repoGitId;
 	private String htmlUrl;
 	private String description;
