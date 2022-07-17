@@ -1,5 +1,8 @@
 package org.ibm.repository;
 
-public interface ApplicationUserRepository {
+import org.ibm.model.applicationuser.ApplicationUser;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, Integer> {
 
 }

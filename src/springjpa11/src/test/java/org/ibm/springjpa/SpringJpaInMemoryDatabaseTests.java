@@ -8,9 +8,12 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
+import org.ibm.model.applicationuser.ApplicationUser;
 import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
 import org.ibm.model.repohub.GitRepository;
+import org.ibm.repository.ApplicationUserRepository;
 import org.ibm.repository.GitRepoRepository;
 import org.ibm.rest.dto.GetUserRepositoriesDTO;
 import org.ibm.rest.dto.RepositoryDTO;
@@ -34,7 +37,10 @@ public class SpringJpaInMemoryDatabaseTests {
 	private EntityManager em;
 	
 	@Autowired
-	private GitRepoRepository repository;
+	private GitRepoRepository gitRepoRepository;
+	
+	@Autowired 
+	private ApplicationUserRepository userRepository;
 	
 	private HttpResponse<String> makeRequest(String url) throws IOException, InterruptedException {
 		HttpClient httpClient = HttpClient.newBuilder().build();
@@ -53,8 +59,21 @@ public class SpringJpaInMemoryDatabaseTests {
 		return mapper;
 	}
 
+	@Test
+	@Transactional
+	void testAddUserToRepository() {
+		ApplicationUser user = new ApplicationUser();
+		user.setNodeId("asdf");
+		
+		em.persist(user);
+		userRepository.save(user);
+		em.flush();
+		Long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf")==0).count();
+		Assertions.assertTrue(count > 0);
+	}
 	
 	@Test
+	@Transactional // testing a service would offload the Transactional flag to the actual service, keeping the tests pure.
 	void testGetGitGathererServiceEndpoint_getRepositoriesAndPersist() {
 		String url = "http://127.0.0.1:8080/scanReposOfUser?username=p0licat";
 		try {
@@ -69,18 +88,14 @@ public class SpringJpaInMemoryDatabaseTests {
 				// otherwise refactor deserializers as a sort of external module
 			}
 			Assertions.assertTrue(dto.toString().length() > 0);
-
-			// continue todo ...
 			
 			for (RepositoryDTO i : dto.getRepositories()) {
 				GitRepository repo = new GitRepository();
 				repo.setId(i.getId().intValue());
 				
 				em.persist(repo);
-				this.repository.save(repo); // need a DTO to Model converter
+				this.gitRepoRepository.save(repo); // need a DTO to Model converter
 			}
-
-
 		} catch (IOException e) {
 			Assertions.fail();
 		} catch (InterruptedException e) {
