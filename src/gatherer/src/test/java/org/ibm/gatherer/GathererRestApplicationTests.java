@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import org.ibm.model.RepositoryDTO;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
-import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
 import org.ibm.model.deserializers.GetReposOfUserDeserializerFromGitReply;
 import org.ibm.model.dto.GetUserDetailsDTO;
 import org.ibm.model.dto.GetUserRepositoriesDTO;

@@ -7,6 +7,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
+import javax.persistence.EntityManager;
+
 import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
 import org.ibm.model.repohub.GitRepository;
 import org.ibm.repository.GitRepoRepository;
@@ -27,6 +29,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 @WebAppConfiguration
 @DataJpaTest
 public class SpringJpaInMemoryDatabaseTests {
+	
+	@Autowired
+	private EntityManager em;
 	
 	@Autowired
 	private GitRepoRepository repository;
@@ -65,10 +70,13 @@ public class SpringJpaInMemoryDatabaseTests {
 			}
 			Assertions.assertTrue(dto.toString().length() > 0);
 
+			// continue todo ...
+			
 			for (RepositoryDTO i : dto.getRepositories()) {
 				GitRepository repo = new GitRepository();
 				repo.setId(i.getId().intValue());
 				
+				em.persist(repo);
 				this.repository.save(repo); // need a DTO to Model converter
 			}
 

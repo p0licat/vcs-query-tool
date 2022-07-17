@@ -26,6 +26,7 @@ public class GetReposOfUserDeserializerFromEndpointReply extends StdDeserializer
 		super(vc);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public GetUserRepositoriesDTO deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException, JacksonException {
