@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.ibm.rest.dto.GetUserRepositoriesDTO;
-import org.ibm.rest.dto.RepositoryDTO;
+import org.ibm.model.RepositoryDTO;
+import org.ibm.model.dto.GetUserRepositoriesDTO;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -16,15 +16,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 @SuppressWarnings("serial")
-public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositoriesDTO> {
+public class GetReposOfUserDeserializerFromEndpointReply extends StdDeserializer<GetUserRepositoriesDTO> {
 
-	public GetReposOfUserDeserializer() {this(null);}
+	public GetReposOfUserDeserializerFromEndpointReply() {this(null);}
 	
-	protected GetReposOfUserDeserializer(Class<?> vc) {
+	protected GetReposOfUserDeserializerFromEndpointReply(Class<?> vc) {
 		super(vc);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public GetUserRepositoriesDTO deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException, JacksonException {
@@ -35,14 +34,14 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositor
 		} catch (Exception e) {
 			throw e;
 		}
-
-		ArrayList<RepositoryDTO> result = new ArrayList<RepositoryDTO>();
-
-		// should have a custom exception here
-		// otherwise NPE
+		
+		ArrayList<RepositoryDTO> result = new ArrayList<>();
+		
+		// 1 bug already caused by not refactoring this to an external dependency/module
+		// 
 		for (JsonNode child : node.get("repositories")) {
 			
-			Map<String, Object> reflectiveMap = new HashMap<String, Object>();
+Map<String, Object> reflectiveMap = new HashMap<String, Object>();
 			
 			for (Field f : RepositoryDTO.class.getDeclaredFields()) {
 				if (f.getName().contains("UID")) {
@@ -85,6 +84,7 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositor
 					(String)reflectiveMap.get("updatedAt"), 
 					(String)reflectiveMap.get("pushedAt")));
 		}
+		
 		
 		return new GetUserRepositoriesDTO(result); 
 	}

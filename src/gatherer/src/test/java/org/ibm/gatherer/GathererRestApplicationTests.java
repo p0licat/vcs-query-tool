@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import org.ibm.model.RepositoryDTO;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
-import org.ibm.model.deserializers.GetReposOfUserDeserializer;
+import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
 import org.ibm.model.dto.GetUserDetailsDTO;
 import org.ibm.model.dto.GetUserRepositoriesDTO;
 import org.ibm.service.rest.github.GitHubConnectionService;
@@ -92,7 +92,7 @@ class GathererRestApplicationTests {
 	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializer());
+		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializerFromEndpointReply());
 		mapper.registerModule(module);
 		return mapper;
 	}
@@ -108,6 +108,31 @@ class GathererRestApplicationTests {
 		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
 		String response = service.getRawRepositoriesOfUser("p0licat").body();
 		return response;
+	}
+	
+	@Order(2)
+	@Test
+	void getResponseFromResourcesTest__userRepos() throws Exception {
+		String compareTo = null;
+		try {
+			compareTo = this.getResponseFromResouces("response2.txt");
+		} catch (Exception e) {
+			Assertions.fail();
+		}
+
+		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
+
+		final GetUserRepositoriesDTO dto_res;
+
+		try {
+			dto_res = mapper.readValue(compareTo, GetUserRepositoriesDTO.class);
+		} catch (Exception e) {
+			Assertions.fail();
+			throw e;
+		}
+
+		Assertions.assertTrue(dto_res != null);
+		Assertions.assertTrue(dto_res.getRepositories().size() > 0);
 	}
 
 	@Order(3)

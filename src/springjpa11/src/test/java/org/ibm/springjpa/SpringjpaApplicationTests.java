@@ -10,7 +10,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import org.ibm.model.deserializers.GetReposOfUserDeserializer;
+import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
 import org.ibm.model.repohub.GitRepository;
 import org.ibm.repository.GitRepoRepository;
 import org.ibm.rest.dto.GetUserRepositoriesDTO;
@@ -53,7 +53,7 @@ class SpringjpaApplicationTests {
 	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializer());
+		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializerFromEndpointReply());
 		mapper.registerModule(module);
 		return mapper;
 	}
@@ -84,13 +84,10 @@ class SpringjpaApplicationTests {
 				em.persist(repo);
 				this.repository.save(repo); // need a DTO to Model converter
 			}
-
-
 		} catch (IOException e) {
 			Assertions.fail();
 		} catch (InterruptedException e) {
 			Assertions.fail();
 		}
-
 	}
 }

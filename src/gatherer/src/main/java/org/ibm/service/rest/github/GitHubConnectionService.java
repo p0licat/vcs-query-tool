@@ -8,7 +8,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Optional;
 
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
-import org.ibm.model.deserializers.GetReposOfUserDeserializer;
+import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
 import org.ibm.model.dto.GetUserDetailsDTO;
 import org.ibm.model.dto.GetUserRepositoriesDTO;
 
@@ -89,7 +89,7 @@ public class GitHubConnectionService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializer());
+		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializerFromEndpointReply());
 		mapper.registerModule(module);
 		
 		try {

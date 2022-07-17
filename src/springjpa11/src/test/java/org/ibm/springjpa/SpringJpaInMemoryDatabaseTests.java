@@ -7,7 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
-import org.ibm.model.deserializers.GetReposOfUserDeserializer;
+import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
 import org.ibm.model.repohub.GitRepository;
 import org.ibm.repository.GitRepoRepository;
 import org.ibm.rest.dto.GetUserRepositoriesDTO;
@@ -43,7 +43,7 @@ public class SpringJpaInMemoryDatabaseTests {
 	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializer());
+		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializerFromEndpointReply());
 		mapper.registerModule(module);
 		return mapper;
 	}

@@ -7,7 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
-import org.ibm.model.deserializers.GetReposOfUserDeserializer;
+import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
 import org.ibm.rest.dto.GetUserRepositoriesDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -67,7 +67,7 @@ public class SpringWebMvcTestsWithHttpClient {
 	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializer());
+		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializerFromEndpointReply());
 		mapper.registerModule(module);
 		return mapper;
 	}
