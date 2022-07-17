@@ -79,11 +79,10 @@ class SpringjpaApplicationTests {
 
 			for (RepositoryDTO i : dto.getRepositories()) {
 				GitRepository repo = new GitRepository();
-				repo.setId(i.getId().intValue());
+				repo.setRepoGitId(i.getId().intValue());
 				
 				em.persist(repo);
 				this.repository.save(repo); // need a DTO to Model converter
-				
 			}
 
 
