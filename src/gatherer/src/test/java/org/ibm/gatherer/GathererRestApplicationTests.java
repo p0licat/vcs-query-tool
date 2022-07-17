@@ -135,7 +135,7 @@ class GathererRestApplicationTests {
 		}
 
 		Assertions.assertTrue(dto_web.toString().compareTo(dto_res.toString()) == 0);
-		List<RepositoryDTO> matches = dto_web.repositories.stream()
+		List<RepositoryDTO> matches = dto_web.getRepositories().stream()
 				.filter(e -> e.getName().compareTo("Algorithms") == 0).collect(Collectors.toList());
 		// no duplicates check
 		Assertions.assertTrue(matches.stream().filter(

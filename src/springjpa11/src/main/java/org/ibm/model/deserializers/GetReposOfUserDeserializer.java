@@ -36,13 +36,13 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositor
 			throw e;
 		}
 
-		ArrayList<RepositoryDTO> result = new ArrayList<>();
+		ArrayList<RepositoryDTO> result = new ArrayList<RepositoryDTO>();
 
 		// should have a custom exception here
 		// otherwise NPE
 		for (JsonNode child : node.get("repositories")) {
 			
-			Map<String, Object> reflectiveMap = new HashMap<>();
+			Map<String, Object> reflectiveMap = new HashMap<String, Object>();
 			
 			for (Field f : RepositoryDTO.class.getDeclaredFields()) {
 				if (f.getName().contains("UID")) {

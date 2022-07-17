@@ -8,10 +8,14 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
 import org.ibm.model.deserializers.GetReposOfUserDeserializer;
+import org.ibm.model.repohub.GitRepository;
+import org.ibm.repository.GitRepoRepository;
 import org.ibm.rest.dto.GetUserRepositoriesDTO;
+import org.ibm.rest.dto.RepositoryDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -22,18 +26,31 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @DataJpaTest
-class SpringjpaApplicationTests {
+public class SpringJpaInMemoryDatabaseTests {
+	
+	@Autowired
+	private GitRepoRepository repository;
+	
+	private HttpResponse<String> makeRequest(String url) throws IOException, InterruptedException {
+		HttpClient httpClient = HttpClient.newBuilder().build();
+		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Content-Type", "application/json")
+				.GET().build();
 
-	// warn! this design can only work if the RestService is Mocked as well
-	// cannot use localhost or loopback to request application running as a
-	// different process
+		return httpClient.send(request, BodyHandlers.ofString());
 
-	@Test
-	void contextLoads() {
+	}
+	
+	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
+		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializer());
+		mapper.registerModule(module);
+		return mapper;
 	}
 
+	
 	@Test
-	void testGetGitGathererServiceEndpoint_getRepositories() {
+	void testGetGitGathererServiceEndpoint_getRepositoriesAndPersist() {
 		String url = "http://127.0.0.1:8080/scanReposOfUser?username=p0licat";
 		try {
 			HttpResponse<String> response = this.makeRequest(url);
@@ -48,44 +65,19 @@ class SpringjpaApplicationTests {
 			}
 			Assertions.assertTrue(dto.toString().length() > 0);
 
+			for (RepositoryDTO i : dto.getRepositories()) {
+				GitRepository repo = new GitRepository();
+				repo.setId(i.getId().intValue());
+				
+				this.repository.save(repo); // need a DTO to Model converter
+			}
+
+
 		} catch (IOException e) {
 			Assertions.fail();
 		} catch (InterruptedException e) {
 			Assertions.fail();
 		}
-
-	}
-
-	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
-		ObjectMapper mapper = new ObjectMapper();
-		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializer());
-		mapper.registerModule(module);
-		return mapper;
-	}
-
-	@Test
-	void testGetGitGathererServiceEndpoint_UsingHttpClient() throws Exception {
-		String url = "http://127.0.0.1:8080/scanReposOfUser?username=p0licat";
-		HttpClient httpClient = HttpClient.newBuilder().build();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Content-Type", "application/json")
-				.GET().build();
-		HttpResponse<String> response = null; // not a string, but a DTO
-		try {
-			response = httpClient.send(request, BodyHandlers.ofString());
-		} catch (IOException e) {
-			throw e;
-		}
-
-		Assertions.assertTrue(response.statusCode() != 404);
-	}
-
-	private HttpResponse<String> makeRequest(String url) throws IOException, InterruptedException {
-		HttpClient httpClient = HttpClient.newBuilder().build();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Content-Type", "application/json")
-				.GET().build();
-
-		return httpClient.send(request, BodyHandlers.ofString());
 
 	}
 }

@@ -1,17 +1,25 @@
 package org.ibm.repository.implementation;
 
-import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
-import org.ibm.repository.GitRepoRepository;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
+import org.ibm.model.repohub.GitRepository;
+import org.ibm.repository.GitRepoRepositoryCustom;
+import org.springframework.stereotype.Repository;
 
-public class GitRepoRepositoryImplementation<T, ID extends Serializable> implements GitRepoRepository<T, ID> {
-	private EntityManager entityManager;
+@Repository
+public class GitRepoRepositoryImplementation implements GitRepoRepositoryCustom {
 	
-	public GitRepoRepositoryImplementation(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
-		super(entityInformation, entityManager);
-		this.entityManager = entityManager;
+	private EntityManager entityManager;
+
+	@Override // might also use Non-Primitive arguments and construct/deserialize here... by injecting Deserialization service. # todo
+	@Transactional
+	public List<GitRepository> findByFirstName(String name) {
+		entityManager.isOpen();
+		return null;
 	}
+	
+
 }

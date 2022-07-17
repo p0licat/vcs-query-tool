@@ -12,7 +12,7 @@ import org.ibm.rest.dto.GetUserRepositoriesDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -20,18 +20,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 @ExtendWith(SpringExtension.class)
+@SpringBootTest
 @WebAppConfiguration
-@DataJpaTest
-class SpringjpaApplicationTests {
-
-	// warn! this design can only work if the RestService is Mocked as well
-	// cannot use localhost or loopback to request application running as a
-	// different process
-
-	@Test
-	void contextLoads() {
-	}
-
+public class SpringWebMvcTestsWithHttpClient {
+	
 	@Test
 	void testGetGitGathererServiceEndpoint_getRepositories() {
 		String url = "http://127.0.0.1:8080/scanReposOfUser?username=p0licat";
@@ -55,15 +47,7 @@ class SpringjpaApplicationTests {
 		}
 
 	}
-
-	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
-		ObjectMapper mapper = new ObjectMapper();
-		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializer());
-		mapper.registerModule(module);
-		return mapper;
-	}
-
+	
 	@Test
 	void testGetGitGathererServiceEndpoint_UsingHttpClient() throws Exception {
 		String url = "http://127.0.0.1:8080/scanReposOfUser?username=p0licat";
@@ -79,6 +63,16 @@ class SpringjpaApplicationTests {
 
 		Assertions.assertTrue(response.statusCode() != 404);
 	}
+	
+	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
+		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializer());
+		mapper.registerModule(module);
+		return mapper;
+	}
+
+
 
 	private HttpResponse<String> makeRequest(String url) throws IOException, InterruptedException {
 		HttpClient httpClient = HttpClient.newBuilder().build();
