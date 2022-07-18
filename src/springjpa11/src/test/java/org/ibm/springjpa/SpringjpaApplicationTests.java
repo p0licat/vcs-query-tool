@@ -85,7 +85,7 @@ class SpringjpaApplicationTests {
 		
 		em.persist(user);
 		userRepository.save(user);
-		//em.flush();
+		
 		Long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf")==0).count();
 		Assertions.assertTrue(count > 0);
 		
@@ -93,7 +93,6 @@ class SpringjpaApplicationTests {
 		em.persist(newRepoHub);
 		newRepoHub.setHubOwner(user);
 		newRepoHub = hubRepository.save(newRepoHub);
-		//em.flush();
 		
 		try {
 			HttpResponse<String> response = this.makeRequest(url);
@@ -107,16 +106,7 @@ class SpringjpaApplicationTests {
 				// otherwise refactor deserializers as a sort of external module
 			}
 			Assertions.assertTrue(dto.toString().length() > 0);
-			
-			for (RepositoryDTO i : dto.getRepositories()) {
-				GitRepository repo = new GitRepository();
-				repo.setRepoGitId(i.getId().intValue());
-				
-				//em.persist(repo);
-				//this.gitRepoRepository.save(repo); // need a DTO to Model converter
-			}
-			
-			//em.flush();
+
 			Set<RepositoryDTO> newSet = Set.copyOf(dto.getRepositories());
 			Set<GitRepository> reposSet = new HashSet<>();
 			for (RepositoryDTO r : newSet) {
@@ -133,16 +123,7 @@ class SpringjpaApplicationTests {
 				em.persist(g);
 				reposSet.add(this.gitRepoRepository.save(g));
 			}
-			
-			//em.persist(newRepoHub);
-			//newRepoHub = hubRepository.getById(newRepoHub.getId());
-			//newRepoHub.setRepositories(reposSet);
-			//newRepoHub = hubRepository.save(newRepoHub);
-			//newRepoHub = hubRepository.getById(newRepoHub.getId());
-			//hubRepository.save(newRepoHub);
-			//em.merge(newRepoHub);
-			//em.flush();
-			
+
 		} catch (IOException e) {
 			Assertions.fail();
 		} catch (InterruptedException e) {

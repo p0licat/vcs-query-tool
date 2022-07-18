@@ -90,96 +90,17 @@ public class SpringJpaInMemoryDatabaseTests {
 		user.setGitId("12345");
 		user.setReposUrl(url); // not the actual URL
 		
-		//em.persist(user);
-		userRepository.save(user);
-		//em.flush();
-		Long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf")==0).count();
-		Assertions.assertTrue(count > 0);
-		
-		RepoHub newRepoHub = new RepoHub();
-		//em.persist(newRepoHub);
-		newRepoHub.setHubOwner(user);
-		newRepoHub = hubRepository.save(newRepoHub);
-		//em.flush();
-		
-		try {
-			HttpResponse<String> response = this.makeRequest(url);
-			Assertions.assertTrue(response.statusCode() == 200);
-			ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
-			GetUserRepositoriesDTO dto;
-			try {
-				dto = mapper.readValue(response.body(), GetUserRepositoriesDTO.class);
-			} catch (NullPointerException e) {
-				throw e; // should be custom exception from Deserializer.
-				// otherwise refactor deserializers as a sort of external module
-			}
-			Assertions.assertTrue(dto.toString().length() > 0);
-			
-			for (RepositoryDTO i : dto.getRepositories()) {
-				GitRepository repo = new GitRepository();
-				repo.setRepoGitId(i.getId().intValue());
-				
-				//em.persist(repo);
-				//this.gitRepoRepository.save(repo); // need a DTO to Model converter
-			}
-			
-			//em.flush();
-			Set<RepositoryDTO> newSet = Set.copyOf(dto.getRepositories());
-			Set<GitRepository> reposSet = new HashSet<>();
-			for (RepositoryDTO r : newSet) {
-				GitRepository g = new GitRepository();
-				g.setContentsNode(null);
-				g.setContentsUrl(r.getContentsUrl());
-				g.setDescription(r.getDescription());
-				g.setHtmlUrl(r.getContentsUrl()); // ??
-				g.setMasterRepoHub(newRepoHub);
-				g.setName(r.getName());
-				g.setNodeId(r.getNodeId());
-				g.setRepoGitId(r.getId());
-				
-				//em.persist(g);
-				reposSet.add(this.gitRepoRepository.save(g));
-			}
-			
-			//em.persist(newRepoHub);
-			newRepoHub = hubRepository.getById(newRepoHub.getId());
-			newRepoHub.setRepositories(reposSet);
-			newRepoHub = hubRepository.save(newRepoHub);
-			newRepoHub = hubRepository.getById(newRepoHub.getId());
-			//hubRepository.save(newRepoHub);
-			//em.merge(newRepoHub);
-			//em.flush();
-			
-		} catch (IOException e) {
-			Assertions.fail();
-		} catch (InterruptedException e) {
-			Assertions.fail();
-		}
-	}
-	
-	@Test
-	@Transactional
-	void testAddUserToRepositoryThenHubAndReposAndScan() {
-		String url = "http://127.0.0.1:8080/scanReposOfUserOffline?username=p0licat";
-		
-		ApplicationUser user = new ApplicationUser();
-		user.setNodeId("asdf");
-		user.setUsername("p0licat");
-		user.setGitId("12345");
-		user.setReposUrl(url); // not the actual URL
-		
 		em.persist(user);
 		userRepository.save(user);
-		em.flush();
+		
 		Long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf")==0).count();
 		Assertions.assertTrue(count > 0);
 		
 		RepoHub newRepoHub = new RepoHub();
 		em.persist(newRepoHub);
 		newRepoHub.setHubOwner(user);
-		hubRepository.save(newRepoHub);
+		newRepoHub = hubRepository.save(newRepoHub);
 		
-		//continue by parsing repos urls....
 		try {
 			HttpResponse<String> response = this.makeRequest(url);
 			Assertions.assertTrue(response.statusCode() == 200);
@@ -192,16 +113,7 @@ public class SpringJpaInMemoryDatabaseTests {
 				// otherwise refactor deserializers as a sort of external module
 			}
 			Assertions.assertTrue(dto.toString().length() > 0);
-			
-			for (RepositoryDTO i : dto.getRepositories()) {
-				GitRepository repo = new GitRepository();
-				repo.setId(i.getId().intValue());
-				
-				em.persist(repo);
-				this.gitRepoRepository.save(repo); // need a DTO to Model converter
-			}
-			
-			em.flush();
+
 			Set<RepositoryDTO> newSet = Set.copyOf(dto.getRepositories());
 			Set<GitRepository> reposSet = new HashSet<>();
 			for (RepositoryDTO r : newSet) {
@@ -216,53 +128,26 @@ public class SpringJpaInMemoryDatabaseTests {
 				g.setRepoGitId(r.getId());
 				
 				em.persist(g);
-				reposSet.add(g);
+				reposSet.add(this.gitRepoRepository.save(g));
 			}
-			
-			newRepoHub.setRepositories(reposSet);
-			hubRepository.save(newRepoHub);
-			
-			
-			em.flush();
-			
 			
 		} catch (IOException e) {
 			Assertions.fail();
 		} catch (InterruptedException e) {
 			Assertions.fail();
 		}
+	}
+	
+	@Test
+	@Transactional
+	void testAddUserToRepositoryThenHubAndReposAndScan() {
+
 
 	}
 	
 	@Test
 	@Transactional // testing a service would offload the Transactional flag to the actual service, keeping the tests pure.
 	void testGetGitGathererServiceEndpoint_getRepositoriesAndPersist() {
-		String url = "http://127.0.0.1:8080/scanReposOfUserOffline?username=p0licat";
-		try {
-			HttpResponse<String> response = this.makeRequest(url);
-			Assertions.assertTrue(response.statusCode() == 200);
-			ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
-			GetUserRepositoriesDTO dto;
-			try {
-				dto = mapper.readValue(response.body(), GetUserRepositoriesDTO.class);
-			} catch (NullPointerException e) {
-				throw e; // should be custom exception from Deserializer.
-				// otherwise refactor deserializers as a sort of external module
-			}
-			Assertions.assertTrue(dto.toString().length() > 0);
-			
-			for (RepositoryDTO i : dto.getRepositories()) {
-				GitRepository repo = new GitRepository();
-				repo.setRepoGitId(i.getId().intValue());
-				
-				em.persist(repo);
-				this.gitRepoRepository.save(repo); // need a DTO to Model converter
-			}
-		} catch (IOException e) {
-			Assertions.fail();
-		} catch (InterruptedException e) {
-			Assertions.fail();
-		}
 
 	}
 }
