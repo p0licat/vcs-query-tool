@@ -48,6 +48,14 @@ public class ContentGathererApplication {
 		return mapper;
 	}
 	
+	private ObjectMapper getMapperFor__getRepoContentsDeserializerSingleFile() {
+		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(RepoFileFromGitHubReplyDTO.class, new GetRepoContentsFilePathDeserializerFromGithubReply());
+		mapper.registerModule(module);
+		return mapper;
+	}
+	
 	@GetMapping("/getContentsOfRepo")
 	public RepoContentsFromGithubReplyDTO getContentsOfRepo(String username, String repoName) throws IOException {
 		String authKey = this.getClass().getClassLoader().getResourceAsStream("keyValue.txt").readAllBytes().toString();
@@ -59,7 +67,7 @@ public class ContentGathererApplication {
 	}
 	
 	@GetMapping("/getContentsOfRepoAtFilePath")
-	public String getContentsOfRepoAtFilePath(String username, String repoName, String resourcePath, String resourceType) throws IOException {
+	public RepoFileFromGitHubReplyDTO getContentsOfRepoAtFilePath(String username, String repoName, String resourcePath, String resourceType) throws IOException {
 		String authKey = this.getClass().getClassLoader().getResourceAsStream("keyValue.txt").readAllBytes().toString();
 		HttpResponse<String> response = this.getResponseFromEndpoint_repoContentsAtPath(username, repoName, authKey, resourcePath);
 		
