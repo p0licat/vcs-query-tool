@@ -7,8 +7,8 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Optional;
 
-import org.ibm.model.contentscanner.dto.RepoContentsDTO;
-import org.ibm.model.deserializers.GetRepoContentsDeserializer;
+import org.ibm.model.contentscanner.dto.RepoContentsFromGithubReplyDTO;
+import org.ibm.model.deserializers.GetRepoContentsDeserializerFromGithubReply;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -45,32 +45,86 @@ public class GitHubConnectionService {
 		return response;
 	}
 
+	public HttpResponse<String> sendGETRequestWithAuthorization(String URI, String authKey) {
+		String path = URL + '/' + URI;
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(java.net.URI.create(path))
+				.header("Content-Type", "application/json")
+				.header("Authorization", authKey)
+				.GET()
+				.build();
+		
+		HttpResponse<String> response = null;
+		try {
+			response = this.httpClient.send(request, BodyHandlers.ofString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		return response;
+	}
+	
+	public HttpResponse<String> sendGETRequestWithAuthorizationToUrl(String URL, String authKey) {
+		String path = URL;
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(java.net.URI.create(path))
+				.header("Content-Type", "application/json")
+				.header("Authorization", authKey)
+				.GET()
+				.build();
+		
+		HttpResponse<String> response = null;
+		try {
+			response = this.httpClient.send(request, BodyHandlers.ofString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		return response;
+	}
 	
 	public HttpResponse<String> getRawRepositoriesOfUser(String userName) {
 		String getRepositoriesOfUsersURI = "users" + '/' + userName + '/' + "repos";
 		HttpResponse<String> response = this.sendGETRequest(getRepositoriesOfUsersURI);
 		return response;
 	}
+	
+	public HttpResponse<String> sendRawApiRequest(String url, String apiKey) {
+		HttpResponse<String> response = this.sendGETRequestWithAuthorizationToUrl(url, apiKey);
+		return response;
+	}
+	
+	public HttpResponse<String> getRawContentsOfRepository(String userName, String repoName, String apiKey) {
+		String getRepositoriesOfUsersURI = "repos" + '/' + userName + '/' + repoName + '/' + "contents";
+		HttpResponse<String> response = this.sendGETRequestWithAuthorization(getRepositoriesOfUsersURI, apiKey);
+		return response;
+	}
 
-	public Optional<RepoContentsDTO> getRepoContents(String userName, String repoName, String apiKey) {
+	public Optional<RepoContentsFromGithubReplyDTO> getRepoContents(String userName, String repoName, String apiKey) {
 		String response = this.getRawRepositoriesOfUser(userName).body();
-		RepoContentsDTO responseDTO = null;
+		RepoContentsFromGithubReplyDTO responseDTO = null;
 		
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addDeserializer(RepoContentsDTO.class, new GetRepoContentsDeserializer());
+		module.addDeserializer(RepoContentsFromGithubReplyDTO.class, new GetRepoContentsDeserializerFromGithubReply());
 		mapper.registerModule(module);
 		
 		try {
-			responseDTO = mapper.readValue(response, RepoContentsDTO.class);
+			responseDTO = mapper.readValue(response, RepoContentsFromGithubReplyDTO.class);
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		
-		Optional<RepoContentsDTO> returnValue = Optional.ofNullable((RepoContentsDTO) responseDTO);
+		Optional<RepoContentsFromGithubReplyDTO> returnValue = Optional.ofNullable((RepoContentsFromGithubReplyDTO) responseDTO);
 		return returnValue;
 	}
+	
+	
 
 }
