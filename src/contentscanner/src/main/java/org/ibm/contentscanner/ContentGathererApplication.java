@@ -32,6 +32,12 @@ public class ContentGathererApplication {
 		HttpResponse<String> response = service.getRawContentsOfRepository(username, repoName, authKey);
 		return response;
 	}
+	
+	private HttpResponse<String> getResponseFromEndpoint_repoContentsAtPath(String username, String repoName, String authKey, String resourcePath) {
+		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
+		HttpResponse<String> response = service.getRawContentsOfRepositoryAtPath(username, repoName, authKey, resourcePath);
+		return response;
+	}
 
 
 	private ObjectMapper getMapperFor__getRepoContentsDeserializer() {
@@ -50,6 +56,34 @@ public class ContentGathererApplication {
 		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
 		RepoContentsFromGithubReplyDTO dto = mapper.readValue(response.body(), RepoContentsFromGithubReplyDTO.class);
 		return dto;
+	}
+	
+	@GetMapping("/getContentsOfRepoAtFilePath")
+	public String getContentsOfRepoAtFilePath(String username, String repoName, String resourcePath, String resourceType) throws IOException {
+		String authKey = this.getClass().getClassLoader().getResourceAsStream("keyValue.txt").readAllBytes().toString();
+		HttpResponse<String> response = this.getResponseFromEndpoint_repoContentsAtPath(username, repoName, authKey, resourcePath);
+		
+		if (resourceType.compareTo("dir") == 0) {
+			throw new Exception("Query must contain a file resource type.");
+		} else {
+			ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializerSingleFile();
+			RepoFileFromGitHubReplyDTO dto = mapper.readValue(response.body(), RepoFileFromGitHubReplyDTO.class);
+			return dto;
+		}
+	}
+	
+	@GetMapping("/getContentsOfRepoAtDirPath")
+	public RepoContentsFromGithubReplyDTO getContentsOfRepoAtDirPath(String username, String repoName, String resourcePath, String resourceType) throws Exception {
+		String authKey = this.getClass().getClassLoader().getResourceAsStream("keyValue.txt").readAllBytes().toString();
+		HttpResponse<String> response = this.getResponseFromEndpoint_repoContentsAtPath(username, repoName, authKey, resourcePath);
+		
+		if (resourceType.compareTo("dir") == 0) {
+			ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
+			RepoContentsFromGithubReplyDTO dto = mapper.readValue(response.body(), RepoContentsFromGithubReplyDTO.class);
+			return dto;
+		} else {
+			throw new Exception("Query must contain a directory resource type.");
+		}
 	}
 	
 }

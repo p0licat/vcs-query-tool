@@ -103,6 +103,12 @@ public class GitHubConnectionService {
 		HttpResponse<String> response = this.sendGETRequestWithAuthorization(getRepositoriesOfUsersURI, apiKey);
 		return response;
 	}
+	
+	public HttpResponse<String> getRawContentsOfRepositoryAtPath(String userName, String repoName, String apiKey, String resourcePath) {
+		String getRepositoriesOfUsersURI = "repos" + '/' + userName + '/' + repoName + '/' + "contents";
+		HttpResponse<String> response = this.sendGETRequestWithAuthorization(getRepositoriesOfUsersURI, apiKey);
+		return response;
+	}
 
 	public Optional<RepoContentsFromGithubReplyDTO> getRepoContents(String userName, String repoName, String apiKey) {
 		String response = this.getRawRepositoriesOfUser(userName).body();
