@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import org.ibm.model.RepositoryDTO;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
-import org.ibm.model.deserializers.GetReposOfUserDeserializer;
+import org.ibm.model.deserializers.GetReposOfUserDeserializerFromGitReply;
 import org.ibm.model.dto.GetUserDetailsDTO;
 import org.ibm.model.dto.GetUserRepositoriesDTO;
 import org.ibm.service.rest.github.GitHubConnectionService;
@@ -39,7 +39,7 @@ class GathererRestApplicationTests {
 	@Test
 	void testDtoConverterRepositoriesOfUser() throws IOException {
 		String contents = this.getResponseFromResouces("response2.txt");
-		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
+		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromGitApi();
 		try {
 			GetUserRepositoriesDTO dto;
 			dto = mapper.readValue(contents, GetUserRepositoriesDTO.class);
@@ -88,11 +88,11 @@ class GathererRestApplicationTests {
 		mapper.registerModule(module);
 		return mapper;
 	}
-
-	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
+	
+	private ObjectMapper getMapperFor__getReposOfUserDeserializerFromGitApi() {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializer());
+		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializerFromGitReply());
 		mapper.registerModule(module);
 		return mapper;
 	}
@@ -109,6 +109,31 @@ class GathererRestApplicationTests {
 		String response = service.getRawRepositoriesOfUser("p0licat").body();
 		return response;
 	}
+	
+	@Order(2)
+	@Test
+	void getResponseFromResourcesTest__userRepos() throws Exception {
+		String compareTo = null;
+		try {
+			compareTo = this.getResponseFromResouces("response2.txt");
+		} catch (Exception e) {
+			Assertions.fail();
+		}
+
+		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromGitApi();
+
+		final GetUserRepositoriesDTO dto_res;
+
+		try {
+			dto_res = mapper.readValue(compareTo, GetUserRepositoriesDTO.class);
+		} catch (Exception e) {
+			Assertions.fail();
+			throw e;
+		}
+
+		Assertions.assertTrue(dto_res != null);
+		Assertions.assertTrue(dto_res.getRepositories().size() > 0);
+	}
 
 	@Order(3)
 	@Test
@@ -121,7 +146,7 @@ class GathererRestApplicationTests {
 		}
 
 		String result = this.getResponseFromEndpoint_userRepos();
-		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
+		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromGitApi();
 
 		final GetUserRepositoriesDTO dto_web;
 		final GetUserRepositoriesDTO dto_res;
@@ -135,7 +160,7 @@ class GathererRestApplicationTests {
 		}
 
 		Assertions.assertTrue(dto_web.toString().compareTo(dto_res.toString()) == 0);
-		List<RepositoryDTO> matches = dto_web.repositories.stream()
+		List<RepositoryDTO> matches = dto_web.getRepositories().stream()
 				.filter(e -> e.getName().compareTo("Algorithms") == 0).collect(Collectors.toList());
 		// no duplicates check
 		Assertions.assertTrue(matches.stream().filter(

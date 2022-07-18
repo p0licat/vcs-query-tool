@@ -13,11 +13,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 @SuppressWarnings("serial")
-public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositoriesDTO> {
-
-	public GetReposOfUserDeserializer() {this(null);}
+public class GetReposOfUserDeserializerFromGitReply extends StdDeserializer<GetUserRepositoriesDTO>{
 	
-	protected GetReposOfUserDeserializer(Class<?> vc) {
+	public GetReposOfUserDeserializerFromGitReply() {
+		this(null);
+	}
+	
+	public GetReposOfUserDeserializerFromGitReply(Class<?> vc) {
 		super(vc);
 	}
 
@@ -34,6 +36,8 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositor
 		
 		ArrayList<RepositoryDTO> result = new ArrayList<>();
 		
+		// 1 bug already caused by not refactoring this to an external dependency/module
+		// 
 		for (JsonNode child : node) {
 			
 			String name = child.get("name").asText();
@@ -56,5 +60,4 @@ public class GetReposOfUserDeserializer extends StdDeserializer<GetUserRepositor
 		
 		return new GetUserRepositoriesDTO(result); 
 	}
-	
 }

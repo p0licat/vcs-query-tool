@@ -1,13 +1,16 @@
 package org.ibm.gatherer;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.ibm.model.RepositoryDTO;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
-import org.ibm.model.deserializers.GetReposOfUserDeserializer;
+import org.ibm.model.deserializers.GetReposOfUserDeserializerFromGitReply;
 import org.ibm.model.dto.GetUserDetailsDTO;
 import org.ibm.model.dto.GetUserRepositoriesDTO;
 import org.ibm.service.rest.github.GitHubConnectionService;
@@ -42,10 +45,10 @@ public class GathererRestApplication {
 		return mapper;
 	}
 
-	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
+	private ObjectMapper getMapperFor__getReposOfUserDeserializerFromGitReply() {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializer());
+		module.addDeserializer(GetUserRepositoriesDTO.class, new GetReposOfUserDeserializerFromGitReply());
 		mapper.registerModule(module);
 		return mapper;
 	}
@@ -62,6 +65,14 @@ public class GathererRestApplication {
 		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
 		HttpResponse<String> response = service.getRawRepositoriesOfUser("p0licat");
 		return response;
+	}
+	//endregion
+	
+	//region cached queries
+	private String getResponseFromResouces(String resourceName) throws IOException {
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream(resourceName);
+		String contents = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+		return contents;
 	}
 	//endregion
 	
@@ -84,11 +95,22 @@ public class GathererRestApplication {
 			throw new Exception("Custom HTTP exception. Request failed. Git API unreachable.");
 		}
 		
-		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
+		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromGitReply();
 		GetUserRepositoriesDTO dto = mapper.readValue(response.body(), GetUserRepositoriesDTO.class);
 		return dto;
 	}
+	
+	
 
+	// used to avoid rate limit
+	@GetMapping("/scanReposOfUserOffline")
+	public GetUserRepositoriesDTO scanReposOfUserOffline(String username) throws Exception {
+		String response = this.getResponseFromResouces("response2.txt");
+		
+		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromGitReply();
+		GetUserRepositoriesDTO dto = mapper.readValue(response, GetUserRepositoriesDTO.class);
+		return dto;
+	}
 
 	@GetMapping("/getReposOfUser")
 	public List<RepositoryDTO> getReposOfUser(String username, String repositoryName) {

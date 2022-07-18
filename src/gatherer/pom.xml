@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.36</version><!--$NO-MVN-MAN-VER$-->
+			<version>1.7.36</version> <!--$NO-MVN-MAN-VER$-->
 			<scope>test</scope>
 		</dependency>
 
@@ -61,7 +61,7 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.8.2</version><!--$NO-MVN-MAN-VER$-->
+			<version>5.8.2</version> <!--$NO-MVN-MAN-VER$-->
 			<scope>test</scope>
 		</dependency>
 
@@ -69,6 +69,16 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources/test_data</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

@@ -1,19 +1,13 @@
 package org.ibm;
 
-import java.util.List;
-
-import org.ibm.applicationuser.repository.ApplicationUserRepository;
-import org.ibm.model.applicationuser.ApplicationUser;
 import org.ibm.rest.dto.RequestUserDetailsDTO;
 import org.ibm.rest.dto.RequestUserRepositoriesDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,14 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @EntityScan("org.ibm.*")
 public class SpringjpaApplication {
 
-	@Autowired
-	private ApplicationUserRepository userRepository;
-
-	@GetMapping("/getUsers")
-	// this should return a DTO.
-	public List<ApplicationUser> getUsers() {
-		return this.userRepository.findAll();
-	}
 	
 	@PostMapping("/populateUserRepositories")
 	public RequestUserRepositoriesDTO requestUserRepositoryData(String username, String repoName) {
