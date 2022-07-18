@@ -9,6 +9,8 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.ibm.model.deserializers.contentservice.GetRepoContentsDeserializerFromGithubReply;
+import org.ibm.model.deserializers.contentservice.model.RepoContentsFromGithubReplyDTO;
 import org.ibm.model.repohub.GitRepository;
 import org.ibm.repository.GitRepoRepository;
 import org.ibm.rest.dto.RequestUserDetailsDTO;
@@ -23,6 +25,9 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+
 @SpringBootApplication
 @PropertySources({ @PropertySource({ "classpath:application.properties" }) })
 @RestController
@@ -32,6 +37,14 @@ public class SpringjpaApplication {
 	
 	@Autowired
 	private GitRepoRepository gitRepoRepository;
+	
+	private ObjectMapper getMapperFor__getRepoContentsDeserializer() {
+		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(RepoContentsFromGithubReplyDTO.class, new GetRepoContentsDeserializerFromGithubReply());
+		mapper.registerModule(module);
+		return mapper;
+	}
 
 	private HttpResponse<String> makeRequest(String url) throws IOException, InterruptedException {
 		HttpClient httpClient = HttpClient.newBuilder().build();
@@ -49,7 +62,14 @@ public class SpringjpaApplication {
 		
 		String response = this.makeRequest("http://127.0.0.1:8081/getContentsOfRepo?username=" + username + "&repoName=" + repoName.toString()).body();
 		
-		
+		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
+		var lombokDeserialized = mapper.readValue(response, RepoContentsFromGithubReplyDTO.class);
+		lombokDeserialized.getNodes().forEach(e -> {
+			if (e.getType().equals("dir")) {
+				// either use recursion or a queue of requests
+				// must also create a new route in the contentscanner /getContentsOfRepoAtContentsUrl?...
+			}
+		});
 		
 		return null;
 	}
