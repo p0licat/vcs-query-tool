@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.http.HttpResponse;
 
 import org.ibm.model.contentscanner.dto.RepoContentsFromGithubReplyDTO;
+import org.ibm.model.contentscanner.dto.RepoFileFromGitHubReplyDTO;
 import org.ibm.model.deserializers.GetRepoContentsDeserializerFromGithubReply;
+import org.ibm.model.deserializers.GetRepoContentsFilePathDeserializerFromGitHubReply;
 import org.ibm.service.rest.github.GitHubConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -51,7 +53,7 @@ public class ContentGathererApplication {
 	private ObjectMapper getMapperFor__getRepoContentsDeserializerSingleFile() {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addDeserializer(RepoFileFromGitHubReplyDTO.class, new GetRepoContentsFilePathDeserializerFromGithubReply());
+		module.addDeserializer(RepoFileFromGitHubReplyDTO.class, new GetRepoContentsFilePathDeserializerFromGitHubReply());
 		mapper.registerModule(module);
 		return mapper;
 	}
@@ -67,7 +69,7 @@ public class ContentGathererApplication {
 	}
 	
 	@GetMapping("/getContentsOfRepoAtFilePath")
-	public RepoFileFromGitHubReplyDTO getContentsOfRepoAtFilePath(String username, String repoName, String resourcePath, String resourceType) throws IOException {
+	public RepoFileFromGitHubReplyDTO getContentsOfRepoAtFilePath(String username, String repoName, String resourcePath, String resourceType) throws Exception {
 		String authKey = this.getClass().getClassLoader().getResourceAsStream("keyValue.txt").readAllBytes().toString();
 		HttpResponse<String> response = this.getResponseFromEndpoint_repoContentsAtPath(username, repoName, authKey, resourcePath);
 		
