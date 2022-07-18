@@ -17,6 +17,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class RepoContentsFromGithubReplyDTO {
+public class RepoContentsFromEndpointResponseDTO {
 	private List<ContentNode> nodes;
 }

@@ -1,5 +1,6 @@
 package org.ibm.contentscanner;
 
+import java.io.IOException;
 import java.net.http.HttpResponse;
 
 import org.ibm.model.contentscanner.dto.RepoContentsFromGithubReplyDTO;
@@ -11,12 +12,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"org.ibm.service.*", "org.ibm.*"})
 @RestController
 public class ContentGathererApplication {
 
@@ -44,12 +43,13 @@ public class ContentGathererApplication {
 	}
 	
 	@GetMapping("/getContentsOfRepo")
-	public RepoContentsFromGithubReplyDTO getContentsOfRepo(String username, String repoName, String authKey) throws JsonMappingException, JsonProcessingException {
+	public RepoContentsFromGithubReplyDTO getContentsOfRepo(String username, String repoName) throws IOException {
+		String authKey = this.getClass().getClassLoader().getResourceAsStream("keyValue.txt").readAllBytes().toString();
 		HttpResponse<String> response = this.getResponseFromEndpoint_repoContents(username, repoName, authKey);
 		
 		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
 		RepoContentsFromGithubReplyDTO dto = mapper.readValue(response.body(), RepoContentsFromGithubReplyDTO.class);
-		return new RepoContentsFromGithubReplyDTO();
+		return dto;
 	}
 	
 }
