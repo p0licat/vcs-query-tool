@@ -1,5 +1,23 @@
 package org.ibm.model.contentscanner.dto;
 
-public class RepoContentsDTO {
+import java.util.List;
 
+import org.ibm.model.contentscanner.model.ContentNode;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class RepoContentsDTO {
+	private Long id;
+	private List<ContentNode> nodes;
 }
