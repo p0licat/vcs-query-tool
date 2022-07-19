@@ -72,98 +72,27 @@ public class SpringjpaApplication {
 	public PopulateUserRepositoriesEndpointResponseDTO requestUserRepositoryData(String username, String repoName)
 			throws IOException, InterruptedException {
 
+		//int apiLimit = -1;
+		int apiLimit = 10;
+		
 		List<GitRepository> repos = gitRepoRepository.findAll().stream().filter(e -> e.getName().contains(repoName))
 				.collect(Collectors.toList()); // todo optimize query by creating a custom query within repo
 		String foundName = repos.get(0).getName(); // proxy variable guards against JPA NotExists errors
-
-		String response = this.makeRequest(
-				"http://127.0.0.1:8081/getContentsOfRepo?username=" + username + "&repoName=" + foundName.toString())
-				.body();
-
 		
 		Set<String> performedRequests = new HashSet<>(); // maybe this container should have versioned persistence or make this method responsible for completeness // for example creating a stack of get...ofDirectory and looping while there are changes to the stack. note that the loop should not mutate the stack, but return a new one
 		Stack<String> queryQueue = new Stack<>();
 		List<String> allFileUrls = new ArrayList<>();
 		List<ContentNode> nodeList = new ArrayList<>();
 		
+		queryQueue.add(repos.get(0).getContentsUrl().split("{+path}")[0].toString());
+		
+		
 		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
-		var lombokDeserialized = mapper.readValue(response, RepoContentsFromEndpointResponseDTO.class);
-		
-		//List<CompletableFuture<String>> fileDownloadUrls = new ArrayList<CompletableFuture<String>>();
-		//ExecutorService s = Executors.newSingleThreadExecutor();
-		//s.
-		
-		// todo: add while loop
-		// instead of recursive enumeration running synchronously, could have recursive generation of CompletableFuture and iterative synchronous requests with exception handling
-		lombokDeserialized.getNodes().forEach(e -> {
-			if (e.getType().equals("file")) {
-				// either use recursion or a queue of requests
-				// must also create a new route in the contentscanner
-				// /getContentsOfRepoAtContentsUrl?...
-
-				// move business logic elsewhere...
-				if (!performedRequests.contains(e.getContentsUrl())) {
-
-					try {
-						String result = this
-								.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfFile?username="
-										+ username + "&contentsUrl=" + e.getContentsUrl())
-								.body();
-						// result.persist() 
-						performedRequests.add(e.getContentsUrl());
-						logger.info("Found a file: " + e.getContentsUrl());
-						logger.info("Found a file: " + e.getDownloadsUrl());
-						logger.info("Response for contentsRequest:" + result);
-						//Future<String> future = Future.;
-						if (!allFileUrls.contains(e.getDownloadsUrl())) {
-							allFileUrls.add(e.getDownloadsUrl());
-							nodeList.add(e);
-						}
-						//fileDownloadUrls.add(  )
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-				}
-				
-				
-			} else {
-				// directory request branch
-				try {
-					String result = this
-							.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username="
-									+ username + "&contentsUrl=" + e.getContentsUrl())
-							.body();
-					performedRequests.add(e.getContentsUrl());
-					var currentRequestDeserialized = mapper.readValue(result, RepoContentsFromEndpointResponseDTO.class);
-					
-					currentRequestDeserialized.getNodes().forEach(node -> {
-						if (node.getType().compareTo("file") == 0) {
-							logger.info("Sub-file of directory with name: " + e.getName() + " is: " + node.getContentsUrl());
-							if (!allFileUrls.contains(node.getDownloadsUrl())) {
-								allFileUrls.add(node.getDownloadsUrl());	
-								nodeList.add(node);
-							}
-						} else if (node.getType().compareTo("dir") == 0) {
-							if (!performedRequests.contains(node.getContentsUrl())) {
-								queryQueue.add(node.getContentsUrl());
-								logger.info("Directory: added to query queue the url: " + node.getContentsUrl());
-								nodeList.add(node);
-							}
-						}
-					});
-					
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		
-		// refactoring day is 21st
 		while (!queryQueue.empty()) {
+			if (performedRequests.size() > apiLimit) {
+				break;
+			}
+			
 			var e = queryQueue.pop();
 			String result2 = this
 					.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username="
