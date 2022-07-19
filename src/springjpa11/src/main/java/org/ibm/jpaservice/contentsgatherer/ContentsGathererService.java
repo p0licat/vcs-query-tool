@@ -3,6 +3,7 @@ package org.ibm.jpaservice.contentsgatherer;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
 import org.ibm.model.contents.ContentDir;
 import org.ibm.model.contents.ContentFile;
@@ -10,13 +11,14 @@ import org.ibm.model.deserializers.contentservice.model.ContentNode;
 import org.ibm.model.repohub.RepoContents;
 import org.ibm.repository.RepoContentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
-@ComponentScan(basePackages = "org.ibm.*")
-@EntityScan("org.ibm.*")
-@Component
+
+//@Controller
+//@Component
+@Service
 public class ContentsGathererService {
 
 //	@Autowired
@@ -28,6 +30,7 @@ public class ContentsGathererService {
 	@Autowired
 	private EntityManager em;
 
+	@Transactional
 	public void persistContentNodes(List<ContentNode> nodes, String repoName) {
 		nodes.forEach(e -> {
 			if (e.getType().compareTo("dir") == 0) {
