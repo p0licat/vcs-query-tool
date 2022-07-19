@@ -49,7 +49,7 @@ public class GitHubConnectionService {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(java.net.URI.create(this.URL))
 				.header("Content-Type", "application/json")
-				.header("Authorization", authKey)
+				.header("Authorization", "token "+authKey.toString())
 				.build();
 		return this.httpClient.send(request, BodyHandlers.ofString());
 	}

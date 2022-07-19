@@ -39,7 +39,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 @SpringBootApplication
 @PropertySources({ @PropertySource({ "classpath:application.properties" }) })
 @RestController
-//@ComponentScan({"org.ibm", "org.ibm.jpaservice", "org.ibm.jpaservice.contentsgatherer", "org.ibm.config"}, basePackages="org.ibm")
 @ComponentScan(basePackages = {"org.ibm.jpaservice"})
 @EntityScan("org.ibm.*")
 public class SpringjpaApplication {
