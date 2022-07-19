@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.ibm.model.deserializers.contentservice.GetRepoContentsDeserializerFromGithubReply;
+import org.ibm.model.deserializers.contentservice.model.ContentNode;
 import org.ibm.model.deserializers.contentservice.model.RepoContentsFromEndpointResponseDTO;
 import org.ibm.model.deserializers.contentservice.model.RepoContentsFromGithubReplyDTO;
 import org.ibm.model.repohub.GitRepository;
@@ -67,7 +68,7 @@ public class SpringjpaApplication {
 	}
 
 	@PostMapping("/populateUserRepositories")
-	public RequestUserRepositoriesDTO requestUserRepositoryData(String username, String repoName)
+	public PopulateUserRepositoriesEndpointResponseDTO requestUserRepositoryData(String username, String repoName)
 			throws IOException, InterruptedException {
 
 		List<GitRepository> repos = gitRepoRepository.findAll().stream().filter(e -> e.getName().contains(repoName))
@@ -82,6 +83,7 @@ public class SpringjpaApplication {
 		Set<String> performedRequests = new HashSet<>(); // maybe this container should have versioned persistence or make this method responsible for completeness // for example creating a stack of get...ofDirectory and looping while there are changes to the stack. note that the loop should not mutate the stack, but return a new one
 		Stack<String> queryQueue = new Stack<>();
 		List<String> allFileUrls = new ArrayList<>();
+		List<ContentNode> nodeList = new ArrayList<>();
 		
 		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
 		var lombokDeserialized = mapper.readValue(response, RepoContentsFromEndpointResponseDTO.class);
@@ -112,7 +114,8 @@ public class SpringjpaApplication {
 						logger.info("Found a file: " + e.getDownloadsUrl());
 						//Future<String> future = Future.;
 						if (!allFileUrls.contains(e.getDownloadsUrl())) {
-							allFileUrls.add(e.getDownloadsUrl());	
+							allFileUrls.add(e.getDownloadsUrl());
+							nodeList.add(e);
 						}
 						//fileDownloadUrls.add(  )
 					} catch (IOException e1) {
@@ -138,11 +141,13 @@ public class SpringjpaApplication {
 							logger.info("Sub-file of directory with name: " + e.getName() + " is: " + node.getContentsUrl());
 							if (!allFileUrls.contains(node.getDownloadsUrl())) {
 								allFileUrls.add(node.getDownloadsUrl());	
+								nodeList.add(node);
 							}
 						} else if (node.getType().compareTo("dir") == 0) {
 							if (!performedRequests.contains(node.getContentsUrl())) {
 								queryQueue.add(node.getContentsUrl());
 								logger.info("Directory: added to query queue the url: " + node.getContentsUrl());
+								nodeList.add(node);
 							}
 						}
 					});
@@ -185,7 +190,8 @@ public class SpringjpaApplication {
 							logger.info("Found a file: " + r.getDownloadsUrl());
 							//Future<String> future = Future.;
 							if (!allFileUrls.contains(r.getDownloadsUrl())) {
-								allFileUrls.add(r.getDownloadsUrl());	
+								allFileUrls.add(r.getDownloadsUrl());
+								nodeList.add(r);
 							}
 							//fileDownloadUrls.add(  )
 						} catch (IOException e1) {
@@ -210,12 +216,14 @@ public class SpringjpaApplication {
 							if (node.getType().compareTo("file") == 0) {
 								logger.info("Sub-file of directory with name: " + r.getName() + " is: " + node.getContentsUrl());
 								if (!allFileUrls.contains(node.getDownloadsUrl())) {
-									allFileUrls.add(node.getDownloadsUrl());	
+									allFileUrls.add(node.getDownloadsUrl());
+									nodeList.add(node);
 								}
 							} else if (node.getType().compareTo("dir") == 0) {
 								if (!performedRequests.contains(node.getContentsUrl())) {
 									queryQueue.add(node.getContentsUrl());
 									logger.info("Directory: added to query queue the url: " + node.getContentsUrl());
+									nodeList.add(node);
 								}
 							}
 						});
@@ -229,6 +237,8 @@ public class SpringjpaApplication {
 			});
 		}
 
+		
+		contentsGathererService.persistContentNodes(nodeList);
 		return null;
 	}
 

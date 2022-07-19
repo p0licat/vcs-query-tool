@@ -24,6 +24,7 @@ public class ContentFile implements Inode {
 	private String shaSum;
 	private String downloadUrl;
 	private long fileSize;
+	private String contents;
 	
 	@ManyToOne
 	private RepoContents childOfRepo;
