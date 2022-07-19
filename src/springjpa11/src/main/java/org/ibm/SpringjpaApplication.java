@@ -6,10 +6,15 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -73,12 +78,17 @@ public class SpringjpaApplication {
 				"http://127.0.0.1:8081/getContentsOfRepo?username=" + username + "&repoName=" + repoName.toString())
 				.body();
 
-		Set<String> performedRequests = new HashSet<>(); // maybe this container should have versioned persistence or make this method responsible for completeness
-		// for example creating a stack of get...ofDirectory and looping while there are changes to the stack. note that the loop should not mutate the stack, but return a new one
+		
+		Set<String> performedRequests = new HashSet<>(); // maybe this container should have versioned persistence or make this method responsible for completeness // for example creating a stack of get...ofDirectory and looping while there are changes to the stack. note that the loop should not mutate the stack, but return a new one
 		Stack<String> queryQueue = new Stack<>();
+		List<String> allFileUrls = new ArrayList<>();
 		
 		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
 		var lombokDeserialized = mapper.readValue(response, RepoContentsFromEndpointResponseDTO.class);
+		
+		//List<CompletableFuture<String>> fileDownloadUrls = new ArrayList<CompletableFuture<String>>();
+		//ExecutorService s = Executors.newSingleThreadExecutor();
+		//s.
 		
 		// todo: add while loop
 		// instead of recursive enumeration running synchronously, could have recursive generation of CompletableFuture and iterative synchronous requests with exception handling
@@ -100,6 +110,11 @@ public class SpringjpaApplication {
 						performedRequests.add(e.getContentsUrl());
 						logger.info("Found a file: " + e.getContentsUrl());
 						logger.info("Found a file: " + e.getDownloadsUrl());
+						//Future<String> future = Future.;
+						if (!allFileUrls.contains(e.getDownloadsUrl())) {
+							allFileUrls.add(e.getDownloadsUrl());	
+						}
+						//fileDownloadUrls.add(  )
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					} catch (InterruptedException e1) {
@@ -121,6 +136,9 @@ public class SpringjpaApplication {
 					currentRequestDeserialized.getNodes().forEach(node -> {
 						if (node.getType().compareTo("file") == 0) {
 							logger.info("Sub-file of directory with name: " + e.getName() + " is: " + node.getContentsUrl());
+							if (!allFileUrls.contains(node.getDownloadsUrl())) {
+								allFileUrls.add(node.getDownloadsUrl());	
+							}
 						} else if (node.getType().compareTo("dir") == 0) {
 							if (!performedRequests.contains(node.getContentsUrl())) {
 								queryQueue.add(node.getContentsUrl());
@@ -136,6 +154,80 @@ public class SpringjpaApplication {
 				}
 			}
 		});
+		
+		// refactoring day is 21st
+		while (!queryQueue.empty()) {
+			var e = queryQueue.pop();
+			String result2 = this
+					.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username="
+							+ username + "&contentsUrl=" + e)
+					.body();
+			performedRequests.add(e);
+			var currentRequestDeserialized2 = mapper.readValue(result2, RepoContentsFromEndpointResponseDTO.class);
+			
+			currentRequestDeserialized2.getNodes().forEach(r -> {
+				if (r.getType().equals("file")) {
+					// either use recursion or a queue of requests
+					// must also create a new route in the contentscanner
+					// /getContentsOfRepoAtContentsUrl?...
+
+					// move business logic elsewhere...
+					if (!performedRequests.contains(r.getContentsUrl())) {
+
+						try {
+							String result = this
+									.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfFile?username="
+											+ username + "&contentsUrl=" + r.getContentsUrl())
+									.body();
+							// result.persist()
+							performedRequests.add(r.getContentsUrl());
+							logger.info("Found a file: " + r.getContentsUrl());
+							logger.info("Found a file: " + r.getDownloadsUrl());
+							//Future<String> future = Future.;
+							if (!allFileUrls.contains(r.getDownloadsUrl())) {
+								allFileUrls.add(r.getDownloadsUrl());	
+							}
+							//fileDownloadUrls.add(  )
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+					}
+					
+					
+				} else {
+					// directory request branch
+					try {
+						String result = this
+								.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username="
+										+ username + "&contentsUrl=" + r.getContentsUrl())
+								.body();
+						performedRequests.add(r.getContentsUrl());
+						var currentRequestDeserialized = mapper.readValue(result, RepoContentsFromEndpointResponseDTO.class);
+						
+						currentRequestDeserialized.getNodes().forEach(node -> {
+							if (node.getType().compareTo("file") == 0) {
+								logger.info("Sub-file of directory with name: " + r.getName() + " is: " + node.getContentsUrl());
+								if (!allFileUrls.contains(node.getDownloadsUrl())) {
+									allFileUrls.add(node.getDownloadsUrl());	
+								}
+							} else if (node.getType().compareTo("dir") == 0) {
+								if (!performedRequests.contains(node.getContentsUrl())) {
+									queryQueue.add(node.getContentsUrl());
+									logger.info("Directory: added to query queue the url: " + node.getContentsUrl());
+								}
+							}
+						});
+						
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
+		}
 
 		return null;
 	}
