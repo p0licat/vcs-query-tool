@@ -81,6 +81,7 @@ public class SpringjpaApplication {
 		var lombokDeserialized = mapper.readValue(response, RepoContentsFromEndpointResponseDTO.class);
 		
 		// todo: add while loop
+		// instead of recursive enumeration running synchronously, could have recursive generation of CompletableFuture and iterative synchronous requests with exception handling
 		lombokDeserialized.getNodes().forEach(e -> {
 			if (e.getType().equals("file")) {
 				// either use recursion or a queue of requests
@@ -116,11 +117,15 @@ public class SpringjpaApplication {
 							.body();
 					performedRequests.add(e.getContentsUrl());
 					var currentRequestDeserialized = mapper.readValue(result, RepoContentsFromEndpointResponseDTO.class);
+					
 					currentRequestDeserialized.getNodes().forEach(node -> {
-						logger.info("Sub-file of directory with name: " + e.getName() + " is: " + node.getContentsUrl());
-						if (!performedRequests.contains(node.getContentsUrl())) {
-							queryQueue.add(node.getContentsUrl());
-							logger.info("Directory: added to query queue the url: " + node.getContentsUrl());
+						if (node.getType().compareTo("file") == 0) {
+							logger.info("Sub-file of directory with name: " + e.getName() + " is: " + node.getContentsUrl());
+						} else if (node.getType().compareTo("dir") == 0) {
+							if (!performedRequests.contains(node.getContentsUrl())) {
+								queryQueue.add(node.getContentsUrl());
+								logger.info("Directory: added to query queue the url: " + node.getContentsUrl());
+							}
 						}
 					});
 					
