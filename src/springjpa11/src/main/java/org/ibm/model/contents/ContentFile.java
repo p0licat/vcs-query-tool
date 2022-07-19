@@ -23,7 +23,7 @@ public class ContentFile implements Inode {
 	private String fileName;
 	private String shaSum;
 	private String downloadUrl;
-	private long fileSize;
+	private Long fileSize;
 	private String contents;
 	
 	@ManyToOne

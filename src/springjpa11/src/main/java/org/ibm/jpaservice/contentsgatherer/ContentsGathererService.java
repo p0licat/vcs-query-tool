@@ -8,21 +8,19 @@ import javax.transaction.Transactional;
 import org.ibm.model.contents.ContentDir;
 import org.ibm.model.contents.ContentFile;
 import org.ibm.model.deserializers.contentservice.model.ContentNode;
+import org.ibm.model.repohub.GitRepository;
 import org.ibm.model.repohub.RepoContents;
+import org.ibm.repository.GitRepoRepository;
 import org.ibm.repository.RepoContentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 
-//@Controller
-//@Component
 @Service
 public class ContentsGathererService {
 
-//	@Autowired
-//	private GitRepoRepository repoRepository; // commented untill check for repoName existence is determined necessary
+	@Autowired
+	private GitRepoRepository repoRepository; // commented untill check for repoName existence is determined necessary
 
 	@Autowired
 	private RepoContentsRepository repoContentsRepository;
@@ -46,13 +44,21 @@ public class ContentsGathererService {
 				dir.setShaSum(e.getShasum());
 				
 				em.persist(dir);
+				em.flush();
 				
 				if (repoContents == null) {
+					repoContents = new RepoContents();
+					repoContents.setDirs(null);
+					repoContents.setFiles(null);
+					GitRepository foundOwnerRepo = this.repoRepository.findAll().stream().filter(ef -> ef.getName().compareTo(repoName) == 0).findFirst().orElse(null);
+					repoContents.setOwnerRepo(foundOwnerRepo);
+					repoContents.setRepoName(repoName);
+					
 					em.persist(repoContents);
 					this.repoContentsRepository.save(repoContents);
 					dir.setChildOfRepo(repoContents);
 				} else {
-					dir.setChildOfRepo(repoContents);
+					dir.setChildOfRepo(repoContents); // should rename to childOfRepoConents
 				}
 				
 				// persistence achieved from ManyToOne direction
@@ -70,8 +76,16 @@ public class ContentsGathererService {
 				file.setShaSum(e.getShasum());
 				
 				em.persist(file);
+				em.flush();
 				
 				if (repoContents == null) {
+					repoContents = new RepoContents();
+					repoContents.setDirs(null);
+					repoContents.setFiles(null);
+					GitRepository foundOwnerRepo = this.repoRepository.findAll().stream().filter(ef -> ef.getName().compareTo(repoName) == 0).findFirst().orElse(null);
+					repoContents.setOwnerRepo(foundOwnerRepo);
+					repoContents.setRepoName(repoName);
+					
 					em.persist(repoContents);
 					this.repoContentsRepository.save(repoContents);
 					file.setChildOfRepo(repoContents);
@@ -80,6 +94,9 @@ public class ContentsGathererService {
 				}
 				
 			}
+			// finally
+			
+			
 		});
 	}
 

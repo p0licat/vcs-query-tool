@@ -3,6 +3,7 @@ package org.ibm.contentscanner;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 
+import org.ibm.exceptions.ApiRequestLimitExceeded;
 import org.ibm.model.contentscanner.dto.RepoContentsFromGithubReplyDTO;
 import org.ibm.model.contentscanner.dto.RepoFileFromGitHubReplyDTO;
 import org.ibm.model.deserializers.GetRepoContentsDeserializerFromGithubReply;
@@ -64,10 +65,14 @@ public class ContentGathererApplication {
 	}
 	
 	@GetMapping("/getContentsOfRepo")
-	public RepoContentsFromGithubReplyDTO getContentsOfRepo(String username, String repoName) throws IOException {
+	public RepoContentsFromGithubReplyDTO getContentsOfRepo(String username, String repoName) throws IOException, ApiRequestLimitExceeded {
 		String authKey = this.getClass().getClassLoader().getResourceAsStream("keyValue.txt").readAllBytes().toString();
 		HttpResponse<String> response = this.getResponseFromEndpoint_repoContents(username, repoName, authKey);
-		
+		if (response.statusCode()==403) {
+			if (response.body().contains("limit")) {
+				throw new ApiRequestLimitExceeded("Request limit exceeded for this api key.");
+			}
+		}
 		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
 		RepoContentsFromGithubReplyDTO dto = mapper.readValue(response.body(), RepoContentsFromGithubReplyDTO.class);
 		return dto;
