@@ -11,13 +11,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
 import org.ibm.model.deserializers.contentservice.GetRepoContentsDeserializerFromGithubReply;
 import org.ibm.model.deserializers.contentservice.model.ContentNode;
 import org.ibm.model.deserializers.contentservice.model.RepoContentsFromEndpointResponseDTO;
@@ -25,7 +22,7 @@ import org.ibm.model.deserializers.contentservice.model.RepoContentsFromGithubRe
 import org.ibm.model.repohub.GitRepository;
 import org.ibm.repository.GitRepoRepository;
 import org.ibm.rest.dto.RequestUserDetailsDTO;
-import org.ibm.rest.dto.RequestUserRepositoriesDTO;
+import org.ibm.rest.dto.endpointresponse.PopulateUserRepositoriesEndpointResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -50,6 +47,9 @@ public class SpringjpaApplication {
 	
 	@Autowired
 	private GitRepoRepository gitRepoRepository;
+	
+	@Autowired
+	private ContentsGathererService contentsGathererService;
 
 	private ObjectMapper getMapperFor__getRepoContentsDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
@@ -73,10 +73,10 @@ public class SpringjpaApplication {
 
 		List<GitRepository> repos = gitRepoRepository.findAll().stream().filter(e -> e.getName().contains(repoName))
 				.collect(Collectors.toList()); // todo optimize query by creating a custom query within repo
-		String foundName = repos.get(0).getName();
+		String foundName = repos.get(0).getName(); // proxy variable guards against JPA NotExists errors
 
 		String response = this.makeRequest(
-				"http://127.0.0.1:8081/getContentsOfRepo?username=" + username + "&repoName=" + repoName.toString())
+				"http://127.0.0.1:8081/getContentsOfRepo?username=" + username + "&repoName=" + foundName.toString())
 				.body();
 
 		
@@ -108,10 +108,11 @@ public class SpringjpaApplication {
 								.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfFile?username="
 										+ username + "&contentsUrl=" + e.getContentsUrl())
 								.body();
-						// result.persist()
+						// result.persist() 
 						performedRequests.add(e.getContentsUrl());
 						logger.info("Found a file: " + e.getContentsUrl());
 						logger.info("Found a file: " + e.getDownloadsUrl());
+						logger.info("Response for contentsRequest:" + result);
 						//Future<String> future = Future.;
 						if (!allFileUrls.contains(e.getDownloadsUrl())) {
 							allFileUrls.add(e.getDownloadsUrl());
@@ -188,6 +189,7 @@ public class SpringjpaApplication {
 							performedRequests.add(r.getContentsUrl());
 							logger.info("Found a file: " + r.getContentsUrl());
 							logger.info("Found a file: " + r.getDownloadsUrl());
+							logger.info("Response for contentsRequest:" + result);
 							//Future<String> future = Future.;
 							if (!allFileUrls.contains(r.getDownloadsUrl())) {
 								allFileUrls.add(r.getDownloadsUrl());
@@ -238,8 +240,8 @@ public class SpringjpaApplication {
 		}
 
 		
-		contentsGathererService.persistContentNodes(nodeList);
-		return null;
+		contentsGathererService.persistContentNodes(nodeList, repoName);
+		return new PopulateUserRepositoriesEndpointResponseDTO(nodeList, performedRequests);
 	}
 
 	@PostMapping("/populateUserDetails")
