@@ -55,6 +55,7 @@ public class ContentsGathererService {
 					repoContents.setRepoName(repoName);
 					
 					em.persist(repoContents);
+					em.flush();
 					this.repoContentsRepository.save(repoContents);
 					dir.setChildOfRepo(repoContents);
 				} else {
@@ -87,6 +88,7 @@ public class ContentsGathererService {
 					repoContents.setRepoName(repoName);
 					
 					em.persist(repoContents);
+					em.flush();
 					this.repoContentsRepository.save(repoContents);
 					file.setChildOfRepo(repoContents);
 				} else {

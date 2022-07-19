@@ -72,18 +72,22 @@ public class SpringjpaApplication {
 			throws IOException, InterruptedException {
 
 		//int apiLimit = -1;
-		int apiLimit = 10;
+		int apiLimit = 3;
 		
 		List<GitRepository> repos = gitRepoRepository.findAll().stream().filter(e -> e.getName().contains(repoName))
 				.collect(Collectors.toList()); // todo optimize query by creating a custom query within repo
 		String foundName = repos.get(0).getName(); // proxy variable guards against JPA NotExists errors
+		
+		// possible errors for the above .get()
+		// if it doesn't exist, ContentsScanningForInexistentRepoError
 		
 		Set<String> performedRequests = new HashSet<>(); // maybe this container should have versioned persistence or make this method responsible for completeness // for example creating a stack of get...ofDirectory and looping while there are changes to the stack. note that the loop should not mutate the stack, but return a new one
 		Stack<String> queryQueue = new Stack<>();
 		List<String> allFileUrls = new ArrayList<>();
 		List<ContentNode> nodeList = new ArrayList<>();
 		
-		queryQueue.add(repos.get(0).getContentsUrl().split("{+path}")[0].toString());
+		String[] regexMatch = repos.get(0).getContentsUrl().split("/\\{");
+		queryQueue.add(regexMatch[0].toString());
 		
 		
 		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
