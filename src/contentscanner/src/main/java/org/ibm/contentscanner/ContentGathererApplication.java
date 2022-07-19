@@ -41,6 +41,11 @@ public class ContentGathererApplication {
 		return response;
 	}
 
+	private HttpResponse<String> getResponseFromEndpoint_repoContentsAtContentsUrl(String username, String contentsUrl, String apiKey) throws IOException, InterruptedException {
+		GitHubConnectionService service = new GitHubConnectionService(contentsUrl);
+		HttpResponse<String> response = service.getRawResponseFromMainUrl(apiKey);
+		return response;
+	}
 
 	private ObjectMapper getMapperFor__getRepoContentsDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
@@ -96,4 +101,12 @@ public class ContentGathererApplication {
 		}
 	}
 	
+	@GetMapping("/getContentsOfRepoAtContentsUrlOfDirectory")
+	public RepoContentsFromGithubReplyDTO getContentsOfRepoAtContentsUrlOfDirectory(String username, String contentsUrl) throws IOException, InterruptedException {
+		String authKey = this.getClass().getClassLoader().getResourceAsStream("keyValue.txt").readAllBytes().toString();
+		HttpResponse<String> response = this.getResponseFromEndpoint_repoContentsAtContentsUrl(username, contentsUrl, authKey);
+		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
+		var dto = mapper.readValue(response.body(), RepoContentsFromGithubReplyDTO.class);
+		return dto;
+	}
 }

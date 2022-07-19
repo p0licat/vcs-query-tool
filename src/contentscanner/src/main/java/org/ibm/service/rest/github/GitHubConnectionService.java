@@ -44,6 +44,15 @@ public class GitHubConnectionService {
 		
 		return response;
 	}
+	
+	public HttpResponse<String> getRawResponseFromMainUrl(String authKey) throws IOException, InterruptedException {
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(java.net.URI.create(this.URL))
+				.header("Content-Type", "application/json")
+				.header("Authorization", authKey)
+				.build();
+		return this.httpClient.send(request, BodyHandlers.ofString());
+	}
 
 	public HttpResponse<String> sendGETRequestWithAuthorization(String URI, String authKey) {
 		String path = URL + '/' + URI;
