@@ -1,7 +1,5 @@
 package org.ibm.vcs_ui;
 
-import java.awt.print.Book;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -16,6 +14,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+import org.ibm.shared.model.vcsmanager.GetUserDetailsDTO;
+import org.ibm.shared.model.vcsmanager.RepositoryDTO;
 
 @SpringBootApplication
 @RestController
@@ -34,11 +35,11 @@ public class VcsUiApplication {
 			+ "No members of this class are modified by any operation usable from this controller.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found the book", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = String.class)) }),
+					@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User already exists.", content = @Content),
 			@ApiResponse(responseCode = "400", description = "Bad request.", content = @Content) })
-	public String addNewUser() {
-		return "";
+	public RepositoryDTO addNewUser() {
+		return new RepositoryDTO();
 	}
 
 	@Operation(summary = "" + "Initiates a download of the repository contents. The user is required as a parameter.")
