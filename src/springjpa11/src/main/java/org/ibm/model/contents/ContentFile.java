@@ -1,6 +1,8 @@
 package org.ibm.model.contents;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -19,11 +21,13 @@ import lombok.NoArgsConstructor;
 public class ContentFile implements Inode {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String fileName;
 	private String shaSum;
 	private String downloadUrl;
-	private long fileSize;
+	private Long fileSize;
+	private String contents;
 	
 	@ManyToOne
 	private RepoContents childOfRepo;

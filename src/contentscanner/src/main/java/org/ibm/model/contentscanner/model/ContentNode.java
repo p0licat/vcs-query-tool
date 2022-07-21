@@ -15,12 +15,13 @@ import lombok.ToString;
 @ToString
 public class ContentNode {
 
-	private int id;
 	private String name;
 	private String path;
 	private String contentsUrl;
 	private String downloadsUrl;
 	// for fileSize, make a setter... persist
-	private long size; // make this public to move to interface
+	private Long size; // make this public to move to interface
 	private String type;
+	private String shasum;
 }
+// actually a DTO, but hackishly shared by dto and model (for now)

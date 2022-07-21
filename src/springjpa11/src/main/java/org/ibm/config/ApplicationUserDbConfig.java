@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EntityScan("org.ibm")
-@EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory", basePackages={"org.ibm.*"})
+@EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory", basePackages={"org.ibm.*", "org.ibm.jpaservice.contentsgatherer"})
 public class ApplicationUserDbConfig {
 	@Primary
 	@Bean(name="datasource")

@@ -80,6 +80,5 @@ public class SpringWebMvcTestsWithHttpClient {
 				.GET().build();
 
 		return httpClient.send(request, BodyHandlers.ofString());
-
 	}
 }

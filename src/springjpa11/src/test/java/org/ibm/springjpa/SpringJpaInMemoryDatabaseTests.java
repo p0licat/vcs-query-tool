@@ -38,7 +38,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 public class SpringJpaInMemoryDatabaseTests {
 	
 	@Autowired
-	private EntityManager em;
+	private EntityManager em; // should not depend on composition class but on the reposervice
 	
 	@Autowired
 	private GitRepoRepository gitRepoRepository;
