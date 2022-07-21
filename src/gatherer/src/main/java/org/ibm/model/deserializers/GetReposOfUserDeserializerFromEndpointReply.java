@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.ibm.model.RepositoryDTO;
-import org.ibm.model.dto.GetUserRepositoriesDTO;
+import org.ibm.shared.model.vcsmanager.dto.GetUserRepositoriesDTO;
+import org.ibm.shared.model.vcsmanager.dto.RepositoryDTO;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;

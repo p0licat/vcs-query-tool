@@ -1,9 +1,9 @@
 package org.ibm.service.deserializer;
 
-import org.ibm.model.contentscanner.dto.RepoContentsFromGithubReplyDTO;
-import org.ibm.model.contentscanner.dto.RepoFileFromGitHubReplyDTO;
 import org.ibm.model.deserializers.GetRepoContentsDeserializerFromGithubReply;
 import org.ibm.model.deserializers.GetRepoContentsFilePathDeserializerFromGitHubReply;
+import org.ibm.shared.model.vcsmanager.dto.RepoContentsFromGithubReplyDTO;
+import org.ibm.shared.model.vcsmanager.dto.RepoFileFromGitHubReplyDTO;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

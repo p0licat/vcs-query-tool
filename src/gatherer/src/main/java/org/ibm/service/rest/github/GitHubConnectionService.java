@@ -9,8 +9,8 @@ import java.util.Optional;
 
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
 import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
-import org.ibm.model.dto.GetUserDetailsDTO;
-import org.ibm.model.dto.GetUserRepositoriesDTO;
+import org.ibm.shared.model.vcsmanager.dto.GetUserDetailsDTO;
+import org.ibm.shared.model.vcsmanager.dto.GetUserRepositoriesDTO;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;

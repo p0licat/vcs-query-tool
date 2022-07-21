@@ -3,8 +3,8 @@ package org.ibm.contentscanner;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import org.ibm.model.contentscanner.dto.RepoContentsFromEndpointResponseDTO;
 import org.ibm.model.deserializers.GetRepoContentsDeserializerFromEndpointResponse;
+import org.ibm.shared.model.vcsmanager.dto.RepoContentsFromEndpointResponseDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

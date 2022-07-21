@@ -1,7 +1,7 @@
 package org.ibm.gatherer;
 
 import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
-import org.ibm.model.dto.GetUserRepositoriesDTO;
+import org.ibm.shared.model.vcsmanager.dto.GetUserRepositoriesDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,4 +1,4 @@
-package org.ibm.model;
+package org.ibm.shared.model.vcsmanager.dto;
 
 import java.io.Serializable;
 

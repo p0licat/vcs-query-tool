@@ -1,8 +1,8 @@
-package org.ibm.model.contentscanner.dto;
+package org.ibm.shared.model.vcsmanager.dto;
 
 import java.util.List;
 
-import org.ibm.model.contentscanner.model.ContentNode;
+import org.ibm.shared.model.vcsmanager.model.ContentNode;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -17,6 +17,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class RepoContentsFromEndpointResponseDTO {
+public class RepoContentsFromGithubReplyDTO {
 	private List<ContentNode> nodes;
 }

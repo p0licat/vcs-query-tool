@@ -1,4 +1,4 @@
-package org.ibm.model.contentscanner.model;
+package org.ibm.shared.model.vcsmanager.model;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

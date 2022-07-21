@@ -1,4 +1,4 @@
-package org.ibm.model.contentscanner.dto;
+package org.ibm.shared.model.vcsmanager.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

@@ -3,8 +3,8 @@ package org.ibm.model.deserializers;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.ibm.model.contentscanner.dto.RepoContentsFromGithubReplyDTO;
-import org.ibm.model.contentscanner.model.ContentNode;
+import org.ibm.shared.model.vcsmanager.dto.RepoContentsFromGithubReplyDTO;
+import org.ibm.shared.model.vcsmanager.model.ContentNode;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;

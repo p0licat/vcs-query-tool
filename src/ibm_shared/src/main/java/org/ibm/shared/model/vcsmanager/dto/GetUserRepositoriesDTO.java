@@ -1,8 +1,6 @@
-package org.ibm.model.dto;
+package org.ibm.shared.model.vcsmanager.dto;
 
 import java.util.ArrayList;
-
-import org.ibm.model.RepositoryDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
