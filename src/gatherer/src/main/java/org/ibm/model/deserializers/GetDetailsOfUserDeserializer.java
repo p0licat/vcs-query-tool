@@ -2,7 +2,7 @@ package org.ibm.model.deserializers;
 
 import java.io.IOException;
 
-import org.ibm.shared.model.vcsmanager.dto.GetUserDetailsDTO;
+import org.ibm.model.dto.GetUserDetailsDTO;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;

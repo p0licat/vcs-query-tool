@@ -1,7 +1,5 @@
 package org.ibm.vcs_ui;
 
-import org.ibm.shared.model.vcsmanager.dto.GetUserDetailsDTO;
-import org.ibm.shared.model.vcsmanager.dto.RepositoryDTO;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -16,6 +14,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+import org.ibm.shared.model.vcsmanager.GetUserDetailsDTO;
+import org.ibm.shared.model.vcsmanager.RepositoryDTO;
 
 @SpringBootApplication
 @RestController

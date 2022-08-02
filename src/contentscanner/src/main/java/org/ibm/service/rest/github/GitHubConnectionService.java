@@ -7,8 +7,8 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Optional;
 
+import org.ibm.model.contentscanner.dto.RepoContentsFromGithubReplyDTO;
 import org.ibm.model.deserializers.GetRepoContentsDeserializerFromGithubReply;
-import org.ibm.shared.model.vcsmanager.dto.RepoContentsFromGithubReplyDTO;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;

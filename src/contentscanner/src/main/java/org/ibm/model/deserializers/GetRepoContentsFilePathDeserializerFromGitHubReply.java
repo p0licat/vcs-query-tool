@@ -2,7 +2,7 @@ package org.ibm.model.deserializers;
 
 import java.io.IOException;
 
-import org.ibm.shared.model.vcsmanager.dto.RepoFileFromGitHubReplyDTO;
+import org.ibm.model.contentscanner.dto.RepoFileFromGitHubReplyDTO;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;

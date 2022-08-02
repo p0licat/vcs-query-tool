@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.ibm.model.RepositoryDTO;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
 import org.ibm.model.deserializers.GetReposOfUserDeserializerFromGitReply;
+import org.ibm.model.dto.GetUserDetailsDTO;
+import org.ibm.model.dto.GetUserRepositoriesDTO;
 import org.ibm.service.rest.github.GitHubConnectionService;
-import org.ibm.shared.model.vcsmanager.dto.GetUserDetailsDTO;
-import org.ibm.shared.model.vcsmanager.dto.GetUserRepositoriesDTO;
-import org.ibm.shared.model.vcsmanager.dto.RepositoryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

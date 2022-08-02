@@ -9,12 +9,12 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.ibm.model.RepositoryDTO;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
 import org.ibm.model.deserializers.GetReposOfUserDeserializerFromGitReply;
+import org.ibm.model.dto.GetUserDetailsDTO;
+import org.ibm.model.dto.GetUserRepositoriesDTO;
 import org.ibm.service.rest.github.GitHubConnectionService;
-import org.ibm.shared.model.vcsmanager.dto.GetUserDetailsDTO;
-import org.ibm.shared.model.vcsmanager.dto.GetUserRepositoriesDTO;
-import org.ibm.shared.model.vcsmanager.dto.RepositoryDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
