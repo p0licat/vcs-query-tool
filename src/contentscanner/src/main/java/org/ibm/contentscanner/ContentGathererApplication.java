@@ -2,16 +2,12 @@ package org.ibm.contentscanner;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 
 import org.ibm.exceptions.ApiRequestLimitExceeded;
 import org.ibm.exceptions.ConfigurationProviderArgumentError;
 import org.ibm.model.contentscanner.dto.RepoContentsFromGithubReplyDTO;
 import org.ibm.model.contentscanner.dto.RepoFileFromGitHubReplyDTO;
-import org.ibm.model.deserializers.GetRepoContentsDeserializerFromGithubReply;
-import org.ibm.model.deserializers.GetRepoContentsFilePathDeserializerFromGitHubReply;
 import org.ibm.service.deserializer.DeserializerFactoryService;
-import org.ibm.service.rest.github.GitHubConnectionService;
 import org.ibm.service.rest.github.GitHubConnectionServiceFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -19,9 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 
 @SpringBootApplication(scanBasePackages = { "org.ibm.service.*", "org.ibm.*" })
 @RestController
