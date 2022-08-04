@@ -66,6 +66,9 @@ public class SpringjpaApplication {
 
 	@Autowired
 	private ContentsGathererService contentsGathererService;
+	
+	@Autowired
+	private UserPersistenceService userService;
 
 	private ObjectMapper getMapperFor__getRepoContentsDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
@@ -211,9 +214,17 @@ public class SpringjpaApplication {
 	}
 
 	@PostMapping("/requestUserDetailsData")
-	public RequestUserDetailsDTO requestUserDetailsData(String username) {
-		return null;
-
+	@Operation(summary = "" + "Searches for an existing GitHub user, and if the request is successful it adds it to the database.")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found a GitHub match and added to db.", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
+			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
+	public RequestUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException {
+		String searchForUserUrl = "http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username.toString();
+		String response = this.makeRequest(searchForUserUrl).body(); // should be a service instance, not a RestController method
+		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer(); // should be a service call to do the whole deserialization part
+		var deserializedUserDetails = mapper.readValue(response, GetUserDetailsDTO.class);
+		this.userService.saveUserDetails(deserializedUserDetails);
+		return UserDetailsSerializer.serialize(response);
 	}
 
 	public static void main(String[] args) {
