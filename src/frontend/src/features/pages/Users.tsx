@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { AddUserToRepoElement } from "../components/operations/AddUserToRepoElement";
 import { ListUsersElement } from "../components/searchable/ListUsersElement";
 
@@ -8,6 +9,7 @@ export function Users(props: UsersPageProps) {
     <div>
       <div id="components">
         <AddUserToRepoElement />
+        <Button variant="contained">Load users</Button>
         <ListUsersElement />
       </div>
       Users page.
