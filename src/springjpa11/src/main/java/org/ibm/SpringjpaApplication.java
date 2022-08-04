@@ -20,8 +20,11 @@ import org.ibm.model.deserializers.contentservice.model.ContentNode;
 import org.ibm.model.deserializers.contentservice.model.RepoContentsFromEndpointResponseDTO;
 import org.ibm.model.deserializers.contentservice.model.RepoContentsFromGithubReplyDTO;
 import org.ibm.model.repohub.GitRepository;
+import org.ibm.model.serializers.userserializer.UserSerializer;
+import org.ibm.repository.ApplicationUserRepository;
 import org.ibm.repository.GitRepoRepository;
 import org.ibm.rest.dto.RequestUserDetailsDTO;
+import org.ibm.rest.dto.endpointresponse.GetUsersDTO;
 import org.ibm.rest.dto.endpointresponse.PopulateUserRepositoriesEndpointResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +33,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,6 +51,9 @@ public class SpringjpaApplication {
 	
 	@Autowired
 	private GitRepoRepository gitRepoRepository;
+	
+	@Autowired
+	private ApplicationUserRepository userRepository;
 	
 	@Autowired
 	private ContentsGathererService contentsGathererService;
@@ -67,6 +74,14 @@ public class SpringjpaApplication {
 		return httpClient.send(request, BodyHandlers.ofString());
 	}
 
+	@GetMapping("/getUsers")
+	public GetUsersDTO getUsers() {
+		var allUsers = userRepository.findAll();
+		var usersList = UserSerializer.serialize(allUsers);
+		GetUsersDTO result = new GetUsersDTO(usersList);
+		return result;
+	}
+	
 	@PostMapping("/populateUserRepositories")
 	public PopulateUserRepositoriesEndpointResponseDTO requestUserRepositoryData(String username, String repoName)
 			throws IOException, InterruptedException {
