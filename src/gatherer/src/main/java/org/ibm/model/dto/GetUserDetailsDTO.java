@@ -18,4 +18,5 @@ public class GetUserDetailsDTO {
 	public String nodeId;
 	public String subscriptionsUrl;
 	public String reposUrl;
+	public String fullName;
 }

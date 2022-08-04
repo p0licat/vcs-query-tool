@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
+import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
 import org.ibm.model.deserializers.contentservice.GetRepoContentsDeserializerFromGithubReply;
 import org.ibm.model.deserializers.contentservice.model.ContentNode;
 import org.ibm.model.deserializers.contentservice.model.RepoContentsFromEndpointResponseDTO;
@@ -74,6 +75,15 @@ public class SpringjpaApplication {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
 		module.addDeserializer(RepoContentsFromGithubReplyDTO.class, new GetRepoContentsDeserializerFromGithubReply());
+		mapper.registerModule(module);
+		return mapper;
+	}
+	
+	// turn these into a service
+	private ObjectMapper getMapperFor__getUserDetailsDeserializer() {
+		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(GetUserDetailsDTO.class, new GetDetailsOfUserDeserializer());
 		mapper.registerModule(module);
 		return mapper;
 	}
@@ -221,7 +231,7 @@ public class SpringjpaApplication {
 	public GetUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException {
 		String searchForUserUrl = "http://127.0.0.1:8080/getDetailsOfUser?username=" + username.toString(); // not using dns....
 		String response = this.makeRequest(searchForUserUrl).body(); // should be a service instance, not a RestController method
-		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer(); // should be a service call to do the whole deserialization part
+		ObjectMapper mapper = this.getMapperFor__getUserDetailsDeserializer(); // should be a service call to do the whole deserialization part
 		var deserializedUserDetails = mapper.readValue(response, GetUserDetailsDTO.class);
 		this.userService.saveUserDetails(deserializedUserDetails);
 		return deserializedUserDetails;

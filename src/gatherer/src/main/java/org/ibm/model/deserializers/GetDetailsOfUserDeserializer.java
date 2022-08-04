@@ -40,8 +40,9 @@ public class GetDetailsOfUserDeserializer extends StdDeserializer<GetUserDetails
 		String subscriptionsUrl = node.get("subscriptions_url").asText();
 		String nodeId = node.get("node_id").asText();
 		String userLogin = node.get("login").asText();
+		String fullName = node.get("name").asText();
 		
-		return new GetUserDetailsDTO(userLogin, id, nodeId, subscriptionsUrl, reposUrl);
+		return new GetUserDetailsDTO(userLogin, id, nodeId, subscriptionsUrl, reposUrl, fullName);
 	}
 
 }
