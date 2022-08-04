@@ -9,6 +9,7 @@ import {
 export interface UserCardProps {
   name: string;
   url: string;
+  redirectToSearchReposOfUser: Function;
 }
 
 export function UserCard(props: UserCardProps) {
@@ -24,7 +25,12 @@ export function UserCard(props: UserCardProps) {
         <Typography variant="body2">User details. See props.</Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Search repos</Button>
+        <Button
+          size="small"
+          onClick={props.redirectToSearchReposOfUser(props.name)}
+        >
+          Search repos
+        </Button>
       </CardActions>
     </Card>
   );
