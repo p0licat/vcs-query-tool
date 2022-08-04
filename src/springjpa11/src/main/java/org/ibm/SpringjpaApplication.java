@@ -24,9 +24,9 @@ import org.ibm.model.serializers.userserializer.UserSerializer;
 import org.ibm.repository.ApplicationUserRepository;
 import org.ibm.repository.GitRepoRepository;
 import org.ibm.rest.dto.GetUserDetailsDTO;
-import org.ibm.rest.dto.RequestUserDetailsDTO;
 import org.ibm.rest.dto.endpointresponse.GetUsersDTO;
 import org.ibm.rest.dto.endpointresponse.PopulateUserRepositoriesEndpointResponseDTO;
+import org.ibm.service.persistence.applicationuser.UserPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -218,13 +218,13 @@ public class SpringjpaApplication {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found a GitHub match and added to db.", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
-	public RequestUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException {
+	public GetUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException {
 		String searchForUserUrl = "http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username.toString();
 		String response = this.makeRequest(searchForUserUrl).body(); // should be a service instance, not a RestController method
 		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer(); // should be a service call to do the whole deserialization part
 		var deserializedUserDetails = mapper.readValue(response, GetUserDetailsDTO.class);
 		this.userService.saveUserDetails(deserializedUserDetails);
-		return UserDetailsSerializer.serialize(response);
+		return deserializedUserDetails;
 	}
 
 	public static void main(String[] args) {
