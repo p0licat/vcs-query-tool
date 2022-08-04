@@ -48,7 +48,7 @@ public class VcsUiApplication {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "Failure accessing db.", content = @Content), })
 	public RepositoryDTO getUsers() {
-		
+		return new RepositoryDTO();
 	}
 
 	@Operation(summary = "" + "Initiates a download of the repository contents. The user is required as a parameter.")
