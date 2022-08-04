@@ -1,5 +1,7 @@
 package org.ibm.vcs_ui;
 
+import org.ibm.rest.dto.GetUserDetailsDTO;
+import org.ibm.rest.dto.RepositoryDTO;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -14,9 +16,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import org.ibm.shared.model.vcsmanager.GetUserDetailsDTO;
-import org.ibm.shared.model.vcsmanager.RepositoryDTO;
 
 @SpringBootApplication
 @RestController
@@ -40,6 +39,16 @@ public class VcsUiApplication {
 			@ApiResponse(responseCode = "400", description = "Bad request.", content = @Content) })
 	public RepositoryDTO addNewUser() {
 		return new RepositoryDTO();
+	}
+	
+	@GetMapping("/getUsers")
+	@Operation(summary = "" + "Gets a list of users from the DB by calling DbService.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found the list of users.", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
+			@ApiResponse(responseCode = "400", description = "Failure accessing db.", content = @Content), })
+	public RepositoryDTO getUsers() {
+		
 	}
 
 	@Operation(summary = "" + "Initiates a download of the repository contents. The user is required as a parameter.")

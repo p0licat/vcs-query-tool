@@ -1,4 +1,4 @@
-package org.ibm.shared.model.vcsmanager;
+package org.ibm.rest.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
