@@ -1,5 +1,21 @@
+import { Link, Outlet } from "react-router-dom";
+
 export interface LayoutProps {}
 
 export function Layout(props: LayoutProps) {
-  return <div>asdf</div>;
+  return (
+    <div>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Users</Link>
+          </li>
+          <li>
+            <Link to="/search">SearchRepos</Link>
+          </li>
+        </ul>
+      </nav>
+      <Outlet />
+    </div>
+  );
 }
