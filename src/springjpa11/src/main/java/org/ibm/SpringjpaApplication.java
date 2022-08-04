@@ -23,6 +23,7 @@ import org.ibm.model.repohub.GitRepository;
 import org.ibm.model.serializers.userserializer.UserSerializer;
 import org.ibm.repository.ApplicationUserRepository;
 import org.ibm.repository.GitRepoRepository;
+import org.ibm.rest.dto.GetUserDetailsDTO;
 import org.ibm.rest.dto.RequestUserDetailsDTO;
 import org.ibm.rest.dto.endpointresponse.GetUsersDTO;
 import org.ibm.rest.dto.endpointresponse.PopulateUserRepositoriesEndpointResponseDTO;
@@ -41,22 +42,28 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 @SpringBootApplication
 @PropertySources({ @PropertySource({ "classpath:application.properties" }) })
 @RestController
-@ComponentScan(basePackages = {"org.ibm.jpaservice"})
+@ComponentScan(basePackages = { "org.ibm.jpaservice" })
 @EntityScan("org.ibm.*")
 @CrossOrigin
 public class SpringjpaApplication {
 
 	Logger logger = Logger.getLogger(getClass().getName());
-	
+
 	@Autowired
 	private GitRepoRepository gitRepoRepository;
-	
+
 	@Autowired
 	private ApplicationUserRepository userRepository;
-	
+
 	@Autowired
 	private ContentsGathererService contentsGathererService;
 
@@ -83,44 +90,53 @@ public class SpringjpaApplication {
 		GetUsersDTO result = new GetUsersDTO(usersList);
 		return result;
 	}
-	
+
 	@PostMapping("/populateUserRepositories")
+	@Operation(summary = "" + "Accepts an username of an existing user and a repository name that existed at the time the user was inserted." +
+	"Creates a new entry node for the repository contents.")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found the list of users.", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
+			@ApiResponse(responseCode = "400", description = "Failure accessing db.", content = @Content), })
 	public PopulateUserRepositoriesEndpointResponseDTO requestUserRepositoryData(String username, String repoName)
 			throws IOException, InterruptedException {
 
-		//int apiLimit = -1;
+		// int apiLimit = -1;
 		int apiLimit = 3;
-		
+
 		List<GitRepository> repos = gitRepoRepository.findAll().stream().filter(e -> e.getName().contains(repoName))
 				.collect(Collectors.toList()); // todo optimize query by creating a custom query within repo
-		//String foundName = repos.get(0).getName(); // proxy variable guards against JPA NotExists errors
-		
+		// String foundName = repos.get(0).getName(); // proxy variable guards against
+		// JPA NotExists errors
+
 		// possible errors for the above .get()
 		// if it doesn't exist, ContentsScanningForInexistentRepoError
-		
-		Set<String> performedRequests = new HashSet<>(); // maybe this container should have versioned persistence or make this method responsible for completeness // for example creating a stack of get...ofDirectory and looping while there are changes to the stack. note that the loop should not mutate the stack, but return a new one
+
+		Set<String> performedRequests = new HashSet<>(); // maybe this container should have versioned persistence or
+															// make this method responsible for completeness // for
+															// example creating a stack of get...ofDirectory and looping
+															// while there are changes to the stack. note that the loop
+															// should not mutate the stack, but return a new one
 		Stack<String> queryQueue = new Stack<>();
 		List<String> allFileUrls = new ArrayList<>();
 		List<ContentNode> nodeList = new ArrayList<>();
-		
+
 		String[] regexMatch = repos.get(0).getContentsUrl().split("/\\{");
 		queryQueue.add(regexMatch[0].toString());
-		
-		
+
 		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
 		while (!queryQueue.empty()) {
 			if (performedRequests.size() > apiLimit) {
 				break;
 			}
-			
+
 			var e = queryQueue.pop();
 			String result2 = this
-					.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username="
-							+ username + "&contentsUrl=" + e)
+					.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username
+							+ "&contentsUrl=" + e)
 					.body();
 			performedRequests.add(e);
 			var currentRequestDeserialized2 = mapper.readValue(result2, RepoContentsFromEndpointResponseDTO.class);
-			
+
 			currentRequestDeserialized2.getNodes().forEach(r -> {
 				if (r.getType().equals("file")) {
 					// either use recursion or a queue of requests
@@ -140,20 +156,19 @@ public class SpringjpaApplication {
 							logger.info("Found a file: " + r.getContentsUrl());
 							logger.info("Found a file: " + r.getDownloadsUrl());
 							logger.info("Response for contentsRequest:" + result);
-							//Future<String> future = Future.;
+							// Future<String> future = Future.;
 							if (!allFileUrls.contains(r.getDownloadsUrl())) {
 								allFileUrls.add(r.getDownloadsUrl());
 								nodeList.add(r);
 							}
-							//fileDownloadUrls.add(  )
+							// fileDownloadUrls.add( )
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						}
 					}
-					
-					
+
 				} else {
 					// directory request branch
 					try {
@@ -162,11 +177,13 @@ public class SpringjpaApplication {
 										+ username + "&contentsUrl=" + r.getContentsUrl())
 								.body();
 						performedRequests.add(r.getContentsUrl());
-						var currentRequestDeserialized = mapper.readValue(result, RepoContentsFromEndpointResponseDTO.class);
-						
+						var currentRequestDeserialized = mapper.readValue(result,
+								RepoContentsFromEndpointResponseDTO.class);
+
 						currentRequestDeserialized.getNodes().forEach(node -> {
 							if (node.getType().compareTo("file") == 0) {
-								logger.info("Sub-file of directory with name: " + r.getName() + " is: " + node.getContentsUrl());
+								logger.info("Sub-file of directory with name: " + r.getName() + " is: "
+										+ node.getContentsUrl());
 								if (!allFileUrls.contains(node.getDownloadsUrl())) {
 									allFileUrls.add(node.getDownloadsUrl());
 									nodeList.add(node);
@@ -179,7 +196,7 @@ public class SpringjpaApplication {
 								}
 							}
 						});
-						
+
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					} catch (InterruptedException e1) {
@@ -189,12 +206,11 @@ public class SpringjpaApplication {
 			});
 		}
 
-		
 		contentsGathererService.persistContentNodes(nodeList, repoName);
 		return new PopulateUserRepositoriesEndpointResponseDTO(nodeList, performedRequests);
 	}
 
-	@PostMapping("/populateUserDetails")
+	@PostMapping("/requestUserDetailsData")
 	public RequestUserDetailsDTO requestUserDetailsData(String username) {
 		return null;
 
