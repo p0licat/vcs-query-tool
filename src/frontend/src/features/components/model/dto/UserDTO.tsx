@@ -19,4 +19,5 @@ export interface UserDTO {
   gitId: string;
   followers_url: string;
   reposUrl: string;
+  userName: string;
 }

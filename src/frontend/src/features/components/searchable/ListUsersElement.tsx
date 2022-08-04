@@ -11,13 +11,15 @@ export interface ListUsersElementProps {
 export function ListUsersElement(props: ListUsersElementProps) {
   const navigate = useNavigate();
   const redirectCallback = (cardName: string) => {
-    //navigate("/search/" + cardName);
+    navigate("/search/" + cardName);
   };
 
   let componentList = props.userList.map((e: UserDTO) => {
+    console.log(e.userName);
     return (
       <UserCard
-        name={e.fullName}
+        username={e.userName}
+        fullname={e.fullName}
         url={e.reposUrl}
         redirectToSearchReposOfUser={redirectCallback}
       />

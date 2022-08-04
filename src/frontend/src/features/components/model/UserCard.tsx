@@ -7,7 +7,8 @@ import {
 } from "@mui/material";
 
 export interface UserCardProps {
-  name: string;
+  username: string;
+  fullname: string;
   url: string;
   redirectToSearchReposOfUser: Function;
 }
@@ -17,17 +18,17 @@ export function UserCard(props: UserCardProps) {
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {props.name}
+          {props.fullname}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {props.url}
+          {props.username}
         </Typography>
-        <Typography variant="body2">User details. See props.</Typography>
+        <Typography variant="body2">{props.url}</Typography>
       </CardContent>
       <CardActions>
         <Button
           size="small"
-          onClick={props.redirectToSearchReposOfUser(props.name)}
+          onClick={() => props.redirectToSearchReposOfUser(props.username)}
         >
           Search repos
         </Button>
