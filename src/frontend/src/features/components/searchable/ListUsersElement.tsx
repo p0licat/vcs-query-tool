@@ -16,7 +16,6 @@ export function ListUsersElement(props: ListUsersElementProps) {
     <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
       <ListItem>
         <ListItemAvatar>
-          Sample item
           <Avatar>
             <ImageSearchIcon />
           </Avatar>
