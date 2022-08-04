@@ -13,8 +13,7 @@ const initialState: UsersSliceState = {
 
 export const fetchUsers = createAsyncThunk("eventList/fetchUsers", async () => {
   const response = await axios.get<UserDTO>(
-    `https://${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT}:${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT_PORT}/getUserDetails?username=` +
-      "p0licat"
+    `https://${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT}:${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT_PORT}/getUsers`
   );
 
   return response.data;
