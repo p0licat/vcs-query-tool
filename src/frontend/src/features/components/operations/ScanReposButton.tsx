@@ -9,6 +9,8 @@ import {
   updateRepoNameText,
 } from "../../slices/usersSlice/reposSlice";
 
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+
 export interface ScanReposButtonProps {
   userName: string;
   repoName: string;
@@ -37,7 +39,7 @@ export function ScanReposButton(props: ScanReposButtonProps) {
     <div>
       <div>
         <TextField onChange={handleTextChange} />
-        <Label>Filter</Label>
+        <FilterAltIcon fontSize="large" />
       </div>
       <div>
         <Button variant="contained" onClick={buttonAction}>
