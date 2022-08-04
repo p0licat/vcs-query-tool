@@ -1,9 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../../app/store";
 import GetUserDetailsDTO from "../../components/model/dto/GetUserDetailsDTO";
 import { GetUsersDTO } from "../../components/model/dto/GetUsersDTO";
 import { UserDTO } from "../../components/model/dto/UserDTO";
+import UpdateUserSearchTextPayload from "./payloads/UpdateUserSearchTextPayload";
 
 export interface UsersSliceState {
   usersList: Array<UserDTO>;
@@ -27,13 +28,16 @@ export const fetchUsers = createAsyncThunk("eventList/fetchUsers", async () => {
 });
 
 export const gatherUserDetails = createAsyncThunk(
-  "eventList/fetchUserDetails",
+  "eventList/gatherUserDetails",
   async (_, { rejectWithValue, getState }) => {
-    var stateResult: UsersSliceState = getState() as UsersSliceState;
-    let userName = stateResult.userSearchTextFieldValue;
-
+    var stateResult: any = getState();
+    var thisSlice = stateResult.usersSliceReducer;
+    console.log("cast ok");
+    console.log(thisSlice.userSearchTextFieldValue);
+    let userName = thisSlice.userSearchTextFieldValue;
+    console.log(userName);
     const response = await axios.post<GetUserDetailsDTO>(
-      `http://${process.env.REACT_APP_DDRESS_OF_USER_DETAILS_ENDPOINT}:${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT_PORT}/requestUserDetailsData?username=` +
+      `http://${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT}:${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT_PORT}/requestUserDetailsData?username=` +
         userName.toString()
     );
 
@@ -44,7 +48,14 @@ export const gatherUserDetails = createAsyncThunk(
 export const usersSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {},
+  reducers: {
+    updateUserSearchText: (
+      state,
+      action: PayloadAction<UpdateUserSearchTextPayload>
+    ) => {
+      state.userSearchTextFieldValue = action.payload.newText;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {})
@@ -54,6 +65,7 @@ export const usersSlice = createSlice({
   },
 });
 
+export const { updateUserSearchText } = usersSlice.actions;
 export const usersList = (state: RootState) =>
   state.usersSliceReducer.usersList;
 export default usersSlice.reducer;
