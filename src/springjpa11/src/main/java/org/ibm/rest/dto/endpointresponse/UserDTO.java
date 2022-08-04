@@ -18,4 +18,5 @@ public class UserDTO {
 	private String followers_url;
 	private String nodeId;
 	private String gitId;
+	private String userName;
 }

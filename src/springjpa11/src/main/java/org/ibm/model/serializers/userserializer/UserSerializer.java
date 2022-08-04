@@ -10,15 +10,14 @@ public class UserSerializer {
 	public static List<UserDTO> serialize(List<ApplicationUser> users) {
 		var result = new ArrayList<UserDTO>();
 		users.forEach(e -> {
-			UserDTO newUser = new UserDTO(
-				e.getId(),
-				e.getFullName(),
-				e.getUrl(),
-				e.getReposUrl(),
-				e.getFollowers_url(),
-				e.getNodeId(),
-				e.getGitId()
-			);
+			UserDTO newUser = new UserDTO();
+			newUser.setFullName(e.getFullName());
+			newUser.setUserName(e.getUsername());
+			newUser.setFollowers_url(e.getFollowers_url());
+			newUser.setGitId(e.getGitId());
+			newUser.setNodeId(e.getNodeId());
+			newUser.setReposUrl(e.getUrl());
+			newUser.setUrl(e.getUrl());
 			result.add(newUser);
 		});
 		return result;
