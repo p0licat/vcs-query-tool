@@ -21,11 +21,12 @@ public class UserPersistenceService {
 	@Transactional
 	public void saveUserDetails(GetUserDetailsDTO u) {
 		ApplicationUser newUser = new ApplicationUser();
+		newUser.setFullName(u.getFullName());
 		newUser.setId((int)(u.getId()));
 		newUser.setUsername(u.getUserLogin());
 		newUser.setUrl(u.getReposUrl());
 		newUser.setReposUrl(u.getReposUrl());
-		newUser.setNodeId(u.getNodeId());
+		newUser.setGitId(u.getNodeId());
 		
 		em.persist(newUser);
 		this.userRepository.save(newUser);
