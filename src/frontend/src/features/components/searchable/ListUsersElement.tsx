@@ -6,6 +6,9 @@ import {
   ListItemText,
 } from "@mui/material";
 
+import ImageSearchIcon from "@mui/icons-material/ImageSearch";
+import NetworkCellIcon from "@mui/icons-material/NetworkCell";
+
 export interface ListUsersElementProps {}
 
 export function ListUsersElement(props: ListUsersElementProps) {
@@ -15,7 +18,7 @@ export function ListUsersElement(props: ListUsersElementProps) {
         <ListItemAvatar>
           Sample item
           <Avatar>
-            <ImageIcon />
+            <ImageSearchIcon />
           </Avatar>
         </ListItemAvatar>
         <ListItemText primary="Photos" secondary="Jan 9, 2014" />
@@ -23,7 +26,7 @@ export function ListUsersElement(props: ListUsersElementProps) {
       <ListItem>
         <ListItemAvatar>
           <Avatar>
-            <WorkIcon />
+            <NetworkCellIcon />
           </Avatar>
         </ListItemAvatar>
         <ListItemText primary="Work" secondary="Jan 7, 2014" />
@@ -31,7 +34,7 @@ export function ListUsersElement(props: ListUsersElementProps) {
       <ListItem>
         <ListItemAvatar>
           <Avatar>
-            <BeachAccessIcon />
+            <NetworkCellIcon />
           </Avatar>
         </ListItemAvatar>
         <ListItemText primary="Vacation" secondary="July 20, 2014" />
