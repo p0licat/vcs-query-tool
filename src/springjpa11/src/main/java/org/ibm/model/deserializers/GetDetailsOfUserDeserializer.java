@@ -1,6 +1,9 @@
 package org.ibm.model.deserializers;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.ibm.rest.dto.GetUserDetailsDTO;
 
@@ -9,39 +12,68 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 @SuppressWarnings("serial")
 public class GetDetailsOfUserDeserializer extends StdDeserializer<GetUserDetailsDTO> {
 
-	public GetDetailsOfUserDeserializer() {this(null);}
-	
+	public GetDetailsOfUserDeserializer() {
+		this(null);
+	}
+
 	protected GetDetailsOfUserDeserializer(Class<?> vc) {
 		super(vc);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public GetUserDetailsDTO deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException, JacksonException {
-		
+
 		JsonNode node = jp.getCodec().readTree(jp);
-		
+
 		// sometimes the endpoint wraps Object into list
 		// like [{Object}] instead of "{Object}"
 		if (node.getNodeType() == JsonNodeType.ARRAY) {
-			node = node.get(0); 
+			node = node.get(0);
 		}
-		
-		
-		long id = (Integer) ((IntNode) node.get("id")).numberValue();
-		String reposUrl = node.get("repos_url").asText();
-		
-		String subscriptionsUrl = node.get("subscriptions_url").asText();
-		String nodeId = node.get("node_id").asText();
-		String userLogin = node.get("login").asText();
-		
-		return new GetUserDetailsDTO(userLogin, id, nodeId, subscriptionsUrl, reposUrl);
+
+		Map<String, Object> reflectiveMap = new HashMap<String, Object>();
+
+		for (Field f : GetUserDetailsDTO.class.getDeclaredFields()) {
+			if (f.getName().contains("UID")) {
+				continue;
+			}
+			Object newObject = null;
+			if (f.getType().equals(Long.class) || f.getType().equals(long.class)) {
+				newObject = new Integer(1).longValue();
+			}
+			if (f.getType().equals(Integer.class) || f.getType().equals(int.class)) {
+				newObject = new Integer(1).longValue();
+			}
+			if (f.getType().equals(String.class)) {
+				newObject = new String("");
+			}
+			if (newObject == null) {
+				throw new IOException("Type not present.");
+			}
+			reflectiveMap.put(f.getName(), newObject);
+		}
+
+		for (Field f : GetUserDetailsDTO.class.getDeclaredFields()) {
+			if (f.getName().contains("UID")) {
+				continue;
+			}
+			if (f.getType().equals(Long.class)) {
+				reflectiveMap.put(f.getName(), node.get(f.getName()).longValue());
+			} else if (f.getType().equals(String.class)) {
+				reflectiveMap.put(f.getName(), node.get(f.getName()).asText());
+			}
+		}
+
+		return new GetUserDetailsDTO((String) reflectiveMap.get("userLogin"), (Long) reflectiveMap.get("id"),
+				(String) reflectiveMap.get("nodeId"), (String) reflectiveMap.get("subscriptionsUrl"),
+				(String) reflectiveMap.get("reposUrl"), (String) reflectiveMap.get("fullName"));
 	}
 
 }
