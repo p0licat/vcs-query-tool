@@ -1,4 +1,6 @@
 import { useLocation } from "react-router-dom";
+import { ScanReposButton } from "../components/operations/ScanReposButton";
+import { RepoList } from "../components/searchable/RepoList";
 
 export interface SearchReposPageProps {}
 
@@ -12,7 +14,7 @@ export function SearchRepos(props: SearchReposPageProps) {
 
   return (
     <div>
-      <ScanReposButton />
+      <ScanReposButton userName={username!} repoName={""} />
       <RepoList />
     </div>
   );
