@@ -219,7 +219,7 @@ public class SpringjpaApplication {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
 	public GetUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException {
-		String searchForUserUrl = "http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username.toString();
+		String searchForUserUrl = "http://127.0.0.1:8080/getDetailsOfUser?username=" + username.toString(); // not using dns....
 		String response = this.makeRequest(searchForUserUrl).body(); // should be a service instance, not a RestController method
 		ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer(); // should be a service call to do the whole deserialization part
 		var deserializedUserDetails = mapper.readValue(response, GetUserDetailsDTO.class);
