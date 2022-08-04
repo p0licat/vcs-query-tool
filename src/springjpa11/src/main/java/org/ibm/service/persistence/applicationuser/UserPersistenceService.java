@@ -7,7 +7,9 @@ import org.ibm.model.applicationuser.ApplicationUser;
 import org.ibm.repository.ApplicationUserRepository;
 import org.ibm.rest.dto.GetUserDetailsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserPersistenceService {
 	
 	@Autowired
