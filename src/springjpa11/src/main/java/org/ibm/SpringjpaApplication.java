@@ -33,6 +33,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +46,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 @RestController
 @ComponentScan(basePackages = {"org.ibm.jpaservice"})
 @EntityScan("org.ibm.*")
+@CrossOrigin
 public class SpringjpaApplication {
 
 	Logger logger = Logger.getLogger(getClass().getName());
@@ -91,7 +93,7 @@ public class SpringjpaApplication {
 		
 		List<GitRepository> repos = gitRepoRepository.findAll().stream().filter(e -> e.getName().contains(repoName))
 				.collect(Collectors.toList()); // todo optimize query by creating a custom query within repo
-		String foundName = repos.get(0).getName(); // proxy variable guards against JPA NotExists errors
+		//String foundName = repos.get(0).getName(); // proxy variable guards against JPA NotExists errors
 		
 		// possible errors for the above .get()
 		// if it doesn't exist, ContentsScanningForInexistentRepoError
