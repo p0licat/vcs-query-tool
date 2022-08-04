@@ -23,19 +23,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-@SpringBootApplication(scanBasePackages = {"org.ibm.service.*", "org.ibm.*"})
+@SpringBootApplication(scanBasePackages = { "org.ibm.service.*", "org.ibm.*" })
 @RestController
 public class GathererRestApplication {
 
 	Logger logger = Logger.getLogger(getClass().getName());
-	
+
 	@Autowired
 	GitHubConnectionService gitHubConnectionService;
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(GathererRestApplication.class, args);
 	}
-	
+
 	// region mappers
 	private ObjectMapper getMapperFor__getDetailsOfUserDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
@@ -52,9 +52,9 @@ public class GathererRestApplication {
 		mapper.registerModule(module);
 		return mapper;
 	}
-	//endregion
-	
-	//region GET queries
+	// endregion
+
+	// region GET queries
 	private HttpResponse<String> getResponseFromEndpoint_userDetails() {
 		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
 		HttpResponse<String> response = service.getRawUserDetails("p0licat");
@@ -66,47 +66,45 @@ public class GathererRestApplication {
 		HttpResponse<String> response = service.getRawRepositoriesOfUser("p0licat");
 		return response;
 	}
-	//endregion
-	
-	//region cached queries
+	// endregion
+
+	// region cached queries
 	private String getResponseFromResouces(String resourceName) throws IOException {
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream(resourceName);
 		String contents = new String(is.readAllBytes(), StandardCharsets.UTF_8);
 		return contents;
 	}
-	//endregion
-	
+	// endregion
+
 	@GetMapping("/getDetailsOfUser")
 	public GetUserDetailsDTO getDetailsOfUser(String username) throws Exception {
 		HttpResponse<String> response = this.getResponseFromEndpoint_userDetails();
 		if (response.statusCode() != 200) {
 			throw new Exception("Custom HTTP exception. Request failed. Git API unreachable.");
 		}
-		
+
 		ObjectMapper mapper = this.getMapperFor__getDetailsOfUserDeserializer();
 		GetUserDetailsDTO dto = mapper.readValue(response.body(), GetUserDetailsDTO.class);
 		return dto;
 	}
-	
+
 	@GetMapping("/scanReposOfUser")
 	public GetUserRepositoriesDTO scanReposOfUser(String username) throws Exception {
 		HttpResponse<String> response = this.getResponseFromEndpoint_userRepos();
 		if (response.statusCode() != 200) {
 			throw new Exception("Custom HTTP exception. Request failed. Git API unreachable.");
 		}
-		
+
 		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromGitReply();
 		GetUserRepositoriesDTO dto = mapper.readValue(response.body(), GetUserRepositoriesDTO.class);
 		return dto;
 	}
-	
-	
 
 	// used to avoid rate limit
 	@GetMapping("/scanReposOfUserOffline")
 	public GetUserRepositoriesDTO scanReposOfUserOffline(String username) throws Exception {
 		String response = this.getResponseFromResouces("response2.txt");
-		
+
 		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromGitReply();
 		GetUserRepositoriesDTO dto = mapper.readValue(response, GetUserRepositoriesDTO.class);
 		return dto;
@@ -122,10 +120,11 @@ public class GathererRestApplication {
 			return new ArrayList<>();
 		} else {
 			ArrayList<RepositoryDTO> results = new ArrayList<>(); // not an actual DTO
-			dto.repositories.forEach(e -> {results.add(e);});
+			dto.repositories.forEach(e -> {
+				results.add(e);
+			});
 			return results;
 		}
 	}
-	
-	
+
 }
