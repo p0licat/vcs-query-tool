@@ -9,7 +9,7 @@ export interface RepoListProps {}
 
 export function RepoList(props: RepoListProps) {
   const reposListResult = useAppSelector(reposList);
-  const componentsList = reposListResult.map((e: RepositoryDTO) => {
+  const componentsList = reposListResult?.map((e: RepositoryDTO) => {
     return (
       <div>
         <RepoCard
