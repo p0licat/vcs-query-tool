@@ -70,6 +70,11 @@ class SpringjpaApplicationTests {
 		return mapper;
 	}
 
+	@Test
+	@Rollback(false)
+	void testContextAndCreate() {
+		
+	}
 	
 	@Test
 	@Transactional
@@ -82,7 +87,8 @@ class SpringjpaApplicationTests {
 		user.setUsername("p0licat");
 		user.setGitId("12345");
 		user.setReposUrl(url); // not the actual URL
-		
+		// bad test, could be replaced by mocked GitHub endpoint or actual request
+		// should always rollback... unless H2 db
 		em.persist(user);
 		userRepository.save(user);
 		
