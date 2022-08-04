@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Users />} />
-          <Route path="search" element={<SearchRepos />} />
+          <Route path="search/:username" element={<SearchRepos />} />
         </Route>
       </Routes>
     </BrowserRouter>
