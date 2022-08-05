@@ -19,15 +19,15 @@ const initialState: ReposSliceState = {
   repoName: "",
 };
 
-export const fetchRepos = createAsyncThunk(
-  "eventList/fetchRepos",
+export const scanRepos = createAsyncThunk(
+  "eventList/scanRepos",
   async (_, { rejectWithValue, getState }) => {
     var stateResult: any = getState();
     var thisSlice = stateResult.reposSliceReducer;
     const userName: string = thisSlice.reposQueryParams.userName;
     //const repoName = thisSlice.reposQueryParams.repoName;
     const response = await axios.post<GetReposDTO>(
-      `http://${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT}:${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT_PORT}/getRepos` +
+      `http://${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT}:${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT_PORT}/scanRepos` +
         "?username=" +
         userName
     );
@@ -55,8 +55,8 @@ export const reposSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchRepos.pending, (state) => {})
-      .addCase(fetchRepos.fulfilled, (state, action) => {
+      .addCase(scanRepos.pending, (state) => {})
+      .addCase(scanRepos.fulfilled, (state, action) => {
         state.reposList = action.payload.reposList;
       });
   },

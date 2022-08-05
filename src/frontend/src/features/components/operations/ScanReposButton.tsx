@@ -3,7 +3,7 @@ import { store } from "../../../app/store";
 import ReposQueryParams from "../../slices/usersSlice/payloads/ReposQueryParams";
 import ReposQueryParamsPayload from "../../slices/usersSlice/payloads/ReposQueryParamsPayload";
 import {
-  fetchRepos,
+  scanRepos,
   setReposQueriesParams,
   updateRepoNameText,
 } from "../../slices/usersSlice/reposSlice";
@@ -32,8 +32,10 @@ export function ScanReposButton(props: ScanReposButtonProps) {
       reposQueryParams: rq,
     };
     store.dispatch(setReposQueriesParams(rp)); // change this to not use RepoName (that is for contents only, the third route)
-    store.dispatch<any>(fetchRepos());
+    store.dispatch<any>(scanRepos());
   };
+
+  const loadReposAction = () => {};
 
   return (
     <div>
@@ -47,6 +49,9 @@ export function ScanReposButton(props: ScanReposButtonProps) {
         </Button>
       </div>
       <div>
+        <Button variant="contained" onClick={loadReposAction}>
+          Load repos
+        </Button>
         <RepoList />
       </div>
     </div>
