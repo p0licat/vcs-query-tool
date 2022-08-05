@@ -88,6 +88,6 @@ public class ScanReposOfUserDeserializerFromEndpointReply extends StdDeserialize
 					(String)reflectiveMap.get("pushedAt")));
 		}
 		
-		return new RequestUserRepositoriesDTO(); 
+		return new RequestUserRepositoriesDTO(result); 
 	}
 }
