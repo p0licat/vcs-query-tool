@@ -1,4 +1,3 @@
-import { Label } from "@mui/icons-material";
 import { Button, TextField } from "@mui/material";
 import { store } from "../../../app/store";
 import ReposQueryParams from "../../slices/usersSlice/payloads/ReposQueryParams";
@@ -10,6 +9,7 @@ import {
 } from "../../slices/usersSlice/reposSlice";
 
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { RepoList } from "../searchable/RepoList";
 
 export interface ScanReposButtonProps {
   userName: string;
@@ -45,6 +45,9 @@ export function ScanReposButton(props: ScanReposButtonProps) {
         <Button variant="contained" onClick={buttonAction}>
           Scan all repos
         </Button>
+      </div>
+      <div>
+        <RepoList />
       </div>
     </div>
   );

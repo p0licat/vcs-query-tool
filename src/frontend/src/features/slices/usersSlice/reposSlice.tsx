@@ -19,13 +19,22 @@ const initialState: ReposSliceState = {
   repoName: "",
 };
 
-export const fetchRepos = createAsyncThunk("eventList/fetchUsers", async () => {
-  const response = await axios.get<GetReposDTO>(
-    `http://${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT}:${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT_PORT}/getRepos`
-  );
+export const fetchRepos = createAsyncThunk(
+  "eventList/fetchRepos",
+  async (_, { rejectWithValue, getState }) => {
+    var stateResult: any = getState();
+    var thisSlice = stateResult.reposSliceReducer;
+    const userName: string = thisSlice.reposQueryParams.userName;
+    //const repoName = thisSlice.reposQueryParams.repoName;
+    const response = await axios.post<GetReposDTO>(
+      `http://${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT}:${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT_PORT}/getRepos` +
+        "?username=" +
+        userName
+    );
 
-  return response.data;
-});
+    return response.data;
+  }
+);
 
 export const reposSlice = createSlice({
   name: "repos",
