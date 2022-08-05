@@ -256,18 +256,29 @@ public class SpringjpaApplication {
 		return deserializedUserDetails;
 	}
 
-	@PostMapping("/getRepos")
-	@Operation(summary = "Initiates a scan of the GitHub username for existing public repos.")
+	@PostMapping("/scanRepos")
+	@Operation(summary = "Initiates a scan of the GitHub username for existing public repos. If there is a match, the repositories are inserted in the database.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found username and gathered list of repos.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
-	public GetReposDTO getRepos(String username) throws IOException, InterruptedException {
+	public GetReposDTO scanRepos(String username) throws IOException, InterruptedException {
 		String scanReposUrl = "http://127.0.0.1:8080/scanReposOfUser?username=" + username.toString();
 		String response = this.makeRequest(scanReposUrl).body();
 		ObjectMapper mapper = this.getMapperFor__scanReposOfUserDeserializer();
 		var deserializedResponse = mapper.readValue(response, RequestUserRepositoriesDTO.class);
 		return new GetReposDTO(deserializedResponse.repositories); // not ideal especially without shared libraries
+	}
+	
+	@PostMapping("/getRepos")
+	@Operation(summary = "Returns repos from the db.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Optional list of repos from db.", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }), })
+	public GetReposDTO getRepos(String username) throws IOException, InterruptedException, UserServiceInvalidUserError {
+		var user = this.userService.findUserByName(username);
+		var repositories = this.repoService.getReposOfUser(user); // optional
+		return new GetReposDTO(repositories); // not ideal especially without shared libraries
 	}
 
 	public static void main(String[] args) {
