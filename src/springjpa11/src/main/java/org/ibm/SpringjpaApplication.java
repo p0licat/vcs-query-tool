@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
+import org.ibm.model.deserializers.ScanReposOfUserDeserializerFromEndpointReply;
 import org.ibm.model.deserializers.contentservice.GetRepoContentsDeserializerFromGithubReply;
 import org.ibm.model.deserializers.contentservice.model.ContentNode;
 import org.ibm.model.deserializers.contentservice.model.RepoContentsFromEndpointResponseDTO;
@@ -26,6 +27,7 @@ import org.ibm.repository.ApplicationUserRepository;
 import org.ibm.repository.GitRepoRepository;
 import org.ibm.rest.dto.GetReposDTO;
 import org.ibm.rest.dto.GetUserDetailsDTO;
+import org.ibm.rest.dto.RequestUserRepositoriesDTO;
 import org.ibm.rest.dto.endpointresponse.GetUsersDTO;
 import org.ibm.rest.dto.endpointresponse.PopulateUserRepositoriesEndpointResponseDTO;
 import org.ibm.service.persistence.applicationuser.UserPersistenceService;
@@ -85,6 +87,14 @@ public class SpringjpaApplication {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
 		module.addDeserializer(GetUserDetailsDTO.class, new GetDetailsOfUserDeserializer());
+		mapper.registerModule(module);
+		return mapper;
+	}
+	
+	private ObjectMapper getMapperFor__scanReposOfUserDeserializer() {
+		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(RequestUserRepositoriesDTO.class, new ScanReposOfUserDeserializerFromEndpointReply());
 		mapper.registerModule(module);
 		return mapper;
 	}
@@ -235,6 +245,8 @@ public class SpringjpaApplication {
 	public GetUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException {
 		String searchForUserUrl = "http://127.0.0.1:8080/getDetailsOfUser?username=" + username.toString(); // not using
 																											// dns....
+																											// should be
+																											// a service
 		String response = this.makeRequest(searchForUserUrl).body(); // should be a service instance, not a
 																		// RestController method
 		ObjectMapper mapper = this.getMapperFor__getUserDetailsDeserializer(); // should be a service call to do the
@@ -250,8 +262,12 @@ public class SpringjpaApplication {
 			@ApiResponse(responseCode = "200", description = "Found username and gathered list of repos.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
-	public GetReposDTO getRepos(String username) {
-		return new GetReposDTO();
+	public GetReposDTO getRepos(String username) throws IOException, InterruptedException {
+		String scanReposUrl = "http://127.0.0.1:8080/scanReposOfUser?username=" + username.toString();
+		String response = this.makeRequest(scanReposUrl).body();
+		ObjectMapper mapper = this.getMapperFor__scanReposOfUserDeserializer();
+		var deserializedResponse = mapper.readValue(response, RequestUserRepositoriesDTO.class);
+		return new GetReposDTO(deserializedResponse.repositories); // not ideal especially without shared libraries
 	}
 
 	public static void main(String[] args) {

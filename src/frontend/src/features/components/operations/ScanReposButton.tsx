@@ -31,7 +31,7 @@ export function ScanReposButton(props: ScanReposButtonProps) {
     const rp: ReposQueryParamsPayload = {
       reposQueryParams: rq,
     };
-    store.dispatch(setReposQueriesParams(rp));
+    store.dispatch(setReposQueriesParams(rp)); // change this to not use RepoName (that is for contents only, the third route)
     store.dispatch<any>(fetchRepos());
   };
 
