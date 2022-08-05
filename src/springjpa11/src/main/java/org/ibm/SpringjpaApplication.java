@@ -14,6 +14,7 @@ import java.util.Stack;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.ibm.exceptions.userservice.UserServiceInvalidUserError;
 import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
 import org.ibm.model.deserializers.ScanReposOfUserDeserializerFromEndpointReply;
@@ -22,15 +23,18 @@ import org.ibm.model.deserializers.contentservice.model.ContentNode;
 import org.ibm.model.deserializers.contentservice.model.RepoContentsFromEndpointResponseDTO;
 import org.ibm.model.deserializers.contentservice.model.RepoContentsFromGithubReplyDTO;
 import org.ibm.model.repohub.GitRepository;
+import org.ibm.model.serializers.reposerializer.RepoSerializer;
 import org.ibm.model.serializers.userserializer.UserSerializer;
 import org.ibm.repository.ApplicationUserRepository;
 import org.ibm.repository.GitRepoRepository;
 import org.ibm.rest.dto.GetReposDTO;
 import org.ibm.rest.dto.GetUserDetailsDTO;
+import org.ibm.rest.dto.RepositoryDTO;
 import org.ibm.rest.dto.RequestUserRepositoriesDTO;
 import org.ibm.rest.dto.endpointresponse.GetUsersDTO;
 import org.ibm.rest.dto.endpointresponse.PopulateUserRepositoriesEndpointResponseDTO;
 import org.ibm.service.persistence.applicationuser.UserPersistenceService;
+import org.ibm.service.persistence.reposervice.RepoPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -70,6 +74,9 @@ public class SpringjpaApplication {
 
 	@Autowired
 	private ContentsGathererService contentsGathererService;
+	
+	@Autowired
+	private RepoPersistenceService repoService;
 
 	@Autowired
 	private UserPersistenceService userService;
@@ -278,7 +285,14 @@ public class SpringjpaApplication {
 	public GetReposDTO getRepos(String username) throws IOException, InterruptedException, UserServiceInvalidUserError {
 		var user = this.userService.findUserByName(username);
 		var repositories = this.repoService.getReposOfUser(user); // optional
-		return new GetReposDTO(repositories); // not ideal especially without shared libraries
+		// use RepoSerializer
+		
+		var result = new ArrayList<RepositoryDTO>();
+		repositories.forEach(e -> {
+			var newDTO = RepoSerializer.fromGitRepository(e);
+			result.add(newDTO);
+		});
+		return new GetReposDTO(result); // not ideal especially without shared libraries
 	}
 
 	public static void main(String[] args) {

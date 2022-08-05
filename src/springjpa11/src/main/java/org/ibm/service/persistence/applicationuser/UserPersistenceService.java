@@ -31,4 +31,8 @@ public class UserPersistenceService {
 		em.persist(newUser);
 		this.userRepository.save(newUser);
 	}
+
+	public ApplicationUser findUserByName(String username) {
+		return null;
+	}
 }
