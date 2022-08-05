@@ -3,13 +3,13 @@ import { store } from "../../../app/store";
 import ReposQueryParams from "../../slices/usersSlice/payloads/ReposQueryParams";
 import ReposQueryParamsPayload from "../../slices/usersSlice/payloads/ReposQueryParamsPayload";
 import {
+  fetchRepos,
   scanRepos,
   setReposQueriesParams,
   updateRepoNameText,
 } from "../../slices/usersSlice/reposSlice";
 
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import { RepoList } from "../searchable/RepoList";
 
 export interface ScanReposButtonProps {
   userName: string;
@@ -35,7 +35,17 @@ export function ScanReposButton(props: ScanReposButtonProps) {
     store.dispatch<any>(scanRepos());
   };
 
-  const loadReposAction = () => {};
+  const loadReposAction = () => {
+    const rq: ReposQueryParams = {
+      userName: props.userName,
+      repoName: props.repoName,
+    };
+    const rp: ReposQueryParamsPayload = {
+      reposQueryParams: rq,
+    };
+    store.dispatch(setReposQueriesParams(rp)); // change this to not use RepoName (that is for contents only, the third route) ... and move to useEffect
+    store.dispatch<any>(fetchRepos());
+  };
 
   return (
     <div>
@@ -52,7 +62,6 @@ export function ScanReposButton(props: ScanReposButtonProps) {
         <Button variant="contained" onClick={loadReposAction}>
           Load repos
         </Button>
-        <RepoList />
       </div>
     </div>
   );
