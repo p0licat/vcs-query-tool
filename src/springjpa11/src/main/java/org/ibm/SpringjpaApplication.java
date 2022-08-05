@@ -24,6 +24,7 @@ import org.ibm.model.repohub.GitRepository;
 import org.ibm.model.serializers.userserializer.UserSerializer;
 import org.ibm.repository.ApplicationUserRepository;
 import org.ibm.repository.GitRepoRepository;
+import org.ibm.rest.dto.GetReposDTO;
 import org.ibm.rest.dto.GetUserDetailsDTO;
 import org.ibm.rest.dto.endpointresponse.GetUsersDTO;
 import org.ibm.rest.dto.endpointresponse.PopulateUserRepositoriesEndpointResponseDTO;
@@ -67,7 +68,7 @@ public class SpringjpaApplication {
 
 	@Autowired
 	private ContentsGathererService contentsGathererService;
-	
+
 	@Autowired
 	private UserPersistenceService userService;
 
@@ -78,7 +79,7 @@ public class SpringjpaApplication {
 		mapper.registerModule(module);
 		return mapper;
 	}
-	
+
 	// turn these into a service
 	private ObjectMapper getMapperFor__getUserDetailsDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
@@ -105,8 +106,9 @@ public class SpringjpaApplication {
 	}
 
 	@PostMapping("/populateUserRepositories")
-	@Operation(summary = "" + "Accepts an username of an existing user and a repository name that existed at the time the user was inserted." +
-	"Creates a new entry node for the repository contents.")
+	@Operation(summary = ""
+			+ "Accepts an username of an existing user and a repository name that existed at the time the user was inserted."
+			+ "Creates a new entry node for the repository contents.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found the list of users.", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "Failure accessing db.", content = @Content), })
@@ -224,17 +226,32 @@ public class SpringjpaApplication {
 	}
 
 	@PostMapping("/requestUserDetailsData")
-	@Operation(summary = "" + "Searches for an existing GitHub user, and if the request is successful it adds it to the database.")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found a GitHub match and added to db.", content = {
-			@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
+	@Operation(summary = ""
+			+ "Searches for an existing GitHub user, and if the request is successful it adds it to the database.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found a GitHub match and added to db.", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
 	public GetUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException {
-		String searchForUserUrl = "http://127.0.0.1:8080/getDetailsOfUser?username=" + username.toString(); // not using dns....
-		String response = this.makeRequest(searchForUserUrl).body(); // should be a service instance, not a RestController method
-		ObjectMapper mapper = this.getMapperFor__getUserDetailsDeserializer(); // should be a service call to do the whole deserialization part
+		String searchForUserUrl = "http://127.0.0.1:8080/getDetailsOfUser?username=" + username.toString(); // not using
+																											// dns....
+		String response = this.makeRequest(searchForUserUrl).body(); // should be a service instance, not a
+																		// RestController method
+		ObjectMapper mapper = this.getMapperFor__getUserDetailsDeserializer(); // should be a service call to do the
+																				// whole deserialization part
 		var deserializedUserDetails = mapper.readValue(response, GetUserDetailsDTO.class);
 		this.userService.saveUserDetails(deserializedUserDetails);
 		return deserializedUserDetails;
+	}
+
+	@PostMapping("/getRepos")
+	@Operation(summary = "Initiates a scan of the GitHub username for existing public repos.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found username and gathered list of repos.", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
+			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
+	public GetReposDTO getRepos(String username) {
+		return new GetReposDTO();
 	}
 
 	public static void main(String[] args) {
