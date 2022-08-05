@@ -1,7 +1,9 @@
 package org.ibm.service.persistence.reposervice;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -54,6 +56,7 @@ public class RepoPersistenceService {
 			newHub.setHubOwner(foundUser);
 			newHub.setUrl("");
 			em.persist(newHub);
+			var persistedNewHub = this.repoHubRepo.save(newHub);
 			
 			List<GitRepository> newRepos = new ArrayList<>();
 			rs.repositories.forEach(r -> {
@@ -61,20 +64,19 @@ public class RepoPersistenceService {
 				newRepo.setContentsUrl(r.getContentsUrl());
 				newRepo.setDescription(r.getDescription());
 				newRepo.setHtmlUrl(r.getContentsUrl());
-				newRepo.setMasterRepoHub(newHub);
+				newRepo.setMasterRepoHub(persistedNewHub);
 				newRepo.setName(r.getName());
 				newRepo.setNodeId(r.getNodeId());
 				newRepo.setUrl(r.getContentsUrl());
+				newRepo.setRepoGitId(r.getId());
 				newRepos.add(newRepo);
 			});
 			
+			Set<GitRepository> reposSet = new HashSet<GitRepository>();
 			for (GitRepository g : newRepos) {
 				em.persist(g);
-				this.repoRepo.save(g);
+				reposSet.add(this.repoRepo.save(g));
 			}
-			
-			newHub.setRepositories(newRepos.stream().collect(Collectors.toSet()));
-			this.repoHubRepo.save(newHub);
 		}
 	}
 	
