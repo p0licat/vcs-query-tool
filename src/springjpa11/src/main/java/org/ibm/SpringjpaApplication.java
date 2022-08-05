@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.ibm.exceptions.reposervice.RepoServicePersistenceError;
-import org.ibm.exceptions.userservice.UserServiceInvalidUserError;
 import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
 import org.ibm.model.deserializers.ScanReposOfUserDeserializerFromEndpointReply;
@@ -288,10 +287,11 @@ public class SpringjpaApplication {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Optional list of repos from db.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }), })
-	public GetReposDTO getRepos(String username) throws IOException, InterruptedException, UserServiceInvalidUserError {
+	public GetReposDTO getRepos(String username) throws Exception {
 		var user = this.userService.findUserByName(username);
 		var repositories = this.repoService.getReposOfUser(user); // optional
 		// use RepoSerializer
+		// todo custom exception
 		
 		var result = new ArrayList<RepositoryDTO>();
 		repositories.forEach(e -> {
