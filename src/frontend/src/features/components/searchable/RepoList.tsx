@@ -13,10 +13,10 @@ export function RepoList(props: RepoListProps) {
     return (
       <div>
         <RepoCard
-          repoName={""}
-          userName={""}
-          url={""}
-          redirectToSearchRepoContents={() => {}}
+          repoName={e.name}
+          description={e.description}
+          url={e.contentsUrl}
+          redirectToSearchRepoContents={() => {}} // todo
         />
       </div>
     );

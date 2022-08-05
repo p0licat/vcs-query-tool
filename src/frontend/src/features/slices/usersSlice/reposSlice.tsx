@@ -74,11 +74,13 @@ export const reposSlice = createSlice({
     builder
       .addCase(scanRepos.pending, (state) => {})
       .addCase(scanRepos.fulfilled, (state, action) => {
-        state.reposList = action.payload.reposList;
+        state.reposList = action.payload.repositories;
       })
       .addCase(fetchRepos.pending, (state) => {})
       .addCase(fetchRepos.fulfilled, (state, action) => {
-        state.reposList = action.payload.reposList;
+        console.log("fulfilled fetch");
+        console.log(action.payload);
+        state.reposList = action.payload.repositories;
       });
   },
 });

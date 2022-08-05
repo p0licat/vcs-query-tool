@@ -8,7 +8,7 @@ import {
 
 export interface RepoCardProps {
   repoName: string;
-  userName: string;
+  description: string;
   url: string;
   redirectToSearchRepoContents: Function;
 }
@@ -21,7 +21,7 @@ export function RepoCard(props: RepoCardProps) {
           {props.repoName}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {props.repoName}
+          {props.description}
         </Typography>
         <Typography variant="body2">{props.url}</Typography>
       </CardContent>
@@ -30,7 +30,7 @@ export function RepoCard(props: RepoCardProps) {
           size="small"
           onClick={() => props.redirectToSearchRepoContents(props.repoName)}
         >
-          Search repos
+          View contents
         </Button>
       </CardActions>
     </Card>
