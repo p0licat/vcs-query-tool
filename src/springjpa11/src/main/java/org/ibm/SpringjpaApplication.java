@@ -14,6 +14,7 @@ import java.util.Stack;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.ibm.exceptions.reposervice.RepoServicePersistenceError;
 import org.ibm.exceptions.userservice.UserServiceInvalidUserError;
 import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
@@ -59,7 +60,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @SpringBootApplication
 @PropertySources({ @PropertySource({ "classpath:application.properties" }) })
 @RestController
-@ComponentScan(basePackages = { "org.ibm.jpaservice", "org.ibm.service.persistence.applicationuser" })
+@ComponentScan(basePackages = { "org.ibm.jpaservice", "org.ibm.service.persistence.applicationuser", "org.ibm.service.persistence.reposervice" })
 @EntityScan("org.ibm.*")
 @CrossOrigin
 public class SpringjpaApplication {
@@ -274,6 +275,11 @@ public class SpringjpaApplication {
 		String response = this.makeRequest(scanReposUrl).body();
 		ObjectMapper mapper = this.getMapperFor__scanReposOfUserDeserializer();
 		var deserializedResponse = mapper.readValue(response, RequestUserRepositoriesDTO.class);
+		try {
+			this.repoService.persistReposForUser(username, deserializedResponse);
+		} catch (RepoServicePersistenceError e) {
+			return new GetReposDTO(); // change to HttpResponse 400
+		}
 		return new GetReposDTO(deserializedResponse.repositories); // not ideal especially without shared libraries
 	}
 	
