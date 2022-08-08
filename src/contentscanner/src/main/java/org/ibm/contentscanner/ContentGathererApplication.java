@@ -5,6 +5,7 @@ import java.net.http.HttpResponse;
 
 import org.ibm.exceptions.ApiRequestLimitExceeded;
 import org.ibm.exceptions.ConfigurationProviderArgumentError;
+import org.ibm.model.contentscanner.dto.FileContentsFromGithubReplyDTO;
 import org.ibm.model.contentscanner.dto.RepoContentsFromGithubReplyDTO;
 import org.ibm.model.contentscanner.dto.RepoFileFromGitHubReplyDTO;
 import org.ibm.service.deserializer.DeserializerFactoryService;
@@ -89,5 +90,14 @@ public class ContentGathererApplication {
 		ObjectMapper mapper = this.deserializerService.getMapperFor__getRepoContentsDeserializer();
 		var dto = mapper.readValue(response.body(), RepoContentsFromGithubReplyDTO.class);
 		return dto;
+	}
+	
+	@GetMapping("/getContentsAtDownloadUrl")
+	public FileContentsFromGithubReplyDTO getContentsAtDownloadUrl(String downloadUrl) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
+		String authKey = this.configurationProvider.getConfigurationFileContents("keyValue.txt");
+		HttpResponse<String> response = this.gitHubConnectionServiceFacade.getResponseFromEndpoint_directDownloadUrl(downloadUrl, authKey);
+		String rawFileContents = response.body();
+		var contentsDTO = new FileContentsFromGithubReplyDTO(rawFileContents, "", downloadUrl);
+		return contentsDTO;
 	}
 }

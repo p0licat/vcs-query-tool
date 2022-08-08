@@ -18,6 +18,7 @@ import org.ibm.repository.GitRepoRepository;
 import org.ibm.repository.RepoHubRepository;
 import org.ibm.rest.dto.RequestUserRepositoriesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -78,6 +79,13 @@ public class RepoPersistenceService {
 				reposSet.add(this.repoRepo.save(g));
 			}
 		}
+	}
+
+	public Set<Pair<String, String>> getAllRepoNames() {
+		var allRepos = this.repoRepo.findAll();
+		// pair of OwnerUsername, RepoName
+		var allRepoNames = allRepos.stream().map(e -> Pair.of(e.getMasterRepoHub().getHubOwner().getUsername(), e.getName())).collect(Collectors.toSet());
+		return allRepoNames;
 	}
 	
 	
