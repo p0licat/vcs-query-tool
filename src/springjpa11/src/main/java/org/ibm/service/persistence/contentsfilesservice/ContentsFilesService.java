@@ -3,11 +3,13 @@ package org.ibm.service.persistence.contentsfilesservice;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import org.ibm.model.contents.ContentFile;
+import org.ibm.model.repohub.RepoContents;
 import org.ibm.repository.RepoContentsRepository;
 import org.ibm.service.requests.contentsrequesterservice.ContentsRequesterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,16 @@ public class ContentsFilesService {
 		}
 		
 		return false;
+	}
+
+	public List<ContentFile> findAllContainingSubstring(String search) {
+		List<RepoContents> allContentsRepo = this.contentsRepo.findAll();
+		var allFiles = new ArrayList<ContentFile>();
+		for (var i : allContentsRepo) {
+			var localAllFiles = i.getFiles().stream().filter(e -> e.getContents().contains(search)).collect(Collectors.toList());
+			allFiles.addAll(localAllFiles);
+		}
+		return allFiles;
 	}
 	
 	

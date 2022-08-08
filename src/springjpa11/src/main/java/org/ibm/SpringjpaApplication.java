@@ -27,11 +27,13 @@ import org.ibm.model.serializers.reposerializer.RepoSerializer;
 import org.ibm.model.serializers.userserializer.UserSerializer;
 import org.ibm.repository.ApplicationUserRepository;
 import org.ibm.repository.GitRepoRepository;
+import org.ibm.rest.dto.FileContentsDTO;
 import org.ibm.rest.dto.GetReposDTO;
 import org.ibm.rest.dto.GetUserDetailsDTO;
 import org.ibm.rest.dto.RefreshAllRepoContentsDTO;
 import org.ibm.rest.dto.RepositoryDTO;
 import org.ibm.rest.dto.RequestUserRepositoriesDTO;
+import org.ibm.rest.dto.SearchCodeDTO;
 import org.ibm.rest.dto.endpointresponse.GetUsersDTO;
 import org.ibm.rest.dto.endpointresponse.PopulateUserRepositoriesEndpointResponseDTO;
 import org.ibm.service.persistence.applicationuser.UserPersistenceService;
@@ -411,6 +413,25 @@ public class SpringjpaApplication {
 		}
 		return new GetReposDTO(deserializedResponse.repositories); // not ideal especially without shared libraries
 	}
+	
+	@PostMapping("/searchCode")
+	@Operation(summary = "Locally scans all files for contents matching the pattern.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found code substring match.", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
+			@ApiResponse(responseCode = "400", description = "Db persistence error.", content = @Content), })
+	public SearchCodeDTO searchCode(String search) throws IOException, InterruptedException {
+		var allFiles = this.fileService.findAllContainingSubstring(search);
+		var dtolist = new ArrayList<FileContentsDTO>();
+		for (var file : allFiles) {
+			FileContentsDTO newContents = new FileContentsDTO(file.getContents(), file.getFileName());
+			dtolist.add(newContents);
+		}
+		SearchCodeDTO result = new SearchCodeDTO(dtolist);
+		return result;
+	}
+	
+	
 	
 	@PostMapping("/getRepos")
 	@Operation(summary = "Returns repos from the db.")
