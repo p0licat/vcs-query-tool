@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../../app/store";
 import CodeFileDTO from "../../components/model/dto/intermediate/CodeFileDTO";
+import RefreshContentsDTO from "../../components/model/dto/RefreshContentsDTO";
 import { SearchCodeBaseDTO } from "../../components/model/dto/SearchCodeBaseDTO";
 import UpdateCodeSearchTextPayload from "../payloads/UpdateCodeSearchTextPayload";
 
@@ -14,6 +15,16 @@ const initialState: CodeSliceState = {
   searchText: "",
   codeFiles: [],
 };
+
+export const refreshAllContentsRequest = createAsyncThunk(
+  "eventList/refreshContents",
+  async () => {
+    const response = await axios.post<RefreshContentsDTO>(
+      `http://${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT}:${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT_PORT}/refreshContents`
+    );
+    return response.data;
+  }
+);
 
 export const searchCodeBase = createAsyncThunk(
   "eventList/searchCodeBase",

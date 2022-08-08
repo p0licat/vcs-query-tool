@@ -1,6 +1,7 @@
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { store } from "../../../app/store";
 import {
+  refreshAllContentsRequest,
   searchCodeBase,
   updateCodeText,
 } from "../../slices/codeSlice/codeSlice";
@@ -8,6 +9,10 @@ import {
 export interface SearchAllCodeTextProps {}
 
 export function SearchAllCodeText(props: SearchAllCodeTextProps) {
+  const refreshContentsHandler = () => {
+    store.dispatch<any>(refreshAllContentsRequest());
+  };
+
   const handleTextChange = (event: any) => {
     let newValue = event.target.value;
     store.dispatch(updateCodeText({ newText: newValue }));
@@ -23,6 +28,7 @@ export function SearchAllCodeText(props: SearchAllCodeTextProps) {
 
   return (
     <div>
+      <Button onClick={refreshContentsHandler}>Refresh contents</Button>
       <TextField onChange={handleTextChange} onKeyDown={handleKeyDown} />
     </div>
   );
