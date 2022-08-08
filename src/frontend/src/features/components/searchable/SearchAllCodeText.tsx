@@ -1,17 +1,21 @@
 import { Button, TextField } from "@mui/material";
+import { useAppSelector } from "../../../app/hooks";
 import { store } from "../../../app/store";
 import {
+  codeFiles,
   refreshAllFilesContentsRequest,
-  refreshAllRepoContentsRequest,
   searchCodeBase,
   updateCodeText,
 } from "../../slices/codeSlice/codeSlice";
+import { CodeResultList } from "./CodeResultList";
 
 export interface SearchAllCodeTextProps {}
 
 export function SearchAllCodeText(props: SearchAllCodeTextProps) {
+  const codeFilesSelected = useAppSelector(codeFiles);
+
   const refreshContentsHandler = () => {
-    //store.dispatch<any>(refreshAllRepoContentsRequest());
+    //store.dispatch<any>(refreshAllRepoContentsRequest()); // todo: test how many request this needs before implementing.
     store.dispatch<any>(refreshAllFilesContentsRequest());
   };
 
@@ -32,6 +36,7 @@ export function SearchAllCodeText(props: SearchAllCodeTextProps) {
     <div>
       <Button onClick={refreshContentsHandler}>Refresh contents</Button>
       <TextField onChange={handleTextChange} onKeyDown={handleKeyDown} />
+      <CodeResultList resultsList={codeFilesSelected} />
     </div>
   );
 }

@@ -414,7 +414,7 @@ public class SpringjpaApplication {
 		return new GetReposDTO(deserializedResponse.repositories); // not ideal especially without shared libraries
 	}
 	
-	@PostMapping("/searchCode")
+	@GetMapping("/searchCode")
 	@Operation(summary = "Locally scans all files for contents matching the pattern.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found code substring match.", content = {

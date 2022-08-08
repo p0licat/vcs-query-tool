@@ -3,7 +3,7 @@ import axios from "axios";
 import { RootState } from "../../../app/store";
 import CodeFileDTO from "../../components/model/dto/intermediate/CodeFileDTO";
 import RefreshContentsDTO from "../../components/model/dto/RefreshContentsDTO";
-import { SearchCodeBaseDTO } from "../../components/model/dto/SearchCodeBaseDTO";
+import { SearchCodeDTO } from "../../components/model/dto/SearchCodeDTO";
 import UpdateCodeSearchTextPayload from "../payloads/UpdateCodeSearchTextPayload";
 
 export interface CodeSliceState {
@@ -42,7 +42,7 @@ export const searchCodeBase = createAsyncThunk(
     var stateResult: any = getState();
     var thisSlice = stateResult.codeSliceReducer;
     const searchText: string = thisSlice.searchText;
-    const response = await axios.post<SearchCodeBaseDTO>(
+    const response = await axios.get<SearchCodeDTO>(
       `http://${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT}:${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT_PORT}/searchCode` +
         "?search=" +
         searchText
@@ -67,7 +67,7 @@ export const codeSlice = createSlice({
     builder
       .addCase(searchCodeBase.pending, (state) => {})
       .addCase(searchCodeBase.fulfilled, (state, action) => {
-        state.codeFiles = action.payload.codeFiles;
+        state.codeFiles = action.payload.contentsList;
       });
   },
 });
