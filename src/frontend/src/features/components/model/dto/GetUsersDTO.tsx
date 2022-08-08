@@ -1,4 +1,4 @@
-import { UserDTO } from "./UserDTO";
+import { UserDTO } from "./intermediate/UserDTO";
 
 export interface GetUsersDTO {
   userList: Array<UserDTO>;

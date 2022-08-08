@@ -1,13 +1,13 @@
 import { Button, TextField } from "@mui/material";
 import { store } from "../../../app/store";
-import ReposQueryParams from "../../slices/usersSlice/payloads/ReposQueryParams";
-import ReposQueryParamsPayload from "../../slices/usersSlice/payloads/ReposQueryParamsPayload";
+import ReposQueryParams from "../../slices/payloads/ReposQueryParams";
+import ReposQueryParamsPayload from "../../slices/payloads/ReposQueryParamsPayload";
 import {
   fetchRepos,
   scanRepos,
   setReposQueriesParams,
   updateRepoNameText,
-} from "../../slices/usersSlice/reposSlice";
+} from "../../slices/reposSlice/reposSlice";
 
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 

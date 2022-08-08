@@ -11,7 +11,7 @@ export function Layout(props: LayoutProps) {
             <Link to="/">Users</Link>
           </li>
           <li>
-            <Link to="/search">SearchRepos</Link>
+            <Link to="/searchcode">Search all code</Link>
           </li>
         </ul>
       </nav>

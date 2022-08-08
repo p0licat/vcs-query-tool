@@ -1,12 +1,14 @@
 import { Action, applyMiddleware, combineReducers, createStore, ThunkAction } from '@reduxjs/toolkit';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from "redux-thunk";
-import reposSlice from '../features/slices/usersSlice/reposSlice';
+import codeSlice from '../features/slices/codeSlice/codeSlice';
+import reposSlice from '../features/slices/reposSlice/reposSlice';
 import usersSlice from '../features/slices/usersSlice/usersSlice';
 
 export const combinedstores = combineReducers({
   usersSliceReducer: usersSlice,
-  reposSliceReducer: reposSlice
+  reposSliceReducer: reposSlice,
+  codeSliceReducer: codeSlice
 });
 
 export const store = createStore(

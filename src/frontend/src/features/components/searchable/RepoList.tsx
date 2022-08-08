@@ -1,6 +1,6 @@
 import { List } from "@mui/material";
 import { useAppSelector } from "../../../app/hooks";
-import { reposList } from "../../slices/usersSlice/reposSlice";
+import { reposList } from "../../slices/reposSlice/reposSlice";
 import RepositoryDTO from "../model/dto/RepositoryDTO";
 
 import { RepoCard } from "../model/RepoCard";

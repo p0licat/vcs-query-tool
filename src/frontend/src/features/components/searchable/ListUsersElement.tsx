@@ -1,6 +1,6 @@
 import { List } from "@mui/material";
 
-import { UserDTO } from "../model/dto/UserDTO";
+import { UserDTO } from "../model/dto/intermediate/UserDTO";
 import { UserCard } from "../model/UserCard";
 import { useNavigate } from "react-router-dom";
 

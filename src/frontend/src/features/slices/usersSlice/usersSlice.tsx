@@ -3,8 +3,8 @@ import axios from "axios";
 import { RootState } from "../../../app/store";
 import GetUserDetailsDTO from "../../components/model/dto/GetUserDetailsDTO";
 import { GetUsersDTO } from "../../components/model/dto/GetUsersDTO";
-import { UserDTO } from "../../components/model/dto/UserDTO";
-import UpdateUserSearchTextPayload from "./payloads/UpdateUserSearchTextPayload";
+import { UserDTO } from "../../components/model/dto/intermediate/UserDTO";
+import UpdateUserSearchTextPayload from "../payloads/UpdateUserSearchTextPayload";
 
 export interface UsersSliceState {
   usersList: Array<UserDTO>;

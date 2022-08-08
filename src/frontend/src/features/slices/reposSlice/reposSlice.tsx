@@ -3,9 +3,9 @@ import axios from "axios";
 import { RootState } from "../../../app/store";
 import GetReposDTO from "../../components/model/dto/GetReposDTO";
 import RepositoryDTO from "../../components/model/dto/RepositoryDTO";
-import ReposQueryParams from "./payloads/ReposQueryParams";
-import ReposQueryParamsPayload from "./payloads/ReposQueryParamsPayload";
-import UpdateRepoTextPayload from "./payloads/UpdateRepoTextPayload";
+import ReposQueryParams from "../payloads/ReposQueryParams";
+import ReposQueryParamsPayload from "../payloads/ReposQueryParamsPayload";
+import UpdateRepoTextPayload from "../payloads/UpdateRepoTextPayload";
 
 export interface ReposSliceState {
   reposList: Array<RepositoryDTO>;
