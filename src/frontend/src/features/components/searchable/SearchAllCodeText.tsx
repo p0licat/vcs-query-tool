@@ -1,7 +1,8 @@
 import { Button, TextField } from "@mui/material";
 import { store } from "../../../app/store";
 import {
-  refreshAllContentsRequest,
+  refreshAllFilesContentsRequest,
+  refreshAllRepoContentsRequest,
   searchCodeBase,
   updateCodeText,
 } from "../../slices/codeSlice/codeSlice";
@@ -10,7 +11,8 @@ export interface SearchAllCodeTextProps {}
 
 export function SearchAllCodeText(props: SearchAllCodeTextProps) {
   const refreshContentsHandler = () => {
-    store.dispatch<any>(refreshAllContentsRequest());
+    //store.dispatch<any>(refreshAllRepoContentsRequest());
+    store.dispatch<any>(refreshAllFilesContentsRequest());
   };
 
   const handleTextChange = (event: any) => {

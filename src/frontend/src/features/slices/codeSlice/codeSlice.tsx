@@ -16,11 +16,21 @@ const initialState: CodeSliceState = {
   codeFiles: [],
 };
 
-export const refreshAllContentsRequest = createAsyncThunk(
+export const refreshAllRepoContentsRequest = createAsyncThunk(
   "eventList/refreshContents",
   async () => {
     const response = await axios.post<RefreshContentsDTO>(
       `http://${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT}:${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT_PORT}/refreshContents`
+    );
+    return response.data;
+  }
+);
+
+export const refreshAllFilesContentsRequest = createAsyncThunk(
+  "eventList/refreshContents",
+  async () => {
+    const response = await axios.post<RefreshContentsDTO>(
+      `http://${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT}:${process.env.REACT_APP_ADDRESS_OF_USER_DETAILS_ENDPOINT_PORT}/refreshFileContents`
     );
     return response.data;
   }
