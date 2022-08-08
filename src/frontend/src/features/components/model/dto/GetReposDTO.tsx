@@ -1,4 +1,4 @@
-import RepositoryDTO from "./RepositoryDTO";
+import RepositoryDTO from "./intermediate/RepositoryDTO";
 
 export default interface GetReposDTO {
   repositories: Array<RepositoryDTO>;
