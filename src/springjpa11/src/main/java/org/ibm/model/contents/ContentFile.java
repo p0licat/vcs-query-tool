@@ -1,5 +1,6 @@
 package org.ibm.model.contents;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,6 +28,8 @@ public class ContentFile implements Inode {
 	private String shaSum;
 	private String downloadUrl;
 	private Long fileSize;
+	
+	@Column(length=8000)
 	private String contents;
 	
 	@ManyToOne

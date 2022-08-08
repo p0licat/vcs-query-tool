@@ -26,9 +26,14 @@ public class ContentsFilesService {
 
 	public List<ContentFile> getAllFiles() {
 		List<ContentFile> allFiles = new ArrayList<>();
-		this.contentsRepo.findAll().stream().map(f -> f.getFiles()).forEach(e -> {
-			e.values().stream().forEach(v -> allFiles.add(v));
-		});
+		var allContents = this.contentsRepo.findAll();
+		for (var f : allContents) {
+			var ffiles = f.getFiles();
+			for (var e : ffiles) {
+				allFiles.add(e);
+			}
+		}
+
 		return allFiles;
 	}
 

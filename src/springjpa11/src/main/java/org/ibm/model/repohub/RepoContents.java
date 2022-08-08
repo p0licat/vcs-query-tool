@@ -1,6 +1,6 @@
 package org.ibm.model.repohub;
 
-import java.util.Map;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -30,9 +30,11 @@ public class RepoContents {
 	@ManyToOne
 	private GitRepository ownerRepo;
 	
-	@OneToMany(mappedBy = "childOfRepo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Map<String, ContentFile> files;
+	@OneToMany(mappedBy = "childOfRepo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	//@JoinColumn(name="id")
+	private List<ContentFile> files;
 	
 	@OneToMany(mappedBy = "childOfRepo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Map<String, ContentDir> dirs;
+	//@JoinColumn(name="id")
+	private List<ContentDir> dirs;
 }
