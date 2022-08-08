@@ -29,11 +29,13 @@ import org.ibm.repository.ApplicationUserRepository;
 import org.ibm.repository.GitRepoRepository;
 import org.ibm.rest.dto.GetReposDTO;
 import org.ibm.rest.dto.GetUserDetailsDTO;
+import org.ibm.rest.dto.RefreshAllRepoContentsDTO;
 import org.ibm.rest.dto.RepositoryDTO;
 import org.ibm.rest.dto.RequestUserRepositoriesDTO;
 import org.ibm.rest.dto.endpointresponse.GetUsersDTO;
 import org.ibm.rest.dto.endpointresponse.PopulateUserRepositoriesEndpointResponseDTO;
 import org.ibm.service.persistence.applicationuser.UserPersistenceService;
+import org.ibm.service.persistence.contentsfilesservice.ContentsFilesService;
 import org.ibm.service.persistence.reposervice.RepoPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -42,6 +44,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
+import org.springframework.data.util.Pair;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,6 +83,9 @@ public class SpringjpaApplication {
 
 	@Autowired
 	private UserPersistenceService userService;
+	
+	@Autowired
+	private ContentsFilesService fileService;
 
 	private ObjectMapper getMapperFor__getRepoContentsDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
@@ -242,6 +248,130 @@ public class SpringjpaApplication {
 		return new PopulateUserRepositoriesEndpointResponseDTO(nodeList, performedRequests);
 	}
 
+	@PostMapping("/refreshContents")
+	public RefreshAllRepoContentsDTO refreshContents() throws IOException, InterruptedException {
+		
+		var allRepoNames = this.repoService.getAllRepoNames();
+		for ( Pair<String, String> repoPairs : allRepoNames) {
+			var username = repoPairs.getFirst();
+			var repoName = repoPairs.getSecond();
+			
+			// int apiLimit = -1;
+			// int apiLimit = -1;
+			int apiLimit = 3;
+
+			List<GitRepository> repos = gitRepoRepository.findAll().stream().filter(e -> e.getName().contains(repoName))
+					.collect(Collectors.toList()); 
+			
+			Stack<String> queryQueue = new Stack<>();
+			List<String> allFileUrls = new ArrayList<>();
+			List<ContentNode> nodeList = new ArrayList<>();
+			Set<String> performedRequests = new HashSet<>();
+
+			String[] regexMatch = repos.get(0).getContentsUrl().split("/\\{");
+			queryQueue.add(regexMatch[0].toString());
+
+			ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
+			
+			while (!queryQueue.empty()) {
+				if (performedRequests.size() > apiLimit) {
+					break;
+				}
+
+				var e = queryQueue.pop();
+				String result2 = this
+						.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username
+								+ "&contentsUrl=" + e)
+						.body();
+				performedRequests.add(e);
+				var currentRequestDeserialized2 = mapper.readValue(result2, RepoContentsFromEndpointResponseDTO.class);
+
+				currentRequestDeserialized2.getNodes().forEach(r -> {
+					if (r.getType().equals("file")) {
+						// either use recursion or a queue of requests
+						// must also create a new route in the contentscanner
+						// /getContentsOfRepoAtContentsUrl?...
+
+						// move business logic elsewhere...
+						if (!performedRequests.contains(r.getContentsUrl())) {
+
+							try {
+								String result = this
+										.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfFile?username="
+												+ username + "&contentsUrl=" + r.getContentsUrl())
+										.body();
+								// result.persist()
+								performedRequests.add(r.getContentsUrl());
+								logger.info("Found a file: " + r.getContentsUrl());
+								logger.info("Found a file: " + r.getDownloadsUrl());
+								logger.info("Response for contentsRequest:" + result);
+								// Future<String> future = Future.;
+								if (!allFileUrls.contains(r.getDownloadsUrl())) {
+									allFileUrls.add(r.getDownloadsUrl());
+									nodeList.add(r);
+								}
+								// fileDownloadUrls.add( )
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+						}
+
+					} else {
+						// directory request branch
+						try {
+							String result = this
+									.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username="
+											+ username + "&contentsUrl=" + r.getContentsUrl())
+									.body();
+							performedRequests.add(r.getContentsUrl());
+							var currentRequestDeserialized = mapper.readValue(result,
+									RepoContentsFromEndpointResponseDTO.class);
+
+							currentRequestDeserialized.getNodes().forEach(node -> {
+								if (node.getType().compareTo("file") == 0) {
+									logger.info("Sub-file of directory with name: " + r.getName() + " is: "
+											+ node.getContentsUrl());
+									if (!allFileUrls.contains(node.getDownloadsUrl())) {
+										allFileUrls.add(node.getDownloadsUrl());
+										nodeList.add(node);
+									}
+								} else if (node.getType().compareTo("dir") == 0) {
+									if (!performedRequests.contains(node.getContentsUrl())) {
+										queryQueue.add(node.getContentsUrl());
+										logger.info("Directory: added to query queue the url: " + node.getContentsUrl());
+										nodeList.add(node);
+									}
+								}
+							});
+
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+					}
+				});
+			}
+			
+			contentsGathererService.persistContentNodes(nodeList, repoName);
+		}
+		
+		return new RefreshAllRepoContentsDTO("OK");
+		
+	}
+	
+	@PostMapping("/refreshFileContents")
+	public RefreshAllRepoContentsDTO refreshFileContents() throws IOException, InterruptedException {
+		
+		var allFiles = this.fileService.getAllFiles();
+		if (this.fileService.gatherAllContents(allFiles)) {
+			return new RefreshAllRepoContentsDTO("OK");
+		}
+		return new RefreshAllRepoContentsDTO("FAIL");
+	}
+	
 	@PostMapping("/requestUserDetailsData")
 	@Operation(summary = ""
 			+ "Searches for an existing GitHub user, and if the request is successful it adds it to the database.")
