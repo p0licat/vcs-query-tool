@@ -1,10 +1,12 @@
 package org.ibm.model.repohub;
 
-import java.util.Map;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -24,15 +26,18 @@ import lombok.NoArgsConstructor;
 @Table(name="repo_contents")
 public class RepoContents {
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String repoName;
 	
 	@ManyToOne
 	private GitRepository ownerRepo;
 	
-	@OneToMany(mappedBy = "childOfRepo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Map<String, ContentFile> files;
+	@OneToMany(mappedBy = "childOfRepo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	//@JoinColumn(name="id")
+	private List<ContentFile> files;
 	
 	@OneToMany(mappedBy = "childOfRepo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Map<String, ContentDir> dirs;
+	//@JoinColumn(name="id")
+	private List<ContentDir> dirs;
 }
