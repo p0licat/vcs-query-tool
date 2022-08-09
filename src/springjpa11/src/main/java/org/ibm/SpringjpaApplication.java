@@ -145,6 +145,7 @@ public class SpringjpaApplication {
 
 		List<GitRepository> repos = gitRepoRepository.findAll().stream().filter(e -> e.getName().contains(repoName))
 				.collect(Collectors.toList()); // todo optimize query by creating a custom query within repo
+
 		// String foundName = repos.get(0).getName(); // proxy variable guards against
 		// JPA NotExists errors
 
