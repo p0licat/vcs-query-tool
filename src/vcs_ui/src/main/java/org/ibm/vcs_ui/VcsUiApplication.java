@@ -40,6 +40,16 @@ public class VcsUiApplication {
 	public RepositoryDTO addNewUser() {
 		return new RepositoryDTO();
 	}
+	
+	@GetMapping("/getUsers")
+	@Operation(summary = "" + "Gets a list of users from the DB by calling DbService.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found the list of users.", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
+			@ApiResponse(responseCode = "400", description = "Failure accessing db.", content = @Content), })
+	public RepositoryDTO getUsers() {
+		return new RepositoryDTO();
+	}
 
 	@Operation(summary = "" + "Initiates a download of the repository contents. The user is required as a parameter.")
 	@ApiResponses(value = {

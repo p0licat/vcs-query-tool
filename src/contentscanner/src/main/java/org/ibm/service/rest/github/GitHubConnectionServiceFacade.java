@@ -33,5 +33,11 @@ public class GitHubConnectionServiceFacade {
 		HttpResponse<String> response = this.gitHubConnectionService.getRawResponseFromMainUrl(apiKey);
 		return response;
 	}
+
+	public HttpResponse<String> getResponseFromEndpoint_directDownloadUrl(String downloadUrl, String authKey) throws IOException, InterruptedException {
+		this.gitHubConnectionService.URL = downloadUrl;
+		HttpResponse<String> response = this.gitHubConnectionService.getRawResponseFromMainUrl(authKey);
+		return response;
+	}
 	
 }
