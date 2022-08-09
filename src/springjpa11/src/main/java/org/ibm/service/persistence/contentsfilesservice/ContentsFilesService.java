@@ -19,10 +19,10 @@ import org.springframework.stereotype.Service;
 public class ContentsFilesService {
 	@Autowired
 	private EntityManager em;
-	
+
 	@Autowired
 	private RepoContentsRepository contentsRepo;
-	
+
 	@Autowired
 	private ContentsRequesterService contentsRequesterService;
 
@@ -43,23 +43,30 @@ public class ContentsFilesService {
 	public boolean gatherAllContents(List<ContentFile> allFiles) throws IOException, InterruptedException {
 		for (ContentFile f : allFiles) {
 			if (f.getContents().compareTo("") == 0) {
-				em.persist(f);
-				f.setContents(this.contentsRequesterService.requestContentsOfDownloadUrl(f.getDownloadUrl()));
+				try {
+					em.persist(f); // apparently does not persist by itself
+					if (f.getFileName().contains(".pdf") || f.getFileName().contains(".PDF")) {
+						continue;
+					}
+					f.setContents(this.contentsRequesterService.requestContentsOfDownloadUrl(f.getDownloadUrl()));
+				} catch (Exception e) {
+					continue;
+				}
 			}
 		}
-		
-		return false;
+
+		return true;
 	}
 
 	public List<ContentFile> findAllContainingSubstring(String search) {
 		List<RepoContents> allContentsRepo = this.contentsRepo.findAll();
 		var allFiles = new ArrayList<ContentFile>();
 		for (var i : allContentsRepo) {
-			var localAllFiles = i.getFiles().stream().filter(e -> e.getContents().contains(search)).collect(Collectors.toList());
+			var localAllFiles = i.getFiles().stream().filter(e -> e.getContents().contains(search))
+					.collect(Collectors.toList());
 			allFiles.addAll(localAllFiles);
 		}
 		return allFiles;
 	}
-	
-	
+
 }

@@ -4,6 +4,7 @@ import { store } from "../../../app/store";
 import {
   codeFiles,
   refreshAllFilesContentsRequest,
+  refreshAllRepoContentsRequest,
   searchCodeBase,
   updateCodeText,
 } from "../../slices/codeSlice/codeSlice";
@@ -15,7 +16,10 @@ export function SearchAllCodeText(props: SearchAllCodeTextProps) {
   const codeFilesSelected = useAppSelector(codeFiles);
 
   const refreshContentsHandler = () => {
-    //store.dispatch<any>(refreshAllRepoContentsRequest()); // todo: test how many request this needs before implementing.
+    store.dispatch<any>(refreshAllRepoContentsRequest()); // todo: test how many request this needs before implementing.
+  };
+
+  const collectContentsHandler = () => {
     store.dispatch<any>(refreshAllFilesContentsRequest());
   };
 
@@ -34,7 +38,8 @@ export function SearchAllCodeText(props: SearchAllCodeTextProps) {
 
   return (
     <div>
-      <Button onClick={refreshContentsHandler}>Refresh contents</Button>
+      <Button onClick={refreshContentsHandler}>Scan contents</Button>
+      <Button onClick={collectContentsHandler}>Collect contents</Button>
       <TextField onChange={handleTextChange} onKeyDown={handleKeyDown} />
       <CodeResultList resultsList={codeFilesSelected} />
     </div>

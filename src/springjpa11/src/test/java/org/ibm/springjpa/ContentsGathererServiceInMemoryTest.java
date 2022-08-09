@@ -59,7 +59,7 @@ public class ContentsGathererServiceInMemoryTest {
 		node.setType("file");
 		nodesList.add(node);
 		
-		service.persistContentNodes(nodesList, repoName);
+		service.persistContentNodes(nodesList, repoName, "username");
 	}
 	
 }

@@ -246,7 +246,7 @@ public class SpringjpaApplication {
 			});
 		}
 
-		contentsGathererService.persistContentNodes(nodeList, repoName);
+		contentsGathererService.persistContentNodes(nodeList, repoName, username);
 		return new PopulateUserRepositoriesEndpointResponseDTO(nodeList, performedRequests);
 	}
 
@@ -260,7 +260,7 @@ public class SpringjpaApplication {
 			
 			// int apiLimit = -1;
 			// int apiLimit = -1;
-			int apiLimit = 3;
+			int apiLimit = 75;
 
 			List<GitRepository> repos = gitRepoRepository.findAll().stream().filter(e -> e.getName().contains(repoName))
 					.collect(Collectors.toList()); 
@@ -298,24 +298,22 @@ public class SpringjpaApplication {
 						if (!performedRequests.contains(r.getContentsUrl())) {
 
 							try {
-								String result = this
-										.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfFile?username="
-												+ username + "&contentsUrl=" + r.getContentsUrl())
-										.body();
+//								String result = this
+//										.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfFile?username="
+//												+ username + "&contentsUrl=" + r.getContentsUrl())
+//										.body();
 								// result.persist()
 								performedRequests.add(r.getContentsUrl());
 								logger.info("Found a file: " + r.getContentsUrl());
 								logger.info("Found a file: " + r.getDownloadsUrl());
-								logger.info("Response for contentsRequest:" + result);
+								//logger.info("Response for contentsRequest:" + result);
 								// Future<String> future = Future.;
 								if (!allFileUrls.contains(r.getDownloadsUrl())) {
 									allFileUrls.add(r.getDownloadsUrl());
 									nodeList.add(r);
 								}
 								// fileDownloadUrls.add( )
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							} catch (InterruptedException e1) {
+							} catch (Exception e1) {
 								e1.printStackTrace();
 							}
 						}
@@ -357,7 +355,7 @@ public class SpringjpaApplication {
 				});
 			}
 			
-			contentsGathererService.persistContentNodes(nodeList, repoName);
+			contentsGathererService.persistContentNodes(nodeList, repoName, username);
 		}
 		
 		return new RefreshAllRepoContentsDTO("OK");

@@ -21,6 +21,7 @@ import org.ibm.repository.GitRepoRepository;
 import org.ibm.repository.RepoHubRepository;
 import org.ibm.rest.dto.GetUserRepositoriesDTO;
 import org.ibm.rest.dto.RepositoryDTO;
+import org.ibm.service.requests.contentsrequesterservice.ContentsRequesterService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,16 +44,19 @@ class SpringjpaApplicationTests {
 
 	@Autowired
 	private GitRepoRepository gitRepoRepository;
-	
+
 	@Autowired
 	private EntityManager em;
-	
-	@Autowired 
+
+	@Autowired
 	private ApplicationUserRepository userRepository;
-	
+
 	@Autowired
 	private RepoHubRepository hubRepository;
-	
+
+	@Autowired
+	private ContentsRequesterService contentsRequesterService;
+
 	private HttpResponse<String> makeRequest(String url) throws IOException, InterruptedException {
 		HttpClient httpClient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Content-Type", "application/json")
@@ -61,7 +65,7 @@ class SpringjpaApplicationTests {
 		return httpClient.send(request, BodyHandlers.ofString());
 
 	}
-	
+
 	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
@@ -73,7 +77,43 @@ class SpringjpaApplicationTests {
 	@Test
 	@Rollback(false)
 	void testContextAndCreate() {
+
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	void testAddSingleRepoContentsToPersistentDB() throws IOException, InterruptedException {
+		var persistedRepo = this.gitRepoRepository.findById(1).get();
+		var allRepoFiles = persistedRepo.getContentsNode().getFiles();
+		var firstFile = allRepoFiles.get(1);
+		this.em.persist(firstFile);
+		var requestedContents = this.contentsRequesterService.requestContentsOfDownloadUrl(firstFile.getDownloadUrl());
+		firstFile.setContents(requestedContents);
 		
+	}
+
+	@Test
+	@Transactional
+	@Rollback(false)
+	void testAddSingleRepoContentsToPersistentDBNoRollback() throws IOException, InterruptedException {
+		var persistedRepo = this.gitRepoRepository.findById(1).get();
+		var allRepoFiles = persistedRepo.getContentsNode().getFiles();
+		var firstFile = allRepoFiles.get(1);
+		this.em.persist(firstFile);
+		var requestedContents = this.contentsRequesterService.requestContentsOfDownloadUrl(firstFile.getDownloadUrl());
+		firstFile.setContents(requestedContents);
+		
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(false)
+	void testAddSingleRepoContentsToPersistentDBNoRollbackRevert() throws IOException, InterruptedException {
+		var persistedRepo = this.gitRepoRepository.findById(1).get();
+		var allRepoFiles = persistedRepo.getContentsNode().getFiles();
+		var firstFile = allRepoFiles.get(1);
+		firstFile.setContents(null);
 	}
 	
 	@Test
@@ -81,7 +121,7 @@ class SpringjpaApplicationTests {
 	@Rollback(false)
 	void testAddUserToRepositoryThenHubAndRepos() {
 		String url = "http://127.0.0.1:8080/scanReposOfUserOffline?username=p0licat";
-		
+
 		ApplicationUser user = new ApplicationUser();
 		user.setNodeId("asdf");
 		user.setUsername("p0licat");
@@ -91,15 +131,15 @@ class SpringjpaApplicationTests {
 		// should always rollback... unless H2 db
 		em.persist(user);
 		userRepository.save(user);
-		
-		Long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf")==0).count();
+
+		Long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf") == 0).count();
 		Assertions.assertTrue(count > 0);
-		
+
 		RepoHub newRepoHub = new RepoHub();
 		em.persist(newRepoHub);
 		newRepoHub.setHubOwner(user);
 		newRepoHub = hubRepository.save(newRepoHub);
-		
+
 		try {
 			HttpResponse<String> response = this.makeRequest(url);
 			Assertions.assertTrue(response.statusCode() == 200);
@@ -125,7 +165,7 @@ class SpringjpaApplicationTests {
 				g.setName(r.getName());
 				g.setNodeId(r.getNodeId());
 				g.setRepoGitId(r.getId());
-				
+
 				em.persist(g);
 				reposSet.add(this.gitRepoRepository.save(g));
 			}
@@ -136,7 +176,7 @@ class SpringjpaApplicationTests {
 			Assertions.fail();
 		}
 	}
-	
+
 	@Test
 	@Rollback(false)
 	@Transactional
@@ -158,7 +198,7 @@ class SpringjpaApplicationTests {
 			for (RepositoryDTO i : dto.getRepositories()) {
 				GitRepository repo = new GitRepository();
 				repo.setRepoGitId(i.getId().intValue());
-				
+
 				em.persist(repo);
 				this.gitRepoRepository.save(repo); // need a DTO to Model converter
 			}
