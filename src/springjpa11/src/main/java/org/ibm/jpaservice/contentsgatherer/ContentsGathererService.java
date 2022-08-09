@@ -28,13 +28,16 @@ public class ContentsGathererService {
 	private EntityManager em;
 
 	@Transactional
+	/*
+	 * It is ensured that the nodes will all belong to the same repo, of owner ${userName}.
+	 */
 	public void persistContentNodes(List<ContentNode> nodes, String repoName, String userName) {
 		nodes.forEach(e -> {
 			if (e.getType().compareTo("dir") == 0) {
 				RepoContents repoContents;
 				var foundContents = repoContentsRepository.findAll().stream().filter(
-						rc -> rc.getOwnerRepo().getMasterRepoHub().getHubOwner().getUsername().compareTo(userName) == 0)
-						.findFirst().orElse(null); // should be foundContentsNode or RepoHub
+						rc -> rc.getOwnerRepo().getMasterRepoHub().getHubOwner().getUsername().compareTo(userName) == 0 && rc.getRepoName().compareTo(repoName) == 0)
+						.findFirst().orElse(null); // should be foundContentsNode or RepoHub... translate this to a proper JPA/JPQL/Hibernate/EntityGraph optimized query graph
 				repoContents = foundContents;
 
 				ContentDir dir = new ContentDir();
@@ -44,7 +47,7 @@ public class ContentsGathererService {
 				dir.setShaSum(e.getShasum());
 
 				em.persist(dir);
-				em.flush();
+				//em.flush();
 
 				if (repoContents == null) {
 					repoContents = new RepoContents();
@@ -56,7 +59,7 @@ public class ContentsGathererService {
 					repoContents.setRepoName(repoName);
 
 					em.persist(repoContents);
-					em.flush();
+					//em.flush();
 					this.repoContentsRepository.save(repoContents);
 					dir.setChildOfRepo(repoContents);
 				} else {
@@ -67,8 +70,8 @@ public class ContentsGathererService {
 			} else if (e.getType().compareTo("file") == 0) {
 				RepoContents repoContents;
 				var foundContents = repoContentsRepository.findAll().stream().filter(
-						rc -> rc.getOwnerRepo().getMasterRepoHub().getHubOwner().getUsername().compareTo(userName) == 0)
-						.findFirst().orElse(null);
+						rc -> rc.getOwnerRepo().getMasterRepoHub().getHubOwner().getUsername().compareTo(userName) == 0 && rc.getRepoName().compareTo(repoName) == 0)
+						.findFirst().orElse(null); // should be foundContentsNode or RepoHub... translate this to a proper JPA/JPQL/Hibernate/EntityGraph optimized query graph
 				repoContents = foundContents;
 
 				ContentFile file = new ContentFile();
@@ -79,7 +82,7 @@ public class ContentsGathererService {
 				file.setShaSum(e.getShasum());
 
 				em.persist(file);
-				em.flush();
+				//em.flush();
 
 				if (repoContents == null) {
 					repoContents = new RepoContents();
@@ -91,7 +94,7 @@ public class ContentsGathererService {
 					repoContents.setRepoName(repoName);
 
 					em.persist(repoContents);
-					em.flush();
+					//em.flush();
 					this.repoContentsRepository.save(repoContents);
 					file.setChildOfRepo(repoContents);
 				} else {
