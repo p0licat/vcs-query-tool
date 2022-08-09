@@ -3,6 +3,7 @@ package org.ibm.service.persistence.contentsfilesservice;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ContentsFilesService {
+	
+	Logger logger = Logger.getLogger(getClass().getName());
+	
 	@Autowired
 	private EntityManager em;
 
@@ -45,10 +49,12 @@ public class ContentsFilesService {
 			if (f.getContents().compareTo("") == 0) {
 				try {
 					em.persist(f); // apparently does not persist by itself
-					if (f.getFileName().contains(".pdf") || f.getFileName().contains(".PDF")) {
+					if (!f.getFileName().contains(".java") && !f.getFileName().contains(".py")) {
 						continue;
 					}
+					logger.info("FILE: " + f.getFileName());
 					f.setContents(this.contentsRequesterService.requestContentsOfDownloadUrl(f.getDownloadUrl()));
+					em.flush();
 				} catch (Exception e) {
 					continue;
 				}
