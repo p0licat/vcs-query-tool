@@ -5,16 +5,18 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
+import FileContents from "./dto/intermediate/FileContents";
 
 export interface CodeFileProps {
   fileName: string;
-  contents: string;
+  contents: FileContents;
   // contentsPreviewStart
   // contentsPreviewEnd
   url: string;
 }
 
 export function CodeFile(props: CodeFileProps) {
+  console.log(props.contents.contents);
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
@@ -22,7 +24,7 @@ export function CodeFile(props: CodeFileProps) {
           {props.fileName}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {props.contents}
+          {props.contents.contents}
         </Typography>
         <Typography variant="body2">{props.url}</Typography>
       </CardContent>
