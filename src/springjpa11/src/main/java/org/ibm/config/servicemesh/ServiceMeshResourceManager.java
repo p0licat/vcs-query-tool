@@ -2,9 +2,12 @@ package org.ibm.config.servicemesh;
 
 import org.ibm.exceptions.ConfigurationProviderArgumentError;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Service;
 
 @Service
+@PropertySources({ @PropertySource({ "classpath:application_connection_urls.properties" }) })
 public class ServiceMeshResourceManager {
 	
 	@Value("${mesh.CONTENTS_GATHERER_URL}")
@@ -15,10 +18,12 @@ public class ServiceMeshResourceManager {
 	private String contentsScannerUrl;
 	@Value("${mesh.CONTENTS_SCANNER_PORT}")
 	private String contentsScannerPort;
+	@Value("${mesh.NETWORK_ADDR}")
+	private String networkAddr;
 	/*
 	 * Gets a string from a configuration.
 	 */
-	public String getResourceValue(String fileName, String keyName) throws ConfigurationProviderArgumentError {
+	public String getResourceValue(String keyName) throws ConfigurationProviderArgumentError {
 		var fields = this.getClass().getDeclaredFields();
 		for (var i : fields) {
 			if (i.getName().compareTo(keyName) == 0) {
@@ -27,10 +32,10 @@ public class ServiceMeshResourceManager {
 						return (String) i.get(this);
 					} catch (IllegalArgumentException e) {
 						e.printStackTrace();
-						throw new ConfigurationProviderArgumentError("File " + fileName + " did not produce results.");
+						throw new ConfigurationProviderArgumentError("Arg " + keyName + " did not produce results.");
 					} catch (IllegalAccessException e) {
 						e.printStackTrace();
-						throw new ConfigurationProviderArgumentError("File " + fileName + " did not produce results.");
+						throw new ConfigurationProviderArgumentError("Arg " + keyName + " did not produce results.");
 					} finally {
 					}
 				}

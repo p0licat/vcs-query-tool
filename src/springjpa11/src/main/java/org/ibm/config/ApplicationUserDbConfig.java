@@ -7,8 +7,6 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.ibm.exceptions.ConfigurationProviderArgumentError;
-import org.ibm.service.configuration.configurationprovider.ConfigurationProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
