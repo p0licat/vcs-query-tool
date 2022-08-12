@@ -14,6 +14,8 @@ import java.util.Stack;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.ibm.config.servicemesh.ServiceMeshResourceManager;
+import org.ibm.exceptions.ConfigurationProviderArgumentError;
 import org.ibm.exceptions.reposervice.RepoServicePersistenceError;
 import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
@@ -62,9 +64,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @SpringBootApplication
-@PropertySources({ @PropertySource({ "classpath:application.properties" }) })
+@PropertySources({ @PropertySource({ "classpath:application.properties" }), @PropertySource({"classpath:application_password.properties"}) })
 @RestController
-@ComponentScan(basePackages = { "org.ibm.jpaservice", "org.ibm.service.persistence.applicationuser", "org.ibm.service.persistence.reposervice", "org.ibm.service.persistence.*", "org.ibm.service.requests.*" })
+@ComponentScan(basePackages = { "org.ibm.jpaservice", "org.ibm.service.persistence.applicationuser", "org.ibm.service.persistence.reposervice", "org.ibm.service.persistence.*", "org.ibm.service.requests.*", "org.ibm.config.servicemesh" })
 @EntityScan("org.ibm.*")
 @CrossOrigin
 public class SpringjpaApplication {
@@ -88,7 +90,10 @@ public class SpringjpaApplication {
 	
 	@Autowired
 	private ContentsFilesService fileService;
-
+	
+	@Autowired
+	private ServiceMeshResourceManager meshResources;
+	
 	private ObjectMapper getMapperFor__getRepoContentsDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
@@ -138,7 +143,7 @@ public class SpringjpaApplication {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "Failure accessing db.", content = @Content), })
 	public PopulateUserRepositoriesEndpointResponseDTO requestUserRepositoryData(String username, String repoName)
-			throws IOException, InterruptedException {
+			throws IOException, InterruptedException, ConfigurationProviderArgumentError {
 
 		// int apiLimit = -1;
 		int apiLimit = 3;
@@ -172,7 +177,7 @@ public class SpringjpaApplication {
 
 			var e = queryQueue.pop();
 			String result2 = this
-					.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username
+					.makeRequest("http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8081" + "/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username
 							+ "&contentsUrl=" + e)
 					.body();
 			performedRequests.add(e);
@@ -189,7 +194,7 @@ public class SpringjpaApplication {
 
 						try {
 							String result = this
-									.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfFile?username="
+									.makeRequest("http://"+ this.meshResources.getResourceValue("networkAddr") + ":" + "8081" + "/getContentsOfRepoAtContentsUrlOfFile?username="
 											+ username + "&contentsUrl=" + r.getContentsUrl())
 									.body();
 							// result.persist()
@@ -207,6 +212,9 @@ public class SpringjpaApplication {
 							e1.printStackTrace();
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
+						} catch (ConfigurationProviderArgumentError e1) {
+							e1.printStackTrace();
+							throw new RuntimeException("Failure with configuration provider");
 						}
 					}
 
@@ -214,7 +222,7 @@ public class SpringjpaApplication {
 					// directory request branch
 					try {
 						String result = this
-								.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username="
+								.makeRequest("http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8081" + "/getContentsOfRepoAtContentsUrlOfDirectory?username="
 										+ username + "&contentsUrl=" + r.getContentsUrl())
 								.body();
 						performedRequests.add(r.getContentsUrl());
@@ -242,6 +250,9 @@ public class SpringjpaApplication {
 						e1.printStackTrace();
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
+					} catch (ConfigurationProviderArgumentError e1) {
+						e1.printStackTrace();
+						throw new RuntimeException("Failure with configuration provider");
 					}
 				}
 			});
@@ -252,7 +263,7 @@ public class SpringjpaApplication {
 	}
 
 	@PostMapping("/refreshContents")
-	public RefreshAllRepoContentsDTO refreshContents() throws IOException, InterruptedException {
+	public RefreshAllRepoContentsDTO refreshContents() throws IOException, InterruptedException, ConfigurationProviderArgumentError {
 		
 		var allRepoNames = this.repoService.getAllRepoNames();
 		for ( Pair<String, String> repoPairs : allRepoNames) {
@@ -283,7 +294,7 @@ public class SpringjpaApplication {
 
 				var e = queryQueue.pop();
 				String result2 = this
-						.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username
+						.makeRequest("http://"  + this.meshResources.getResourceValue("networkAddr") + ":" + "8081" +  "/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username
 								+ "&contentsUrl=" + e)
 						.body();
 				performedRequests.add(e);
@@ -323,7 +334,7 @@ public class SpringjpaApplication {
 						// directory request branch
 						try {
 							String result = this
-									.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username="
+									.makeRequest("http://"+ this.meshResources.getResourceValue("networkAddr") + ":" + "8081" + "/getContentsOfRepoAtContentsUrlOfDirectory?username="
 											+ username + "&contentsUrl=" + r.getContentsUrl())
 									.body();
 							performedRequests.add(r.getContentsUrl());
@@ -351,6 +362,9 @@ public class SpringjpaApplication {
 							e1.printStackTrace();
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
+						} catch (ConfigurationProviderArgumentError e1) {
+							e1.printStackTrace();
+							throw new RuntimeException("Failure with configuration provider");
 						}
 					}
 				});
@@ -380,8 +394,8 @@ public class SpringjpaApplication {
 			@ApiResponse(responseCode = "200", description = "Found a GitHub match and added to db.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
-	public GetUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException {
-		String searchForUserUrl = "http://127.0.0.1:8080/getDetailsOfUser?username=" + username.toString(); // not using
+	public GetUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
+		String searchForUserUrl = "http://"  + this.meshResources.getResourceValue("networkAddr") + ":" + "8080" + "/getDetailsOfUser?username=" + username.toString(); // not using
 																											// dns....
 																											// should be
 																											// a service
@@ -400,8 +414,8 @@ public class SpringjpaApplication {
 			@ApiResponse(responseCode = "200", description = "Found username and gathered list of repos.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
-	public GetReposDTO scanRepos(String username) throws IOException, InterruptedException {
-		String scanReposUrl = "http://127.0.0.1:8080/scanReposOfUser?username=" + username.toString();
+	public GetReposDTO scanRepos(String username) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
+		String scanReposUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080" + "/scanReposOfUser?username=" + username.toString();
 		String response = this.makeRequest(scanReposUrl).body();
 		ObjectMapper mapper = this.getMapperFor__scanReposOfUserDeserializer();
 		var deserializedResponse = mapper.readValue(response, RequestUserRepositoriesDTO.class);

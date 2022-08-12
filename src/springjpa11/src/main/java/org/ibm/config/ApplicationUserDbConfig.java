@@ -2,6 +2,7 @@ package org.ibm.config;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -22,13 +23,17 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EntityScan("org.ibm")
+@EntityScan("org.ibm.*")
 @EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory", basePackages={"org.ibm.*", "org.ibm.jpaservice.contentsgatherer"})
 public class ApplicationUserDbConfig {
+
+	Logger logger = Logger.getLogger(getClass().getName());
+	
 	@Primary
 	@Bean(name="datasource")
 	@ConfigurationProperties(prefix="spring.datasource")
 	public DataSource dataSource() {
+		logger.info("Building data source");
 		return DataSourceBuilder.create().build();
 	}
 
@@ -37,16 +42,13 @@ public class ApplicationUserDbConfig {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(EntityManagerFactoryBuilder builder, @Qualifier("datasource") DataSource dataSource) {
 		Map<String, Object> properties = new HashMap<>();
 		//properties.put("spring.jpa.properties.hibernate.hbm2ddl.auto", "create");
-		//properties.put("spring.jpa.properties.hibernate.show_sql", "true");
-		//properties.put("hibernate.dialect", "org.hibernate.dialect.SQLServer2008Dialect");
-		//properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-		
-		
+		logger.info("entitymanagerfactory");
 		return builder.dataSource(dataSource).properties(properties).packages("org.ibm.model.applicationuser").persistenceUnit("ApplicationUser").build();
 	}
 
 	@Bean(name="transactionManager")
 	public PlatformTransactionManager transactionManager(@Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
+		logger.info("Config 2");
 		return new JpaTransactionManager(entityManagerFactory);
 	}
 	
