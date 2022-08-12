@@ -1,3 +1,4 @@
 ../*.class
 ../**/keyValue.txt
 src/contentscanner/src/main/resources/keyValue.txt
+src/springjpa11/src/main/resources/application_password.properties
