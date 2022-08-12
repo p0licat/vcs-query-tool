@@ -1,1 +1,1 @@
-create database TestEntityManager;
+create database "TestEntityManager";
