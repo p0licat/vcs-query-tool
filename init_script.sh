@@ -11,6 +11,8 @@ echo "spring.datasource.password=$pwd1" > ./src/springjpa11/src/main/resources/a
 
 sed s/localhost/172.18.0.1/g ./src/springjpa11/src/main/resources/application.properties | tee ./src/springjpa11/src/main/resources/application.properties
 sed s/mesh.NETWORK_ADDR=127.0.0.1/mesh.NETWORK_ADDR=172.18.0.1/g ./src/springjpa11/src/main/resources/application_connection_urls.properties | tee ./src/springjpa11/src/main/resources/application_connection_urls.properties
+sed s/REACT_APP_ADDRESS=127.0.0.1/REACT_APP_ADDRESS=172.18.0.1/g ./src/frontend/.env | tee ./src/frontend/.env
+
 
 echo "Done."
 cat .env
