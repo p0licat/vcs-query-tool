@@ -14,6 +14,7 @@ import java.util.Stack;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.ibm.config.servicemesh.ServiceMeshResourceManager;
 import org.ibm.exceptions.reposervice.RepoServicePersistenceError;
 import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
@@ -40,6 +41,7 @@ import org.ibm.service.persistence.applicationuser.UserPersistenceService;
 import org.ibm.service.persistence.contentsfilesservice.ContentsFilesService;
 import org.ibm.service.persistence.reposervice.RepoPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -88,6 +90,12 @@ public class SpringjpaApplication {
 	
 	@Autowired
 	private ContentsFilesService fileService;
+	
+	@Autowired
+	private ServiceMeshResourceManager meshResources;
+	
+	@Value("${myProperty}")
+	private String myProperty;
 
 	private ObjectMapper getMapperFor__getRepoContentsDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
@@ -189,7 +197,7 @@ public class SpringjpaApplication {
 
 						try {
 							String result = this
-									.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfFile?username="
+									.makeRequest("http://"+ "127.0.0.1" + ":" + "8081" + "/getContentsOfRepoAtContentsUrlOfFile?username="
 											+ username + "&contentsUrl=" + r.getContentsUrl())
 									.body();
 							// result.persist()
@@ -323,7 +331,7 @@ public class SpringjpaApplication {
 						// directory request branch
 						try {
 							String result = this
-									.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username="
+									.makeRequest("http://"+ "127.0.0.1" + ":" + "8081" + "/getContentsOfRepoAtContentsUrlOfDirectory?username="
 											+ username + "&contentsUrl=" + r.getContentsUrl())
 									.body();
 							performedRequests.add(r.getContentsUrl());
