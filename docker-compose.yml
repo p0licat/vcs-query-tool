@@ -1,0 +1,39 @@
+services:
+  pg1:
+    build: ./src/postgres 
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: ${BACKEND_DB_CONN_PASS}
+    ports:
+      - "5432:5432"
+
+  ms_be1:
+    image: ms_contentsgatherer1
+    restart: always
+    ports: 
+      - "8081:8081"
+    depends_on:
+      - "pg1"
+
+  ms_be2:
+    image: ms_contents1
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "pg1"
+
+  ms_jpa1:
+    image: ms_backendjpa_1
+    restart: always
+    ports:
+      - "8089:8089"
+    depends_on:
+      - "pg1"
+
+  ms_frontend:
+    image: ms_frontend1
+    restart: always
+    ports: 
+      - "8090:3000"
+
