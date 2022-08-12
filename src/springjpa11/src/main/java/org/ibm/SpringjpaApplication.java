@@ -172,7 +172,7 @@ public class SpringjpaApplication {
 
 			var e = queryQueue.pop();
 			String result2 = this
-					.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username
+					.makeRequest("http://" + "127.0.0.1" + ":" + "8081" + "/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username
 							+ "&contentsUrl=" + e)
 					.body();
 			performedRequests.add(e);
@@ -214,7 +214,7 @@ public class SpringjpaApplication {
 					// directory request branch
 					try {
 						String result = this
-								.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username="
+								.makeRequest("http://" + "127.0.0.1" + ":" + "8081" + "/getContentsOfRepoAtContentsUrlOfDirectory?username="
 										+ username + "&contentsUrl=" + r.getContentsUrl())
 								.body();
 						performedRequests.add(r.getContentsUrl());
@@ -283,7 +283,7 @@ public class SpringjpaApplication {
 
 				var e = queryQueue.pop();
 				String result2 = this
-						.makeRequest("http://127.0.0.1:8081/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username
+						.makeRequest("http://"  + "127.0.0.1" + ":" + "8081" +  "/getContentsOfRepoAtContentsUrlOfDirectory?username=" + username
 								+ "&contentsUrl=" + e)
 						.body();
 				performedRequests.add(e);
@@ -381,7 +381,7 @@ public class SpringjpaApplication {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
 	public GetUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException {
-		String searchForUserUrl = "http://127.0.0.1:8080/getDetailsOfUser?username=" + username.toString(); // not using
+		String searchForUserUrl = "http://"  + "127.0.0.1" + ":" + "8080" + "/getDetailsOfUser?username=" + username.toString(); // not using
 																											// dns....
 																											// should be
 																											// a service
@@ -401,7 +401,7 @@ public class SpringjpaApplication {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
 	public GetReposDTO scanRepos(String username) throws IOException, InterruptedException {
-		String scanReposUrl = "http://127.0.0.1:8080/scanReposOfUser?username=" + username.toString();
+		String scanReposUrl = "http://" + "127.0.0.1" + ":" + "8080" + "/scanReposOfUser?username=" + username.toString();
 		String response = this.makeRequest(scanReposUrl).body();
 		ObjectMapper mapper = this.getMapperFor__scanReposOfUserDeserializer();
 		var deserializedResponse = mapper.readValue(response, RequestUserRepositoriesDTO.class);
