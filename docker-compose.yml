@@ -9,7 +9,7 @@ services:
 
   ms_be1:
     image: ms_contentsgatherer1
-    build: ./src/contentsgatherer
+    build: ./src/contentscanner
     restart: always
     ports:
       - "8081:8081"
