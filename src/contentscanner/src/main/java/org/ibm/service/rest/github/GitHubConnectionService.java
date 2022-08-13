@@ -49,7 +49,7 @@ public class GitHubConnectionService {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(java.net.URI.create(this.URL))
 				.header("Content-Type", "application/json")
-				.header("Authorization", "token "+authKey.toString())
+				.header("Authorization", "token "+authKey.toString().trim())
 				.build();
 		return this.httpClient.send(request, BodyHandlers.ofString());
 	}
@@ -59,7 +59,7 @@ public class GitHubConnectionService {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(java.net.URI.create(path))
 				.header("Content-Type", "application/json")
-				.header("Authorization", authKey)
+				.header("Authorization", authKey.toString().trim())
 				.GET()
 				.build();
 		
@@ -80,7 +80,7 @@ public class GitHubConnectionService {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(java.net.URI.create(path))
 				.header("Content-Type", "application/json")
-				.header("Authorization", authKey)
+				.header("Authorization", authKey.toString().trim())
 				.GET()
 				.build();
 		
