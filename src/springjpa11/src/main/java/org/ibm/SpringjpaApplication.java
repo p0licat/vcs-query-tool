@@ -62,7 +62,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @SpringBootApplication
 @PropertySources({ @PropertySource({ "classpath:application.properties" }), @PropertySource({"classpath:application_password.properties"}) })
 @RestController
-@ComponentScan(basePackages = { "org.ibm.jpaservice", "org.ibm.service.persistence.applicationuser", "org.ibm.service.persistence.reposervice", "org.ibm.service.persistence.*", "org.ibm.service.requests.*", "org.ibm.config.servicemesh" })
+@ComponentScan(basePackages = { "org.ibm.jpaservice", "org.ibm.service.persistence.applicationuser", "org.ibm.service.persistence.reposervice", "org.ibm.service.persistence.*", "org.ibm.service.requests.*", "org.ibm.config.servicemesh", "org.ibm.service.contentscanner.contentscannerservice" })
 @EntityScan("org.ibm.*")
 @CrossOrigin
 public class SpringjpaApplication {
