@@ -28,7 +28,7 @@ public class ContentsRequesterService {
 	
 	
 	public String requestContentsOfDownloadUrl(String downloadUrl) throws IOException, InterruptedException {
-		var response = this.makeRequest("http://" + requestsEndpointUrl + ":" + requestsEndpointPort + "/" + "getContentsAtDownloadUrl?downloadUrl=" + downloadUrl.toString());
+		var response = this.makeRequest("http://" + requestsEndpointUrl.toString().trim() + ":" + requestsEndpointPort.toString().trim() + "/" + "getContentsAtDownloadUrl?downloadUrl=" + downloadUrl.toString());
 		return response.body();
 	}
 	
