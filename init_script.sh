@@ -15,8 +15,8 @@ sed s/localhost/172.18.0.1/g ./src/springjpa11/src/main/resources/application.pr
 sed s/mesh.NETWORK_ADDR=127.0.0.1/mesh.NETWORK_ADDR=172.18.0.1/g ./src/springjpa11/src/main/resources/application_connection_urls.properties | tee ./src/springjpa11/src/main/resources/application_connection_urls.properties
 sed s/REACT_APP_ADDRESS=127.0.0.1/REACT_APP_ADDRESS=172.18.0.1/g ./src/frontend/.env | tee ./src/frontend/.env
 
-gpg -o appKey.txt.retrieve --passphrase "$sec1" --batch --yes -d appKey.txt.gpg
-cp appKey.txt.retrieve ./src/contentscanner/src/main/resources/appKey.txt
+gpg -o appKey.txt.retrieve --passphrase "$sec1" --batch --yes -d appKey.txt.gpg # if gpg is not initialized, might fail
+cp appKey.txt.retrieve ./src/contentscanner/src/main/resources/keyValue.txt
 
 # to restrict necessary permissions, no cleanup is performed.
 # rm ./*.retrieve 
