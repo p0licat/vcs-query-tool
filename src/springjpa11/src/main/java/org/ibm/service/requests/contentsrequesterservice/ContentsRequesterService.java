@@ -7,9 +7,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Service;
 
 @Service
+@PropertySources({ @PropertySource({ "classpath:application_connection_urls.properties" }) })
 public class ContentsRequesterService {
 
 	private HttpResponse<String> makeRequest(String url) throws IOException, InterruptedException {
@@ -28,8 +32,6 @@ public class ContentsRequesterService {
 		return response.body();
 	}
 	
-	
-	// to be configured
-	private String requestsEndpointUrl = "http://127.0.0.1:8081/"; 
-
+	@Value("${mesh.NETWORK_ADDR}")
+	private String requestsEndpointUrl; 
 }
