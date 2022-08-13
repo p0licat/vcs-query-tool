@@ -6,7 +6,7 @@ read pwd1
 echo "Insert secret store key: "
 read sec1 # for this arg, visit secret store or in my case the private repo / drive url
 
-echo "BACKEND_DB_CONN_ADDR=127.0.0.1" > .env
+echo "BACKEND_DB_CONN_ADDR=172.18.0.1" > .env
 echo "BACKEND_DB_CONN_PASS=$pwd1" >> .env
 
 echo "spring.datasource.password=$pwd1" > ./src/springjpa11/src/main/resources/application_password.properties
