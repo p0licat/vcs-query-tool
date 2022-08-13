@@ -28,10 +28,12 @@ public class ContentsRequesterService {
 	
 	
 	public String requestContentsOfDownloadUrl(String downloadUrl) throws IOException, InterruptedException {
-		var response = this.makeRequest(requestsEndpointUrl + "getContentsAtDownloadUrl?downloadUrl=" + downloadUrl.toString());
+		var response = this.makeRequest("http://" + requestsEndpointUrl + ":" + requestsEndpointPort + "/" + "getContentsAtDownloadUrl?downloadUrl=" + downloadUrl.toString());
 		return response.body();
 	}
 	
 	@Value("${mesh.NETWORK_ADDR}")
-	private String requestsEndpointUrl; 
+	private String requestsEndpointUrl;
+	@Value("${mesh.CONTENTS_SCANNER_PORT}")
+	private String requestsEndpointPort; 
 }
