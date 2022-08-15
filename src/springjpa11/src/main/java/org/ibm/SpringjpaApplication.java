@@ -7,8 +7,11 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.persistence.PersistenceException;
+
 import org.ibm.config.servicemesh.ServiceMeshResourceManager;
 import org.ibm.exceptions.ConfigurationProviderArgumentError;
+import org.ibm.exceptions.persistence.PersistenceServiceContextError;
 import org.ibm.exceptions.reposervice.RepoServicePersistenceError;
 import org.ibm.exceptions.serializable.CustomMultiSerializationServiceError;
 import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
@@ -41,6 +44,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.util.Pair;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -125,11 +130,13 @@ public class SpringjpaApplication {
 	private SimpleRestMessagingService simpleRestService;
 
 	@GetMapping("/getUsers")
-	public GetUsersDTO getUsers() {
+	public ResponseEntity<GetUsersDTO> getUsers() {
 		var allUsers = userRepository.findAll();
 		var usersList = UserSerializer.serialize(allUsers);
 		GetUsersDTO result = new GetUsersDTO(usersList);
-		return result;
+
+		ResponseEntity<GetUsersDTO> response = new ResponseEntity<>(result, HttpStatus.OK);
+		return response;
 	}
 
 	@PostMapping("/populateUserRepositories")
@@ -138,16 +145,49 @@ public class SpringjpaApplication {
 			+ "Creates a new entry node for the repository contents.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found the list of users.", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
-			@ApiResponse(responseCode = "400", description = "Failure accessing db.", content = @Content), })
-	public PopulateUserRepositoriesEndpointResponseDTO requestUserRepositoryData(String username, String repoName)
-			throws IOException, InterruptedException, ConfigurationProviderArgumentError {
+			@ApiResponse(responseCode = "500", description = "Failure with database persistence context or during recursive scan.", content = @Content), })
+	public ResponseEntity<PopulateUserRepositoriesEndpointResponseDTO> requestUserRepositoryData(String username,
+			String repoName) {
+		
+		List<GitRepository> repos;
+		try {
+			this.repoService.testPersistenceConnection();
+			repos = gitRepoRepository.findAll().stream().filter(e -> e.getName().contains(repoName))
+					.collect(Collectors.toList()); // todo optimize query by creating a custom query within repo
+		} catch (PersistenceServiceContextError e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
-		List<GitRepository> repos = gitRepoRepository.findAll().stream().filter(e -> e.getName().contains(repoName))
-				.collect(Collectors.toList()); // todo optimize query by creating a custom query within repo
+		try {
+			this.contentsGathererService.testPersistenceConnection();
+		} catch (PersistenceServiceContextError e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
-		List<ContentNode> nodeList = this.contentsScannerService.recursiveContentNodeScan(repos, username);
-		contentsGathererService.persistContentNodes(nodeList, repoName, username);
-		return new PopulateUserRepositoriesEndpointResponseDTO(nodeList, Set.of(""));
+		List<ContentNode> nodeList;
+		try {
+			nodeList = this.contentsScannerService.recursiveContentNodeScan(repos, username);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (ConfigurationProviderArgumentError e1) {
+			e1.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		try {
+			contentsGathererService.persistContentNodes(nodeList, repoName, username);
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		var result = new PopulateUserRepositoriesEndpointResponseDTO(nodeList, Set.of(""));
+		var response = new ResponseEntity<PopulateUserRepositoriesEndpointResponseDTO>(result, HttpStatus.OK);
+		return response;
 	}
 
 	@PostMapping("/refreshContents")

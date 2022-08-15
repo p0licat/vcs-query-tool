@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import org.ibm.exceptions.reposervice.RepoServicePersistenceError;
+import org.ibm.jpaservice.BasePersistenceService;
 import org.ibm.model.applicationuser.ApplicationUser;
 import org.ibm.model.repohub.GitRepository;
 import org.ibm.model.repohub.RepoHub;
@@ -22,10 +22,8 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RepoPersistenceService {
+public class RepoPersistenceService extends BasePersistenceService {
 	
-	@Autowired
-	private EntityManager em;
 	
 	@Autowired 
 	private RepoHubRepository repoHubRepo;
@@ -35,6 +33,7 @@ public class RepoPersistenceService {
 	
 	@Autowired 
 	private GitRepoRepository repoRepo;
+	
 
 	// handle fetch type and optimize 
 	public List<GitRepository> getReposOfUser(ApplicationUser user) {
