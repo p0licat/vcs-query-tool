@@ -1,11 +1,6 @@
 package org.ibm;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +31,7 @@ import org.ibm.service.contentscanner.contentscannerservice.ContentsScannerServi
 import org.ibm.service.persistence.applicationuser.UserPersistenceService;
 import org.ibm.service.persistence.contentsfilesservice.ContentsFilesService;
 import org.ibm.service.persistence.reposervice.RepoPersistenceService;
+import org.ibm.service.rest.SimpleRestMessagingService;
 import org.ibm.service.serialization.DTOSerializationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -57,16 +53,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @SpringBootApplication
-@PropertySources({ @PropertySource({ "classpath:application.properties" }), @PropertySource({"classpath:application_password.properties"}) })
+@PropertySources({ @PropertySource({ "classpath:application.properties" }),
+		@PropertySource({ "classpath:application_password.properties" }) })
 @RestController
-@ComponentScan(basePackages = { "org.ibm.jpaservice", "org.ibm.service.persistence.applicationuser", "org.ibm.service.persistence.reposervice", "org.ibm.service.persistence.*", "org.ibm.service.requests.*", "org.ibm.config.servicemesh", "org.ibm.service.contentscanner.contentscannerservice", "org.ibm.service.serialization" })
+@ComponentScan(basePackages = { "org.ibm.jpaservice", "org.ibm.service.persistence.applicationuser",
+		"org.ibm.service.persistence.reposervice", "org.ibm.service.persistence.*", "org.ibm.service.requests.*",
+		"org.ibm.config.servicemesh", "org.ibm.service.contentscanner.contentscannerservice",
+		"org.ibm.service.serialization", "org.ibm.service.rest" })
 @EntityScan("org.ibm.*")
 @CrossOrigin
 public class SpringjpaApplication {
 
 	Logger logger = Logger.getLogger(getClass().getName());
 
-	
 	/*
 	 * Can directly access database for Repository objects.
 	 */
@@ -84,7 +83,7 @@ public class SpringjpaApplication {
 	 */
 	@Autowired
 	private ContentsGathererService contentsGathererService;
-	
+
 	/*
 	 * Persistence service which stores data to database.
 	 */
@@ -96,36 +95,34 @@ public class SpringjpaApplication {
 	 */
 	@Autowired
 	private UserPersistenceService userService;
-	
+
 	/*
-	 * Persistence manager that stores file contents. Can also perform requests to obtain file contents from the other microservice.
+	 * Persistence manager that stores file contents. Can also perform requests to
+	 * obtain file contents from the other microservice.
 	 */
 	@Autowired
 	private ContentsFilesService fileService;
-	
+
 	@Autowired
 	private ServiceMeshResourceManager meshResources;
-	
+
 	/*
 	 * Makes HTTP requests to contentsScanner microservice
 	 */
-	@Autowired 
+	@Autowired
 	private ContentsScannerService contentsScannerService;
 
-	
+	/*
+	 * Provides deserialization using a lookup by the DTO's class attributes.
+	 */
 	@Autowired
 	private DTOSerializationService serializationService;
-	
-	
 
-	// turn these into a service
-	private HttpResponse<String> makeRequest(String url) throws IOException, InterruptedException {
-		HttpClient httpClient = HttpClient.newBuilder().build();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Content-Type", "application/json")
-				.GET().build();
-
-		return httpClient.send(request, BodyHandlers.ofString());
-	}
+	/*
+	 * Make simple requests between microservices.
+	 */
+	@Autowired
+	private SimpleRestMessagingService simpleRestService;
 
 	@GetMapping("/getUsers")
 	public GetUsersDTO getUsers() {
@@ -154,38 +151,37 @@ public class SpringjpaApplication {
 	}
 
 	@PostMapping("/refreshContents")
-	public RefreshAllRepoContentsDTO refreshContents() throws IOException, InterruptedException, ConfigurationProviderArgumentError {
-		
+	public RefreshAllRepoContentsDTO refreshContents()
+			throws IOException, InterruptedException, ConfigurationProviderArgumentError {
+
 		var allRepoNames = this.repoService.getAllRepoNames();
-		for ( Pair<String, String> repoPairs : allRepoNames) {
+		for (Pair<String, String> repoPairs : allRepoNames) {
 			var username = repoPairs.getFirst();
 			var repoName = repoPairs.getSecond();
-			
 
 			List<GitRepository> repos = gitRepoRepository.findAll().stream().filter(e -> e.getName().contains(repoName))
-					.collect(Collectors.toList()); 
-			
-			
+					.collect(Collectors.toList());
+
 			List<ContentNode> nodeList = new ArrayList<>();
 			nodeList = this.contentsScannerService.recursiveContentNodeScan(repos, username);
-			
+
 			contentsGathererService.persistContentNodes(nodeList, repoName, username);
 		}
-		
+
 		return new RefreshAllRepoContentsDTO("OK");
-		
+
 	}
-	
+
 	@PostMapping("/refreshFileContents")
 	public RefreshAllRepoContentsDTO refreshFileContents() throws IOException, InterruptedException {
-		
+
 		var allFiles = this.fileService.getAllFiles();
 		if (this.fileService.gatherAllContents(allFiles)) {
 			return new RefreshAllRepoContentsDTO("OK");
 		}
 		return new RefreshAllRepoContentsDTO("FAIL");
 	}
-	
+
 	@PostMapping("/requestUserDetailsData")
 	@Operation(summary = ""
 			+ "Searches for an existing GitHub user, and if the request is successful it adds it to the database.")
@@ -193,21 +189,22 @@ public class SpringjpaApplication {
 			@ApiResponse(responseCode = "200", description = "Found a GitHub match and added to db.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
-	public GetUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
-		String searchForUserUrl = "http://"  + this.meshResources.getResourceValue("networkAddr") + ":" + "8080" + "/getDetailsOfUser?username=" + username.toString(); // not using
-																											// dns....
-																											// should be
-																											// a service
-		String response = this.makeRequest(searchForUserUrl).body(); // should be a service instance
+	public GetUserDetailsDTO requestUserDetailsData(String username)
+			throws IOException, InterruptedException, ConfigurationProviderArgumentError {
+		String searchForUserUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080"
+				+ "/getDetailsOfUser?username=" + username.toString();
+
+		String response = this.simpleRestService.makeRequest(searchForUserUrl).body();
 
 		GetUserDetailsDTO deserializedUserDetails;
 		try {
-			deserializedUserDetails = (GetUserDetailsDTO) this.serializationService.deserializeClass(response, GetUserDetailsDTO.class.getName());
+			deserializedUserDetails = (GetUserDetailsDTO) this.serializationService.deserializeClass(response,
+					GetUserDetailsDTO.class.getName());
 		} catch (CustomMultiSerializationServiceError e) {
 			e.printStackTrace();
 			throw new InterruptedException();
 		}
-		
+
 		this.userService.saveUserDetails(deserializedUserDetails);
 		return deserializedUserDetails;
 	}
@@ -218,25 +215,28 @@ public class SpringjpaApplication {
 			@ApiResponse(responseCode = "200", description = "Found username and gathered list of repos.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
-	public GetReposDTO scanRepos(String username) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
-		String scanReposUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080" + "/scanReposOfUser?username=" + username.toString();
-		String response = this.makeRequest(scanReposUrl).body();
+	public GetReposDTO scanRepos(String username)
+			throws IOException, InterruptedException, ConfigurationProviderArgumentError {
+		String scanReposUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080"
+				+ "/scanReposOfUser?username=" + username.toString();
+		String response = this.simpleRestService.makeRequest(scanReposUrl).body();
 		RequestUserRepositoriesDTO deserializedResponse;
 		try {
-			deserializedResponse = (RequestUserRepositoriesDTO) this.serializationService.deserializeClass(response, RequestUserRepositoriesDTO.class.getName());
+			deserializedResponse = (RequestUserRepositoriesDTO) this.serializationService.deserializeClass(response,
+					RequestUserRepositoriesDTO.class.getName());
 		} catch (CustomMultiSerializationServiceError e1) {
 			e1.printStackTrace();
 			throw new InterruptedException();
 		}
-		
+
 		try {
 			this.repoService.persistReposForUser(username, deserializedResponse);
 		} catch (RepoServicePersistenceError e) {
 			return new GetReposDTO(); // change to HttpResponse 400
 		}
-		return new GetReposDTO(deserializedResponse.repositories); // not ideal especially without shared libraries
+		return new GetReposDTO(deserializedResponse.repositories);
 	}
-	
+
 	@GetMapping("/searchCode")
 	@Operation(summary = "Locally scans all files for contents matching the pattern.")
 	@ApiResponses(value = {
@@ -253,9 +253,7 @@ public class SpringjpaApplication {
 		SearchCodeDTO result = new SearchCodeDTO(dtolist);
 		return result;
 	}
-	
-	
-	
+
 	@PostMapping("/getRepos")
 	@Operation(summary = "Returns repos from the db.")
 	@ApiResponses(value = {
@@ -263,16 +261,14 @@ public class SpringjpaApplication {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }), })
 	public GetReposDTO getRepos(String username) throws Exception {
 		var user = this.userService.findUserByName(username);
-		var repositories = this.repoService.getReposOfUser(user); // optional
-		// use RepoSerializer
-		// todo custom exception
-		
+		var repositories = this.repoService.getReposOfUser(user);
+
 		var result = new ArrayList<RepositoryDTO>();
 		repositories.forEach(e -> {
 			var newDTO = RepoSerializer.fromGitRepository(e);
 			result.add(newDTO);
 		});
-		return new GetReposDTO(result); // not ideal especially without shared libraries
+		return new GetReposDTO(result);
 	}
 
 	public static void main(String[] args) {
