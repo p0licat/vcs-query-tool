@@ -15,6 +15,7 @@ import org.ibm.exceptions.persistence.PersistenceServiceContextError;
 import org.ibm.exceptions.reposervice.RepoServicePersistenceError;
 import org.ibm.exceptions.serializable.CustomMultiSerializationServiceError;
 import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
+import org.ibm.model.applicationuser.ApplicationUser;
 import org.ibm.model.deserializers.contentservice.model.ContentNode;
 import org.ibm.model.repohub.GitRepository;
 import org.ibm.model.serializers.reposerializer.RepoSerializer;
@@ -191,8 +192,7 @@ public class SpringjpaApplication {
 	}
 
 	@PostMapping("/refreshContents")
-	public ResponseEntity<RefreshAllRepoContentsDTO> refreshContents()
-			throws IOException, InterruptedException, ConfigurationProviderArgumentError {
+	public ResponseEntity<RefreshAllRepoContentsDTO> refreshContents() {
 
 		var allRepoNames = this.repoService.getAllRepoNames();
 		for (Pair<String, String> repoPairs : allRepoNames) {
@@ -203,7 +203,18 @@ public class SpringjpaApplication {
 					.collect(Collectors.toList());
 
 			List<ContentNode> nodeList = new ArrayList<>();
-			nodeList = this.contentsScannerService.recursiveContentNodeScan(repos, username);
+			try {
+				nodeList = this.contentsScannerService.recursiveContentNodeScan(repos, username);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			} catch (ConfigurationProviderArgumentError e1) {
+				e1.printStackTrace();
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 
 			contentsGathererService.persistContentNodes(nodeList, repoName, username);
 		}
@@ -320,7 +331,7 @@ public class SpringjpaApplication {
 			@ApiResponse(responseCode = "200", description = "Found code substring match.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "Db persistence error.", content = @Content), })
-	public SearchCodeDTO searchCode(String search) throws IOException, InterruptedException {
+	public ResponseEntity<SearchCodeDTO> searchCode(String search) {
 		var allFiles = this.fileService.findAllContainingSubstring(search);
 		var dtolist = new ArrayList<FileContentsDTO>();
 		for (var file : allFiles) {
@@ -328,7 +339,7 @@ public class SpringjpaApplication {
 			dtolist.add(newContents);
 		}
 		SearchCodeDTO result = new SearchCodeDTO(dtolist);
-		return result;
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@PostMapping("/getRepos")
@@ -336,8 +347,14 @@ public class SpringjpaApplication {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Optional list of repos from db.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }), })
-	public GetReposDTO getRepos(String username) throws Exception {
-		var user = this.userService.findUserByName(username);
+	public ResponseEntity<GetReposDTO> getRepos(String username) {
+		ApplicationUser user;
+		try {
+			user = this.userService.findUserByName(username);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		var repositories = this.repoService.getReposOfUser(user);
 
 		var result = new ArrayList<RepositoryDTO>();
@@ -345,7 +362,7 @@ public class SpringjpaApplication {
 			var newDTO = RepoSerializer.fromGitRepository(e);
 			result.add(newDTO);
 		});
-		return new GetReposDTO(result);
+		return new ResponseEntity<>(new GetReposDTO(result), HttpStatus.OK);
 	}
 
 	public static void main(String[] args) {
