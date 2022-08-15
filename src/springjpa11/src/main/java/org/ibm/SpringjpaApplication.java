@@ -148,7 +148,7 @@ public class SpringjpaApplication {
 			@ApiResponse(responseCode = "500", description = "Failure with database persistence context or during recursive scan.", content = @Content), })
 	public ResponseEntity<PopulateUserRepositoriesEndpointResponseDTO> requestUserRepositoryData(String username,
 			String repoName) {
-		
+
 		List<GitRepository> repos;
 		try {
 			this.repoService.testPersistenceConnection();
@@ -191,7 +191,7 @@ public class SpringjpaApplication {
 	}
 
 	@PostMapping("/refreshContents")
-	public RefreshAllRepoContentsDTO refreshContents()
+	public ResponseEntity<RefreshAllRepoContentsDTO> refreshContents()
 			throws IOException, InterruptedException, ConfigurationProviderArgumentError {
 
 		var allRepoNames = this.repoService.getAllRepoNames();
@@ -208,18 +208,26 @@ public class SpringjpaApplication {
 			contentsGathererService.persistContentNodes(nodeList, repoName, username);
 		}
 
-		return new RefreshAllRepoContentsDTO("OK");
+		return new ResponseEntity<>(new RefreshAllRepoContentsDTO(), HttpStatus.OK);
 
 	}
 
 	@PostMapping("/refreshFileContents")
-	public RefreshAllRepoContentsDTO refreshFileContents() throws IOException, InterruptedException {
+	public ResponseEntity<RefreshAllRepoContentsDTO> refreshFileContents() {
 
 		var allFiles = this.fileService.getAllFiles();
-		if (this.fileService.gatherAllContents(allFiles)) {
-			return new RefreshAllRepoContentsDTO("OK");
+		try {
+			if (this.fileService.gatherAllContents(allFiles)) {
+				return new ResponseEntity<>(new RefreshAllRepoContentsDTO(), HttpStatus.OK);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-		return new RefreshAllRepoContentsDTO("FAIL");
+
+		return new ResponseEntity<RefreshAllRepoContentsDTO>(new RefreshAllRepoContentsDTO(),
+				HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@PostMapping("/requestUserDetailsData")
@@ -228,13 +236,28 @@ public class SpringjpaApplication {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found a GitHub match and added to db.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
-			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
-	public GetUserDetailsDTO requestUserDetailsData(String username)
-			throws IOException, InterruptedException, ConfigurationProviderArgumentError {
-		String searchForUserUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080"
-				+ "/getDetailsOfUser?username=" + username.toString();
+			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content),
+			@ApiResponse(responseCode = "504", description = "Error when contacting external microservice.", content = @Content), })
+	public ResponseEntity<GetUserDetailsDTO> requestUserDetailsData(String username) {
+		String searchForUserUrl;
+		try {
+			searchForUserUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080"
+					+ "/getDetailsOfUser?username=" + username.toString();
+		} catch (ConfigurationProviderArgumentError e1) {
+			e1.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
-		String response = this.simpleRestService.makeRequest(searchForUserUrl).body();
+		String response;
+		try {
+			response = this.simpleRestService.makeRequest(searchForUserUrl).body();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.GATEWAY_TIMEOUT);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.GATEWAY_TIMEOUT);
+		}
 
 		GetUserDetailsDTO deserializedUserDetails;
 		try {
@@ -242,11 +265,11 @@ public class SpringjpaApplication {
 					GetUserDetailsDTO.class.getName());
 		} catch (CustomMultiSerializationServiceError e) {
 			e.printStackTrace();
-			throw new InterruptedException();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 		this.userService.saveUserDetails(deserializedUserDetails);
-		return deserializedUserDetails;
+		return new ResponseEntity<>(deserializedUserDetails, HttpStatus.OK);
 	}
 
 	@PostMapping("/scanRepos")
@@ -255,26 +278,40 @@ public class SpringjpaApplication {
 			@ApiResponse(responseCode = "200", description = "Found username and gathered list of repos.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
-	public GetReposDTO scanRepos(String username)
-			throws IOException, InterruptedException, ConfigurationProviderArgumentError {
-		String scanReposUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080"
-				+ "/scanReposOfUser?username=" + username.toString();
-		String response = this.simpleRestService.makeRequest(scanReposUrl).body();
+	public ResponseEntity<GetReposDTO> scanRepos(String username) {
+		String scanReposUrl;
+		try {
+			scanReposUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080"
+					+ "/scanReposOfUser?username=" + username.toString();
+		} catch (ConfigurationProviderArgumentError e2) {
+			e2.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		String response;
+		try {
+			response = this.simpleRestService.makeRequest(scanReposUrl).body();
+		} catch (IOException e2) {
+			e2.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.GATEWAY_TIMEOUT);
+		} catch (InterruptedException e2) {
+			e2.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.GATEWAY_TIMEOUT);
+		}
 		RequestUserRepositoriesDTO deserializedResponse;
 		try {
 			deserializedResponse = (RequestUserRepositoriesDTO) this.serializationService.deserializeClass(response,
 					RequestUserRepositoriesDTO.class.getName());
 		} catch (CustomMultiSerializationServiceError e1) {
 			e1.printStackTrace();
-			throw new InterruptedException();
+			return new ResponseEntity<>(new GetReposDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 		try {
 			this.repoService.persistReposForUser(username, deserializedResponse);
 		} catch (RepoServicePersistenceError e) {
-			return new GetReposDTO(); // change to HttpResponse 400
+			return new ResponseEntity<>(new GetReposDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new GetReposDTO(deserializedResponse.repositories);
+		return new ResponseEntity<>(new GetReposDTO(deserializedResponse.repositories), HttpStatus.OK);
 	}
 
 	@GetMapping("/searchCode")
