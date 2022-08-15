@@ -2,6 +2,7 @@ package org.ibm.rest.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -12,7 +13,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class GetUserDetailsDTO {
+@EqualsAndHashCode(callSuper=false)
+public class GetUserDetailsDTO extends BaseDTO {
 	public String userLogin;
 	public long id;
 	public String nodeId;

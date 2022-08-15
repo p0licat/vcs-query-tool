@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -11,7 +12,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class RequestUserRepositoriesDTO {
+@EqualsAndHashCode(callSuper=false)
+public class RequestUserRepositoriesDTO extends BaseDTO {
 	
 	public ArrayList<RepositoryDTO> repositories;
 }

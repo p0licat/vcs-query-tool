@@ -15,9 +15,8 @@ import java.util.stream.Collectors;
 import org.ibm.config.servicemesh.ServiceMeshResourceManager;
 import org.ibm.exceptions.ConfigurationProviderArgumentError;
 import org.ibm.exceptions.reposervice.RepoServicePersistenceError;
+import org.ibm.exceptions.serializable.CustomMultiSerializationServiceError;
 import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
-import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
-import org.ibm.model.deserializers.ScanReposOfUserDeserializerFromEndpointReply;
 import org.ibm.model.deserializers.contentservice.model.ContentNode;
 import org.ibm.model.repohub.GitRepository;
 import org.ibm.model.serializers.reposerializer.RepoSerializer;
@@ -37,6 +36,7 @@ import org.ibm.service.contentscanner.contentscannerservice.ContentsScannerServi
 import org.ibm.service.persistence.applicationuser.UserPersistenceService;
 import org.ibm.service.persistence.contentsfilesservice.ContentsFilesService;
 import org.ibm.service.persistence.reposervice.RepoPersistenceService;
+import org.ibm.service.serialization.DTOSerializationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -50,9 +50,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -62,54 +59,66 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @SpringBootApplication
 @PropertySources({ @PropertySource({ "classpath:application.properties" }), @PropertySource({"classpath:application_password.properties"}) })
 @RestController
-@ComponentScan(basePackages = { "org.ibm.jpaservice", "org.ibm.service.persistence.applicationuser", "org.ibm.service.persistence.reposervice", "org.ibm.service.persistence.*", "org.ibm.service.requests.*", "org.ibm.config.servicemesh", "org.ibm.service.contentscanner.contentscannerservice" })
+@ComponentScan(basePackages = { "org.ibm.jpaservice", "org.ibm.service.persistence.applicationuser", "org.ibm.service.persistence.reposervice", "org.ibm.service.persistence.*", "org.ibm.service.requests.*", "org.ibm.config.servicemesh", "org.ibm.service.contentscanner.contentscannerservice", "org.ibm.service.serialization" })
 @EntityScan("org.ibm.*")
 @CrossOrigin
 public class SpringjpaApplication {
 
 	Logger logger = Logger.getLogger(getClass().getName());
 
+	
+	/*
+	 * Can directly access database for Repository objects.
+	 */
 	@Autowired
 	private GitRepoRepository gitRepoRepository;
 
+	/*
+	 * Can directly access database for ApplicationUser objects.
+	 */
 	@Autowired
 	private ApplicationUserRepository userRepository;
 
+	/*
+	 * Makes HTTP requests to contentsGatherer microservice
+	 */
 	@Autowired
 	private ContentsGathererService contentsGathererService;
 	
+	/*
+	 * Persistence service which stores data to database.
+	 */
 	@Autowired
 	private RepoPersistenceService repoService;
 
+	/*
+	 * Persistence service which stores data to database.
+	 */
 	@Autowired
 	private UserPersistenceService userService;
 	
+	/*
+	 * Persistence manager that stores file contents. Can also perform requests to obtain file contents from the other microservice.
+	 */
 	@Autowired
 	private ContentsFilesService fileService;
 	
 	@Autowired
 	private ServiceMeshResourceManager meshResources;
 	
+	/*
+	 * Makes HTTP requests to contentsScanner microservice
+	 */
 	@Autowired 
 	private ContentsScannerService contentsScannerService;
 
-	// turn these into a service
-	private ObjectMapper getMapperFor__getUserDetailsDeserializer() {
-		ObjectMapper mapper = new ObjectMapper();
-		SimpleModule module = new SimpleModule();
-		module.addDeserializer(GetUserDetailsDTO.class, new GetDetailsOfUserDeserializer());
-		mapper.registerModule(module);
-		return mapper;
-	}
 	
-	private ObjectMapper getMapperFor__scanReposOfUserDeserializer() {
-		ObjectMapper mapper = new ObjectMapper();
-		SimpleModule module = new SimpleModule();
-		module.addDeserializer(RequestUserRepositoriesDTO.class, new ScanReposOfUserDeserializerFromEndpointReply());
-		mapper.registerModule(module);
-		return mapper;
-	}
+	@Autowired
+	private DTOSerializationService serializationService;
+	
+	
 
+	// turn these into a service
 	private HttpResponse<String> makeRequest(String url) throws IOException, InterruptedException {
 		HttpClient httpClient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Content-Type", "application/json")
@@ -189,11 +198,16 @@ public class SpringjpaApplication {
 																											// dns....
 																											// should be
 																											// a service
-		String response = this.makeRequest(searchForUserUrl).body(); // should be a service instance, not a
-																		// RestController method
-		ObjectMapper mapper = this.getMapperFor__getUserDetailsDeserializer(); // should be a service call to do the
-																				// whole deserialization part
-		var deserializedUserDetails = mapper.readValue(response, GetUserDetailsDTO.class);
+		String response = this.makeRequest(searchForUserUrl).body(); // should be a service instance
+
+		GetUserDetailsDTO deserializedUserDetails;
+		try {
+			deserializedUserDetails = (GetUserDetailsDTO) this.serializationService.deserializeClass(response, GetUserDetailsDTO.class.getName());
+		} catch (CustomMultiSerializationServiceError e) {
+			e.printStackTrace();
+			throw new InterruptedException();
+		}
+		
 		this.userService.saveUserDetails(deserializedUserDetails);
 		return deserializedUserDetails;
 	}
@@ -207,8 +221,14 @@ public class SpringjpaApplication {
 	public GetReposDTO scanRepos(String username) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
 		String scanReposUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080" + "/scanReposOfUser?username=" + username.toString();
 		String response = this.makeRequest(scanReposUrl).body();
-		ObjectMapper mapper = this.getMapperFor__scanReposOfUserDeserializer();
-		var deserializedResponse = mapper.readValue(response, RequestUserRepositoriesDTO.class);
+		RequestUserRepositoriesDTO deserializedResponse;
+		try {
+			deserializedResponse = (RequestUserRepositoriesDTO) this.serializationService.deserializeClass(response, RequestUserRepositoriesDTO.class.getName());
+		} catch (CustomMultiSerializationServiceError e1) {
+			e1.printStackTrace();
+			throw new InterruptedException();
+		}
+		
 		try {
 			this.repoService.persistReposForUser(username, deserializedResponse);
 		} catch (RepoServicePersistenceError e) {
