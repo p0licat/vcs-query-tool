@@ -1,11 +1,7 @@
 package org.ibm.springjpa;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,11 +17,13 @@ import org.ibm.repository.GitRepoRepository;
 import org.ibm.repository.RepoHubRepository;
 import org.ibm.rest.dto.GetUserRepositoriesDTO;
 import org.ibm.rest.dto.RepositoryDTO;
+import org.ibm.service.rest.SimpleRestMessagingService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -49,15 +47,9 @@ public class SpringJpaInMemoryDatabaseTests {
 	@Autowired
 	private RepoHubRepository hubRepository;
 	
-	private HttpResponse<String> makeRequest(String url) throws IOException, InterruptedException {
-		HttpClient httpClient = HttpClient.newBuilder().build();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Content-Type", "application/json")
-				.GET().build();
+	@Autowired
+	private SimpleRestMessagingService restMessagingService;
 
-		return httpClient.send(request, BodyHandlers.ofString());
-
-	}
-	
 	private ObjectMapper getMapperFor__getReposOfUserDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
@@ -68,6 +60,7 @@ public class SpringJpaInMemoryDatabaseTests {
 
 	@Test
 	@Transactional
+	@Rollback(true)
 	void testAddUserToRepository() {
 		ApplicationUser user = new ApplicationUser();
 		user.setNodeId("asdf");
@@ -81,6 +74,7 @@ public class SpringJpaInMemoryDatabaseTests {
 	
 	@Test
 	@Transactional
+	@Rollback(true)
 	void testAddUserToRepositoryThenHubAndRepos() {
 		String url = "http://127.0.0.1:8080/scanReposOfUserOffline?username=p0licat";
 		
@@ -102,7 +96,7 @@ public class SpringJpaInMemoryDatabaseTests {
 		newRepoHub = hubRepository.save(newRepoHub);
 		
 		try {
-			HttpResponse<String> response = this.makeRequest(url);
+			HttpResponse<String> response = this.restMessagingService.makeRequest(url);
 			Assertions.assertTrue(response.statusCode() == 200);
 			ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
 			GetUserRepositoriesDTO dto;
@@ -132,22 +126,11 @@ public class SpringJpaInMemoryDatabaseTests {
 			}
 			
 		} catch (IOException e) {
+			e.printStackTrace();
 			Assertions.fail();
 		} catch (InterruptedException e) {
+			e.printStackTrace();
 			Assertions.fail();
 		}
-	}
-	
-	@Test
-	@Transactional
-	void testAddUserToRepositoryThenHubAndReposAndScan() {
-
-
-	}
-	
-	@Test
-	@Transactional // testing a service would offload the Transactional flag to the actual service, keeping the tests pure.
-	void testGetGitGathererServiceEndpoint_getRepositoriesAndPersist() {
-
 	}
 }
