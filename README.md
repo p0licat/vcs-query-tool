@@ -1,4 +1,4 @@
-[![Build Status](https://app.travis-ci.com/p0licat/vcs-query-tool.svg?branch=develop)](https://app.travis-ci.com/p0licat/vcs-query-tool)
+[![Build Status](https://app.travis-ci.com/p0licat/vcs-query-tool.svg?branch=main)](https://app.travis-ci.com/p0licat/vcs-query-tool)
 
 # vcs-query-tool
 
