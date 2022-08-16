@@ -26,6 +26,11 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
+
+/**
+ *	Can make requests to other services. Address of destination is extracted
+ *	from configuration file using the {@link ServiceMeshResourceManager}. 
+ */
 @Service
 public class ContentsScannerService {
 	

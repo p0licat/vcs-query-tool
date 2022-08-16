@@ -2,9 +2,10 @@ package org.ibm.jpaservice.contentsgatherer;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
+import org.ibm.jpaservice.BasePersistenceService;
 import org.ibm.model.contents.ContentDir;
 import org.ibm.model.contents.ContentFile;
 import org.ibm.model.deserializers.contentservice.model.ContentNode;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ContentsGathererService {
+public class ContentsGathererService extends BasePersistenceService {
 
 	@Autowired
 	private GitRepoRepository repoRepository; // commented untill check for repoName existence is determined necessary
@@ -24,14 +25,11 @@ public class ContentsGathererService {
 	@Autowired
 	private RepoContentsRepository repoContentsRepository;
 
-	@Autowired
-	private EntityManager em;
-
 	@Transactional
 	/*
 	 * It is ensured that the nodes will all belong to the same repo, of owner ${userName}.
 	 */
-	public void persistContentNodes(List<ContentNode> nodes, String repoName, String userName) {
+	public void persistContentNodes(List<ContentNode> nodes, String repoName, String userName) throws PersistenceException {
 		nodes.forEach(e -> {
 			if (e.getType().compareTo("dir") == 0) {
 				RepoContents repoContents;
