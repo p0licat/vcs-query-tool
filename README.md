@@ -1,6 +1,8 @@
-# vcs-query-tool
-Framework written in #Java which eases management of multiple VCS.
+[![Build Status](https://app.travis-ci.com/p0licat/vcs-query-tool.svg?branch=develop)](https://app.travis-ci.com/p0licat/vcs-query-tool)
 
+# vcs-query-tool
+
+Framework written in #Java which eases management of multiple VCS.
 
 # Background
 
@@ -10,4 +12,4 @@ This project uses Spring, JPA, Spring Boot, and other frameworks, which can be s
 
 # Deployment
 
-Maven was used with Java EE 11, built with IBM Semeru Runtimes, which are based on  OpenJDK class libraries and the Eclipse OpenJ9 JVM. Projects are created by Eclipse IDE. Database configured is MS SQL Server 2018. For the tests the h2 in-memory db was used. 
+Maven was used with Java EE 11, built with IBM Semeru Runtimes, which are based on OpenJDK class libraries and the Eclipse OpenJ9 JVM. Projects are created by Eclipse IDE. Database configured is MS SQL Server 2018. For the tests the h2 in-memory db was used.
