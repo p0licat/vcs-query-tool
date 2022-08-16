@@ -1,0 +1,13 @@
+language: java
+jdk: openjdk11
+script:
+  - java --version
+  - cd ./src/springjpa11
+  - mvn clean install -DskipTests=true
+  - cd ../../
+  - cd ./src/gatherer
+  - mvn clean install -DskipTests=true
+  - cd ../../
+  - cd ./src/contentscanner
+  - mvn clean install -DskipTests=true
+  - cd ../../
