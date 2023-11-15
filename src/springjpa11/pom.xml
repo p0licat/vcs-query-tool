@@ -65,7 +65,7 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.8.2</version> <!--$NO-MVN-MAN-VER$-->
+			<version>5.10.1</version> <!--$NO-MVN-MAN-VER$-->
 			<scope>test</scope>
 		</dependency> <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 		<dependency>
