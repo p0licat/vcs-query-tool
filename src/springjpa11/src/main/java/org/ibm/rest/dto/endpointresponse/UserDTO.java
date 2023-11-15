@@ -1,6 +1,6 @@
 package org.ibm.rest.dto.endpointresponse;
 
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

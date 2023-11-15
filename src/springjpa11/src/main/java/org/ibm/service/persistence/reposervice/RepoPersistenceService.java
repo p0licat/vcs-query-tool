@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-
+import jakarta.persistence.EntityManager;
 import org.ibm.exceptions.reposervice.RepoServicePersistenceError;
 import org.ibm.model.applicationuser.ApplicationUser;
 import org.ibm.model.repohub.GitRepository;
@@ -20,6 +18,8 @@ import org.ibm.rest.dto.RequestUserRepositoriesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class RepoPersistenceService {

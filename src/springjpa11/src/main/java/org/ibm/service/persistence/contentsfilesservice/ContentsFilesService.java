@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
 
 import org.ibm.model.contents.ContentFile;
 import org.ibm.model.repohub.RepoContents;
@@ -15,6 +14,7 @@ import org.ibm.repository.RepoContentsRepository;
 import org.ibm.service.requests.contentsrequesterservice.ContentsRequesterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ContentsFilesService {

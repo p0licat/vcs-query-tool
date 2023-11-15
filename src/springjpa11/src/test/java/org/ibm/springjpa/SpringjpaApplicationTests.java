@@ -9,8 +9,8 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.ibm.model.applicationuser.ApplicationUser;
 import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;

@@ -2,8 +2,8 @@ package org.ibm.jpaservice.contentsgatherer;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.ibm.model.contents.ContentDir;
 import org.ibm.model.contents.ContentFile;

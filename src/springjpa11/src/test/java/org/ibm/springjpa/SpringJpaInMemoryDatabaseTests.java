@@ -9,8 +9,8 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.ibm.model.applicationuser.ApplicationUser;
 import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -38,7 +39,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 public class SpringJpaInMemoryDatabaseTests {
 	
 	@Autowired
-	private EntityManager em; // should not depend on composition class but on the reposervice
+	private TestEntityManager em; // should not depend on composition class but on the reposervice
 	
 	@Autowired
 	private GitRepoRepository gitRepoRepository;
@@ -71,7 +72,7 @@ public class SpringJpaInMemoryDatabaseTests {
 	void testAddUserToRepository() {
 		ApplicationUser user = new ApplicationUser();
 		user.setNodeId("asdf");
-		
+
 		em.persist(user);
 		userRepository.save(user);
 		em.flush();

@@ -3,8 +3,8 @@ package org.ibm.springjpa;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
 import org.ibm.model.deserializers.contentservice.model.ContentNode;
