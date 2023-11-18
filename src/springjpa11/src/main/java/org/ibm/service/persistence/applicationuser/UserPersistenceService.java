@@ -1,7 +1,7 @@
 package org.ibm.service.persistence.applicationuser;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.ibm.model.applicationuser.ApplicationUser;
 import org.ibm.repository.ApplicationUserRepository;

@@ -2,8 +2,8 @@ package org.ibm.repository.implementation;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.ibm.model.repohub.GitRepository;
 import org.ibm.repository.GitRepoRepositoryCustom;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class GitRepoRepositoryImplementation implements GitRepoRepositoryCustom {
 	
-	private EntityManager entityManager;
+	private EntityManager entityManager; // why is this not autowired? review this.
 
 	@Override // might also use Non-Primitive arguments and construct/deserialize here... by injecting Deserialization service. # todo
 	@Transactional

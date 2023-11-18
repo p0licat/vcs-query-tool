@@ -8,9 +8,11 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import org.ibm.test.utility.StringGenerator;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.ibm.model.applicationuser.ApplicationUser;
 import org.ibm.model.deserializers.GetReposOfUserDeserializerFromEndpointReply;
@@ -40,7 +42,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 @WebAppConfiguration
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-class SpringjpaApplicationTests {
+class SpringJPAApplicationTests {
 
 	@Autowired
 	private GitRepoRepository gitRepoRepository;
@@ -121,18 +123,18 @@ class SpringjpaApplicationTests {
 	@Rollback(false)
 	void testAddUserToRepositoryThenHubAndRepos() {
 		String url = "http://127.0.0.1:8080/scanReposOfUserOffline?username=p0licat";
-
+		final Function<Integer, String> f = (e) -> StringGenerator.generateRandomString(5);
 		ApplicationUser user = new ApplicationUser();
-		user.setNodeId("asdf");
+		user.setNodeId(f.apply(5));
 		user.setUsername("p0licat");
 		user.setGitId("12345");
 		user.setReposUrl(url); // not the actual URL
 		// bad test, could be replaced by mocked GitHub endpoint or actual request
-		// should always rollback... unless H2 db
+		// should always roll back... unless H2 db
 		em.persist(user);
 		userRepository.save(user);
 
-		Long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf") == 0).count();
+		long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf") == 0).count();
 		Assertions.assertTrue(count > 0);
 
 		RepoHub newRepoHub = new RepoHub();
@@ -142,7 +144,7 @@ class SpringjpaApplicationTests {
 
 		try {
 			HttpResponse<String> response = this.makeRequest(url);
-			Assertions.assertTrue(response.statusCode() == 200);
+            Assertions.assertEquals(200, response.statusCode());
 			ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
 			GetUserRepositoriesDTO dto;
 			try {
@@ -151,7 +153,7 @@ class SpringjpaApplicationTests {
 				throw e; // should be custom exception from Deserializer.
 				// otherwise refactor deserializers as a sort of external module
 			}
-			Assertions.assertTrue(dto.toString().length() > 0);
+            Assertions.assertFalse(dto.toString().isEmpty());
 
 			Set<RepositoryDTO> newSet = Set.copyOf(dto.getRepositories());
 			Set<GitRepository> reposSet = new HashSet<>();
@@ -170,12 +172,10 @@ class SpringjpaApplicationTests {
 				reposSet.add(this.gitRepoRepository.save(g));
 			}
 
-		} catch (IOException e) {
-			Assertions.fail();
-		} catch (InterruptedException e) {
+		} catch (IOException | InterruptedException e) {
 			Assertions.fail();
 		}
-	}
+    }
 
 	@Test
 	@Rollback(false)
@@ -184,7 +184,7 @@ class SpringjpaApplicationTests {
 		String url = "http://127.0.0.1:8080/scanReposOfUserOffline?username=p0licat";
 		try {
 			HttpResponse<String> response = this.makeRequest(url);
-			Assertions.assertTrue(response.statusCode() == 200);
+            Assertions.assertEquals(200, response.statusCode());
 			ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
 			GetUserRepositoriesDTO dto;
 			try {
@@ -193,7 +193,7 @@ class SpringjpaApplicationTests {
 				throw e; // should be custom exception from Deserializer.
 				// otherwise refactor deserializers as a sort of external module
 			}
-			Assertions.assertTrue(dto.toString().length() > 0);
+            Assertions.assertFalse(dto.toString().isEmpty());
 
 			for (RepositoryDTO i : dto.getRepositories()) {
 				GitRepository repo = new GitRepository();
@@ -202,10 +202,8 @@ class SpringjpaApplicationTests {
 				em.persist(repo);
 				this.gitRepoRepository.save(repo); // need a DTO to Model converter
 			}
-		} catch (IOException e) {
-			Assertions.fail();
-		} catch (InterruptedException e) {
+		} catch (IOException | InterruptedException e) {
 			Assertions.fail();
 		}
-	}
+    }
 }

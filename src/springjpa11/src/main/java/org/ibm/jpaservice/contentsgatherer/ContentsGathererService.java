@@ -2,8 +2,8 @@ package org.ibm.jpaservice.contentsgatherer;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.ibm.model.contents.ContentDir;
 import org.ibm.model.contents.ContentFile;
@@ -35,10 +35,9 @@ public class ContentsGathererService {
 		nodes.forEach(e -> {
 			if (e.getType().compareTo("dir") == 0) {
 				RepoContents repoContents;
-				var foundContents = repoContentsRepository.findAll().stream().filter(
+                repoContents = repoContentsRepository.findAll().stream().filter(
 						rc -> rc.getOwnerRepo().getMasterRepoHub().getHubOwner().getUsername().compareTo(userName) == 0 && rc.getRepoName().compareTo(repoName) == 0)
-						.findFirst().orElse(null); // should be foundContentsNode or RepoHub... translate this to a proper JPA/JPQL/Hibernate/EntityGraph optimized query graph
-				repoContents = foundContents;
+						.findFirst().orElse(null);
 
 				ContentDir dir = new ContentDir();
 				dir.setFileName(e.getName());
@@ -69,10 +68,9 @@ public class ContentsGathererService {
 				// persistence achieved from ManyToOne direction
 			} else if (e.getType().compareTo("file") == 0) {
 				RepoContents repoContents;
-				var foundContents = repoContentsRepository.findAll().stream().filter(
+                repoContents = repoContentsRepository.findAll().stream().filter(
 						rc -> rc.getOwnerRepo().getMasterRepoHub().getHubOwner().getUsername().compareTo(userName) == 0 && rc.getRepoName().compareTo(repoName) == 0)
-						.findFirst().orElse(null); // should be foundContentsNode or RepoHub... translate this to a proper JPA/JPQL/Hibernate/EntityGraph optimized query graph
-				repoContents = foundContents;
+						.findFirst().orElse(null);
 
 				ContentFile file = new ContentFile();
 				file.setContents(""); // use getDownloadsUrl
@@ -111,9 +109,8 @@ public class ContentsGathererService {
 		nodeList.forEach(e -> {
 			if (e.getType().compareTo("dir") == 0) {
 				RepoContents repoContents;
-				var foundRepoContents = repoContentsRepository.findAll().stream()
+                repoContents = repoContentsRepository.findAll().stream()
 						.filter(rc -> rc.getRepoName().compareTo(repoName) == 0).findFirst().orElse(null);
-				repoContents = foundRepoContents;
 
 				ContentDir dir = new ContentDir();
 				dir.setFileName(e.getName());
@@ -144,9 +141,8 @@ public class ContentsGathererService {
 				// persistence achieved from ManyToOne direction
 			} else if (e.getType().compareTo("file") == 0) {
 				RepoContents repoContents;
-				var foundRepoContents = repoContentsRepository.findAll().stream()
+                repoContents = repoContentsRepository.findAll().stream()
 						.filter(rc -> rc.getRepoName().compareTo(repoName) == 0).findFirst().orElse(null);
-				repoContents = foundRepoContents;
 
 				ContentFile file = new ContentFile();
 				file.setContents(""); // use getDownloadsUrl

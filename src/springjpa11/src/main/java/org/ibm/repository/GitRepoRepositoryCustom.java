@@ -5,5 +5,5 @@ import java.util.List;
 import org.ibm.model.repohub.GitRepository;
 
 public interface GitRepoRepositoryCustom {
-	public List<GitRepository> findByFirstName(String name);
+	List<GitRepository> findByFirstName(String name);
 }

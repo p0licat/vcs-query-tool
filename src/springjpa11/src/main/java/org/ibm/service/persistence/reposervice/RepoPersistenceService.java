@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-
+import jakarta.persistence.EntityManager;
 import org.ibm.exceptions.reposervice.RepoServicePersistenceError;
 import org.ibm.model.applicationuser.ApplicationUser;
 import org.ibm.model.repohub.GitRepository;
@@ -20,6 +18,8 @@ import org.ibm.rest.dto.RequestUserRepositoriesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class RepoPersistenceService {
@@ -38,8 +38,7 @@ public class RepoPersistenceService {
 
 	// handle fetch type and optimize 
 	public List<GitRepository> getReposOfUser(ApplicationUser user) {
-		var repoList = this.repoRepo.findAll().stream().filter(e -> e.getMasterRepoHub().getHubOwner().getId() == (user.getId())).collect(Collectors.toList());
-		return repoList;
+        return this.repoRepo.findAll().stream().filter(e -> e.getMasterRepoHub().getHubOwner().getId() == (user.getId())).collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -84,8 +83,7 @@ public class RepoPersistenceService {
 	public Set<Pair<String, String>> getAllRepoNames() {
 		var allRepos = this.repoRepo.findAll();
 		// pair of OwnerUsername, RepoName
-		var allRepoNames = allRepos.stream().map(e -> Pair.of(e.getMasterRepoHub().getHubOwner().getUsername(), e.getName())).collect(Collectors.toSet());
-		return allRepoNames;
+        return allRepos.stream().map(e -> Pair.of(e.getMasterRepoHub().getHubOwner().getUsername(), e.getName())).collect(Collectors.toSet());
 	}
 	
 	

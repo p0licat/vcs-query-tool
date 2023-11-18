@@ -53,11 +53,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+//import io.swagger.v3.oas.annotations.Operation;
+//import io.swagger.v3.oas.annotations.media.Content;
+//import io.swagger.v3.oas.annotations.media.Schema;
+//import io.swagger.v3.oas.annotations.responses.ApiResponse;
+//import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @SpringBootApplication
 @PropertySources({ @PropertySource({ "classpath:application.properties" }), @PropertySource({"classpath:application_password.properties"}) })
@@ -127,12 +127,12 @@ public class SpringjpaApplication {
 	}
 
 	@PostMapping("/populateUserRepositories")
-	@Operation(summary = ""
+/*	@Operation(summary = ""
 			+ "Accepts an username of an existing user and a repository name that existed at the time the user was inserted."
 			+ "Creates a new entry node for the repository contents.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found the list of users.", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
-			@ApiResponse(responseCode = "400", description = "Failure accessing db.", content = @Content), })
+			@ApiResponse(responseCode = "400", description = "Failure accessing db.", content = @Content), })*/
 	public PopulateUserRepositoriesEndpointResponseDTO requestUserRepositoryData(String username, String repoName)
 			throws IOException, InterruptedException, ConfigurationProviderArgumentError {
 
@@ -178,12 +178,12 @@ public class SpringjpaApplication {
 	}
 	
 	@PostMapping("/requestUserDetailsData")
-	@Operation(summary = ""
+/*	@Operation(summary = ""
 			+ "Searches for an existing GitHub user, and if the request is successful it adds it to the database.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found a GitHub match and added to db.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
-			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
+			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })*/
 	public GetUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
 		String searchForUserUrl = "http://"  + this.meshResources.getResourceValue("networkAddr") + ":" + "8080" + "/getDetailsOfUser?username=" + username.toString(); // not using
 																											// dns....
@@ -199,11 +199,11 @@ public class SpringjpaApplication {
 	}
 
 	@PostMapping("/scanRepos")
-	@Operation(summary = "Initiates a scan of the GitHub username for existing public repos. If there is a match, the repositories are inserted in the database.")
+/*	@Operation(summary = "Initiates a scan of the GitHub username for existing public repos. If there is a match, the repositories are inserted in the database.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found username and gathered list of repos.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
-			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })
+			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })*/
 	public GetReposDTO scanRepos(String username) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
 		String scanReposUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080" + "/scanReposOfUser?username=" + username.toString();
 		String response = this.makeRequest(scanReposUrl).body();
@@ -218,11 +218,11 @@ public class SpringjpaApplication {
 	}
 	
 	@GetMapping("/searchCode")
-	@Operation(summary = "Locally scans all files for contents matching the pattern.")
+/*	@Operation(summary = "Locally scans all files for contents matching the pattern.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found code substring match.", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
-			@ApiResponse(responseCode = "400", description = "Db persistence error.", content = @Content), })
+			@ApiResponse(responseCode = "400", description = "Db persistence error.", content = @Content), })*/
 	public SearchCodeDTO searchCode(String search) throws IOException, InterruptedException {
 		var allFiles = this.fileService.findAllContainingSubstring(search);
 		var dtolist = new ArrayList<FileContentsDTO>();
@@ -237,10 +237,10 @@ public class SpringjpaApplication {
 	
 	
 	@PostMapping("/getRepos")
-	@Operation(summary = "Returns repos from the db.")
+/*	@Operation(summary = "Returns repos from the db.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Optional list of repos from db.", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }), })
+					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }), })*/
 	public GetReposDTO getRepos(String username) throws Exception {
 		var user = this.userService.findUserByName(username);
 		var repositories = this.repoService.getReposOfUser(user); // optional
