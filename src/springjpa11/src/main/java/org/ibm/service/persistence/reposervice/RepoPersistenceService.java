@@ -38,8 +38,7 @@ public class RepoPersistenceService {
 
 	// handle fetch type and optimize 
 	public List<GitRepository> getReposOfUser(ApplicationUser user) {
-		var repoList = this.repoRepo.findAll().stream().filter(e -> e.getMasterRepoHub().getHubOwner().getId() == (user.getId())).collect(Collectors.toList());
-		return repoList;
+        return this.repoRepo.findAll().stream().filter(e -> e.getMasterRepoHub().getHubOwner().getId() == (user.getId())).collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -84,8 +83,7 @@ public class RepoPersistenceService {
 	public Set<Pair<String, String>> getAllRepoNames() {
 		var allRepos = this.repoRepo.findAll();
 		// pair of OwnerUsername, RepoName
-		var allRepoNames = allRepos.stream().map(e -> Pair.of(e.getMasterRepoHub().getHubOwner().getUsername(), e.getName())).collect(Collectors.toSet());
-		return allRepoNames;
+        return allRepos.stream().map(e -> Pair.of(e.getMasterRepoHub().getHubOwner().getUsername(), e.getName())).collect(Collectors.toSet());
 	}
 	
 	

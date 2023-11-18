@@ -76,7 +76,7 @@ public class SpringJpaInMemoryDatabaseTests {
 		em.persist(user);
 		userRepository.save(user);
 		em.flush();
-		Long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf")==0).count();
+		long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf")==0).count();
 		Assertions.assertTrue(count > 0);
 	}
 	
@@ -94,7 +94,7 @@ public class SpringJpaInMemoryDatabaseTests {
 		em.persist(user);
 		userRepository.save(user);
 		
-		Long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf")==0).count();
+		long count = userRepository.findAll().stream().filter(e -> e.getNodeId().compareTo("asdf")==0).count();
 		Assertions.assertTrue(count > 0);
 		
 		RepoHub newRepoHub = new RepoHub();
@@ -104,7 +104,7 @@ public class SpringJpaInMemoryDatabaseTests {
 		
 		try {
 			HttpResponse<String> response = this.makeRequest(url);
-			Assertions.assertTrue(response.statusCode() == 200);
+            Assertions.assertEquals(200, response.statusCode());
 			ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
 			GetUserRepositoriesDTO dto;
 			try {
@@ -113,7 +113,7 @@ public class SpringJpaInMemoryDatabaseTests {
 				throw e; // should be custom exception from Deserializer.
 				// otherwise refactor deserializers as a sort of external module
 			}
-			Assertions.assertTrue(dto.toString().length() > 0);
+            Assertions.assertFalse(dto.toString().isEmpty());
 
 			Set<RepositoryDTO> newSet = Set.copyOf(dto.getRepositories());
 			Set<GitRepository> reposSet = new HashSet<>();
@@ -132,12 +132,10 @@ public class SpringJpaInMemoryDatabaseTests {
 				reposSet.add(this.gitRepoRepository.save(g));
 			}
 			
-		} catch (IOException e) {
-			Assertions.fail();
-		} catch (InterruptedException e) {
+		} catch (IOException | InterruptedException e) {
 			Assertions.fail();
 		}
-	}
+    }
 	
 	@Test
 	@Transactional

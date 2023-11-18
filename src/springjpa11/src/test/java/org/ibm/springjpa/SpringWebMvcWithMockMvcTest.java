@@ -17,7 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @WebAppConfiguration
-public class SpringWebMvcTestWithMockMvc {
+public class SpringWebMvcWithMockMvcTest {
 	// warn! this design can only work if the RestService is Mocked as well
 	// cannot use localhost or loopback to request application running as a
 	// different process

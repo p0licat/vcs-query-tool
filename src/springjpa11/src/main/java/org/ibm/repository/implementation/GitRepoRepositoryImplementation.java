@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class GitRepoRepositoryImplementation implements GitRepoRepositoryCustom {
 	
-	private EntityManager entityManager;
+	private EntityManager entityManager; // why is this not autowired? review this.
 
 	@Override // might also use Non-Primitive arguments and construct/deserialize here... by injecting Deserialization service. # todo
 	@Transactional

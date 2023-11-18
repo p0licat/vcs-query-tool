@@ -7,14 +7,13 @@ import java.util.Map;
 
 import org.ibm.rest.dto.GetUserDetailsDTO;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
-@SuppressWarnings("serial")
+
 public class GetDetailsOfUserDeserializer extends StdDeserializer<GetUserDetailsDTO> {
 
 	public GetDetailsOfUserDeserializer() {
@@ -25,10 +24,9 @@ public class GetDetailsOfUserDeserializer extends StdDeserializer<GetUserDetails
 		super(vc);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public GetUserDetailsDTO deserialize(JsonParser jp, DeserializationContext ctxt)
-			throws IOException, JacksonException {
+	public GetUserDetailsDTO deserialize(JsonParser jp, DeserializationContext _deserializationContext)
+			throws IOException {
 
 		JsonNode node = jp.getCodec().readTree(jp);
 
@@ -38,7 +36,7 @@ public class GetDetailsOfUserDeserializer extends StdDeserializer<GetUserDetails
 			node = node.get(0);
 		}
 
-		Map<String, Object> reflectiveMap = new HashMap<String, Object>();
+		Map<String, Object> reflectiveMap = new HashMap<>();
 
 		for (Field f : GetUserDetailsDTO.class.getDeclaredFields()) {
 			if (f.getName().contains("UID")) {
@@ -46,13 +44,13 @@ public class GetDetailsOfUserDeserializer extends StdDeserializer<GetUserDetails
 			}
 			Object newObject = null;
 			if (f.getType().equals(Long.class) || f.getType().equals(long.class)) {
-				newObject = new Integer(1).longValue();
+				newObject = Integer.valueOf(1).longValue();
 			}
 			if (f.getType().equals(Integer.class) || f.getType().equals(int.class)) {
-				newObject = new Integer(1).longValue();
+				newObject = Integer.valueOf(1).longValue();
 			}
 			if (f.getType().equals(String.class)) {
-				newObject = new String("");
+				newObject = "";
 			}
 			if (newObject == null) {
 				throw new IOException("Type not present.");

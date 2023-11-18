@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import org.ibm.model.deserializers.contentservice.model.ContentNode;
 import org.ibm.model.deserializers.contentservice.model.RepoContentsFromGithubReplyDTO;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -15,16 +14,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class GetRepoContentsDeserializerFromGithubReply extends JsonDeserializer<RepoContentsFromGithubReplyDTO> {
 
 	@Override
-	public RepoContentsFromGithubReplyDTO deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JacksonException {
+	public RepoContentsFromGithubReplyDTO deserialize(JsonParser jp, DeserializationContext _deserializationContext) throws IOException {
 		
-		JsonNode node = null;
-		try { 
-			node = jp.getCodec().readTree(jp);
-		} catch (Exception e) {
-			throw e;
-		}
-		
-		ArrayList<ContentNode> result = new ArrayList<>();
+		JsonNode node;
+        node = jp.getCodec().readTree(jp);
+
+        ArrayList<ContentNode> result = new ArrayList<>();
 		
 		// 1 bug already caused by not refactoring this to an external dependency/module
 		// 

@@ -22,14 +22,14 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @WebAppConfiguration
-public class SpringWebMvcTestsWithHttpClient {
+public class SpringWebMvcWithHttpClientTests {
 	
 	@Test
 	void testGetGitGathererServiceEndpoint_getRepositories() {
 		String url = "http://127.0.0.1:8080/scanReposOfUser?username=p0licat";
 		try {
 			HttpResponse<String> response = this.makeRequest(url);
-			Assertions.assertTrue(response.statusCode() == 200);
+            Assertions.assertEquals(200, response.statusCode());
 			ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializer();
 			GetUserRepositoriesDTO dto;
 			try {
@@ -38,15 +38,13 @@ public class SpringWebMvcTestsWithHttpClient {
 				throw e; // should be custom exception from Deserializer.
 				// otherwise refactor deserializers as a sort of external module
 			}
-			Assertions.assertTrue(dto.toString().length() > 0);
+            Assertions.assertFalse(dto.toString().isEmpty());
 
-		} catch (IOException e) {
-			Assertions.fail();
-		} catch (InterruptedException e) {
+		} catch (IOException | InterruptedException e) {
 			Assertions.fail();
 		}
 
-	}
+    }
 	
 	@Test
 	void testGetGitGathererServiceEndpoint_UsingHttpClient() throws Exception {
@@ -54,7 +52,7 @@ public class SpringWebMvcTestsWithHttpClient {
 		HttpClient httpClient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Content-Type", "application/json")
 				.GET().build();
-		HttpResponse<String> response = null; // not a string, but a DTO
+		HttpResponse<String> response; // not a string, but a DTO
 		try {
 			response = httpClient.send(request, BodyHandlers.ofString());
 		} catch (IOException e) {
