@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
-import java.util.logging.Logger;
 
 import org.ibm.config.servicemesh.ServiceMeshResourceManager;
 import org.ibm.exceptions.ConfigurationProviderArgumentError;
@@ -20,6 +19,7 @@ import org.ibm.model.deserializers.contentservice.model.ContentNode;
 import org.ibm.model.deserializers.contentservice.model.RepoContentsFromEndpointResponseDTO;
 import org.ibm.model.deserializers.contentservice.model.RepoContentsFromGithubReplyDTO;
 import org.ibm.model.repohub.GitRepository;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +28,10 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 @Service
 public class ContentsScannerService {
-	
+
+	Logger logger = org.slf4j.LoggerFactory.getLogger(ContentsScannerService.class);
 	@Autowired
 	private ServiceMeshResourceManager meshResources;
-	
-	Logger logger = Logger.getLogger(getClass().getName());
 
 	private ObjectMapper getMapperFor__getRepoContentsDeserializer() {
 		ObjectMapper mapper = new ObjectMapper();
@@ -66,7 +65,7 @@ public class ContentsScannerService {
 				List<String> allFileUrls = new ArrayList<>();
 				List<ContentNode> nodeList = new ArrayList<>();
 				String[] regexMatch = repos.get(0).getContentsUrl().split("/\\{");
-				queryQueue.add(regexMatch[0].toString());
+				queryQueue.add(regexMatch[0]);
 
 				ObjectMapper mapper = this.getMapperFor__getRepoContentsDeserializer();
 				while (!queryQueue.empty()) {
@@ -107,12 +106,10 @@ public class ContentsScannerService {
 										nodeList.add(r);
 									}
 									// fileDownloadUrls.add( )
-								} catch (IOException e1) {
-									e1.printStackTrace();
-								} catch (InterruptedException e1) {
-									e1.printStackTrace();
+								} catch (IOException | InterruptedException e1) {
+									logger.error(e1.toString());
 								} catch (ConfigurationProviderArgumentError e1) {
-									e1.printStackTrace();
+									logger.error(e1.toString());
 									throw new RuntimeException("Failure with configuration provider");
 								}
 							}
@@ -145,12 +142,10 @@ public class ContentsScannerService {
 									}
 								});
 
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							} catch (InterruptedException e1) {
-								e1.printStackTrace();
+							} catch (IOException | InterruptedException e1) {
+								logger.error(e1.toString());
 							} catch (ConfigurationProviderArgumentError e1) {
-								e1.printStackTrace();
+								logger.error(e1.toString());
 								throw new RuntimeException("Failure with configuration provider");
 							}
 						}

@@ -9,15 +9,15 @@ import java.util.Map;
 import org.ibm.rest.dto.RepositoryDTO;
 import org.ibm.rest.dto.RequestUserRepositoriesDTO;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import org.slf4j.Logger;
 
-@SuppressWarnings("serial")
 public class ScanReposOfUserDeserializerFromEndpointReply extends StdDeserializer<RequestUserRepositoriesDTO> {
-	
+
+	Logger logger = org.slf4j.LoggerFactory.getLogger(ScanReposOfUserDeserializerFromEndpointReply.class);
 	public ScanReposOfUserDeserializerFromEndpointReply() {
 		this(null);
 	}
@@ -26,25 +26,25 @@ public class ScanReposOfUserDeserializerFromEndpointReply extends StdDeserialize
 		super(vc);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public RequestUserRepositoriesDTO deserialize(JsonParser jp, DeserializationContext ctxt)
-			throws IOException, JacksonException {
+	public RequestUserRepositoriesDTO deserialize(JsonParser jp, DeserializationContext _deserializationContext)
+			throws IOException {
 		
-		JsonNode node = null;
+		JsonNode node;
 		try { 
 			node = jp.getCodec().readTree(jp);
 		} catch (Exception e) {
+			logger.error(e.toString());
 			throw e;
 		}
 
-		ArrayList<RepositoryDTO> result = new ArrayList<RepositoryDTO>();
+		ArrayList<RepositoryDTO> result = new ArrayList<>();
 
 		// should have a custom exception here
 		// otherwise NPE
 		for (JsonNode child : node.get("repositories")) {
 			
-			Map<String, Object> reflectiveMap = new HashMap<String, Object>();
+			Map<String, Object> reflectiveMap = new HashMap<>();
 			
 			for (Field f : RepositoryDTO.class.getDeclaredFields()) {
 				if (f.getName().contains("UID")) {
@@ -52,10 +52,10 @@ public class ScanReposOfUserDeserializerFromEndpointReply extends StdDeserialize
 				}
 				Object newObject = null;
 				if (f.getType().equals(Long.class)) {
-					newObject = new Integer(1).longValue();
+					newObject = Integer.valueOf(1).longValue();
 				}
 				if (f.getType().equals(String.class)) {
-					newObject = new String("");
+					newObject = "";
 				}
 				if (newObject == null) {
 					throw new IOException("Type not present.");
