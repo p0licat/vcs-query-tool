@@ -6,7 +6,6 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.ibm.model.RepositoryDTO;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
@@ -27,13 +26,17 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 @RestController
 public class GathererRestApplication {
 
-	Logger logger = Logger.getLogger(getClass().getName());
-
 	@Autowired
 	GitHubConnectionService gitHubConnectionService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(GathererRestApplication.class, args);
+	}
+
+	private final ArrayList<String> configFilePaths = new ArrayList<>();
+
+	{
+		configFilePaths.add("src/main/resources/test_data/response2.txt");
 	}
 
 	// region mappers
@@ -57,22 +60,37 @@ public class GathererRestApplication {
 	// region GET queries
 	private HttpResponse<String> getResponseFromEndpoint_userDetails() {
 		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
-		HttpResponse<String> response = service.getRawUserDetails("p0licat");
+		HttpResponse<String> response = service.getRawUserDetails("p0licat"); // todo: move to args
+		if (response.statusCode() != 200) {
+			throw new RuntimeException("Custom HTTP exception. Request failed. Git API unreachable.");
+		}
 		return response;
 	}
 
 	private HttpResponse<String> getResponseFromEndpoint_userRepos() {
 		GitHubConnectionService service = new GitHubConnectionService("https://api.github.com");
 		HttpResponse<String> response = service.getRawRepositoriesOfUser("p0licat");
+		if (response.statusCode() != 200) {
+			throw new RuntimeException("Custom HTTP exception. Request failed. Git API unreachable.");
+		}
 		return response;
 	}
 	// endregion
 
 	// region cached queries
-	private String getResponseFromResouces(String resourceName) throws IOException {
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream(resourceName);
-		String contents = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-		return contents;
+	private String getResponseFromResources(String resourceName) throws Exception {
+		String contents;
+		try (InputStream is = this.getClass().getClassLoader().getResourceAsStream(resourceName)) {
+            assert is != null;
+            contents = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			throw new IOException("Could not read file: " + resourceName);
+		} catch (NullPointerException e) {
+			throw new NullPointerException("Could not find file: " + resourceName);
+		} catch (AssertionError | Exception e) {
+			throw new Exception("Could not read file or is null: " + resourceName);
+		}
+        return contents;
 	}
 	// endregion
 
@@ -85,6 +103,11 @@ public class GathererRestApplication {
 
 		ObjectMapper mapper = this.getMapperFor__getDetailsOfUserDeserializer();
 		GetUserDetailsDTO dto = mapper.readValue(response.body(), GetUserDetailsDTO.class);
+		if (dto.getClass() == GetUserDetailsDTO.class) {
+			System.out.println("dto is of type GetUserRepositoriesDTO");
+		} else {
+			System.out.println("dto is not of type GetUserRepositoriesDTO");
+		}
 		return dto;
 	}
 
@@ -97,16 +120,28 @@ public class GathererRestApplication {
 
 		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromGitReply();
 		GetUserRepositoriesDTO dto = mapper.readValue(response.body(), GetUserRepositoriesDTO.class);
+		if (dto.getClass() == GetUserRepositoriesDTO.class) {
+			System.out.println("dto is of type GetUserRepositoriesDTO");
+		} else {
+			System.out.println("dto is not of type GetUserRepositoriesDTO");
+		}
 		return dto;
 	}
 
 	// used to avoid rate limit
 	@GetMapping("/scanReposOfUserOffline")
 	public GetUserRepositoriesDTO scanReposOfUserOffline(String username) throws Exception {
-		String response = this.getResponseFromResouces("response2.txt");
+		String response = this.getResponseFromResources(configFilePaths.get(0));
 
 		ObjectMapper mapper = this.getMapperFor__getReposOfUserDeserializerFromGitReply();
 		GetUserRepositoriesDTO dto = mapper.readValue(response, GetUserRepositoriesDTO.class);
+
+		// todo: additional security checks needed when deserializing and defining DTOs
+		if (dto.getClass() == GetUserRepositoriesDTO.class) {
+			System.out.println("dto is of type GetUserRepositoriesDTO");
+		} else {
+			System.out.println("dto is not of type GetUserRepositoriesDTO");
+		}
 		return dto;
 	}
 
