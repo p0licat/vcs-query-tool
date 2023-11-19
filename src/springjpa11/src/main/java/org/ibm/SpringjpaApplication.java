@@ -45,6 +45,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.util.Pair;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import org.springframework.web.client.HttpClientErrorException;
 
 //import io.swagger.v3.oas.annotations.Operation;
 //import io.swagger.v3.oas.annotations.media.Content;
@@ -110,20 +112,22 @@ public class SpringjpaApplication {
 		return mapper;
 	}
 
-	private HttpResponse<String> makeRequest(String url) throws IOException, InterruptedException {
+	private HttpResponse<String> makeRequestToMicroservice(String url) throws IOException, InterruptedException, HttpClientErrorException {
 		HttpClient httpClient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Content-Type", "application/json")
 				.GET().build();
-
-		return httpClient.send(request, BodyHandlers.ofString());
+		var value = httpClient.send(request, BodyHandlers.ofString());
+		if (value.statusCode() == 404) {
+			throw new HttpClientErrorException(HttpStatusCode.valueOf(404), "Query to microservice failed.");
+		}
+		return value;
 	}
 
 	@GetMapping("/getUsers")
 	public GetUsersDTO getUsers() {
 		var allUsers = userRepository.findAll();
 		var usersList = UserSerializer.serialize(allUsers);
-		GetUsersDTO result = new GetUsersDTO(usersList);
-		return result;
+        return new GetUsersDTO(usersList);
 	}
 
 	@PostMapping("/populateUserRepositories")
@@ -157,7 +161,7 @@ public class SpringjpaApplication {
 					.collect(Collectors.toList()); 
 			
 			
-			List<ContentNode> nodeList = new ArrayList<>();
+			List<ContentNode> nodeList;
 			nodeList = this.contentsScannerService.recursiveContentNodeScan(repos, username);
 			
 			contentsGathererService.persistContentNodes(nodeList, repoName, username);
@@ -185,11 +189,8 @@ public class SpringjpaApplication {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })*/
 	public GetUserDetailsDTO requestUserDetailsData(String username) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
-		String searchForUserUrl = "http://"  + this.meshResources.getResourceValue("networkAddr") + ":" + "8080" + "/getDetailsOfUser?username=" + username.toString(); // not using
-																											// dns....
-																											// should be
-																											// a service
-		String response = this.makeRequest(searchForUserUrl).body(); // should be a service instance, not a
+		String searchForUserUrl = "http://"  + this.meshResources.getResourceValue("networkAddr") + ":" + this.meshResources.getResourceValue("contentsGathererPort") + "/getDetailsOfUser?username=" + username;
+		String response = this.makeRequestToMicroservice(searchForUserUrl).body(); // should be a service instance, not a
 																		// RestController method
 		ObjectMapper mapper = this.getMapperFor__getUserDetailsDeserializer(); // should be a service call to do the
 																				// whole deserialization part
@@ -205,8 +206,8 @@ public class SpringjpaApplication {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })*/
 	public GetReposDTO scanRepos(String username) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
-		String scanReposUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080" + "/scanReposOfUser?username=" + username.toString();
-		String response = this.makeRequest(scanReposUrl).body();
+		String scanReposUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080" + "/scanReposOfUser?username=" + username;
+		String response = this.makeRequestToMicroservice(scanReposUrl).body();
 		ObjectMapper mapper = this.getMapperFor__scanReposOfUserDeserializer();
 		var deserializedResponse = mapper.readValue(response, RequestUserRepositoriesDTO.class);
 		try {
