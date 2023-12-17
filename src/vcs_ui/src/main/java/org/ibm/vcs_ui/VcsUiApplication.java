@@ -2,8 +2,11 @@ package org.ibm.vcs_ui;
 
 import org.ibm.rest.dto.GetUserDetailsDTO;
 import org.ibm.rest.dto.RepositoryDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +21,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @SpringBootApplication
+@ComponentScan("org.ibm.swagger")
 @RestController
 @RequestMapping("/api/")
 public class VcsUiApplication {
 
+	private static Logger logger = LoggerFactory.getLogger(VcsUiApplication.class);
+	static {
+		logger.info("Initialized main application bean.");
+	}
 	public static void main(String[] args) {
+
 		SpringApplication.run(VcsUiApplication.class, args);
 	}
 
@@ -48,6 +57,7 @@ public class VcsUiApplication {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetUserDetailsDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "Failure accessing db.", content = @Content), })
 	public RepositoryDTO getUsers() {
+		logger.info("Initialized main application bean.");
 		return new RepositoryDTO();
 	}
 
