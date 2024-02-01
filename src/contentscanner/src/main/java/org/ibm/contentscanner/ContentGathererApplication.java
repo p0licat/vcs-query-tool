@@ -1,6 +1,7 @@
 package org.ibm.contentscanner;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
 
 import org.ibm.exceptions.ApiRequestLimitExceeded;
@@ -84,7 +85,7 @@ public class ContentGathererApplication {
 	}
 
 	@GetMapping("/getContentsOfRepoAtContentsUrlOfDirectory")
-	public RepoContentsFromGithubReplyDTO getContentsOfRepoAtContentsUrlOfDirectory(String username, String contentsUrl) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
+	public RepoContentsFromGithubReplyDTO getContentsOfRepoAtContentsUrlOfDirectory(String username, String contentsUrl) throws IOException, InterruptedException, ConfigurationProviderArgumentError, URISyntaxException {
 		String authKey = this.configurationProvider.getConfigurationFileContents("keyValue.txt");
 		HttpResponse<String> response = this.gitHubConnectionServiceFacade.getResponseFromEndpoint_repoContentsAtContentsUrl(username, contentsUrl, authKey);
 		ObjectMapper mapper = this.deserializerService.getMapperFor__getRepoContentsDeserializer();
@@ -93,7 +94,7 @@ public class ContentGathererApplication {
 	}
 	
 	@GetMapping("/getContentsAtDownloadUrl")
-	public FileContentsFromGithubReplyDTO getContentsAtDownloadUrl(String downloadUrl) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
+	public FileContentsFromGithubReplyDTO getContentsAtDownloadUrl(String downloadUrl) throws IOException, InterruptedException, ConfigurationProviderArgumentError, URISyntaxException {
 		String authKey = this.configurationProvider.getConfigurationFileContents("keyValue.txt");
 		HttpResponse<String> response = this.gitHubConnectionServiceFacade.getResponseFromEndpoint_directDownloadUrl(downloadUrl, authKey);
 		String rawFileContents = response.body();

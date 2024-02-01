@@ -8,13 +8,18 @@ import java.util.stream.Collectors;
 
 import jakarta.persistence.EntityManager;
 
+import org.ibm.model.applicationuser.ApplicationUser;
 import org.ibm.model.contents.ContentFile;
 import org.ibm.model.repohub.RepoContents;
 import org.ibm.repository.RepoContentsRepository;
 import org.ibm.service.requests.contentsrequesterservice.ContentsRequesterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static java.lang.System.in;
 
 @Service
 public class ContentsFilesService {
@@ -43,13 +48,26 @@ public class ContentsFilesService {
 		return allFiles;
 	}
 
+	public List<ContentFile> getAllPythonFiles() {
+		List<ContentFile> resultSet = new ArrayList<>();
+		for (var fileContents : this.contentsRepo.findAll()) {
+			for (var file : fileContents.getFiles()) {
+				if (file.getFileName().contains(".py") || file.getFileName().contains(".ipynb")) {
+					resultSet.add(file);
+				}
+			}
+		}
+		return resultSet;
+	}
+
+
 	@Transactional
 	public boolean gatherAllContents(List<ContentFile> allFiles) throws IOException, InterruptedException {
 		for (ContentFile f : allFiles) {
 			if (f.getContents().compareTo("") == 0) {
 				try {
 					em.persist(f); // apparently does not persist by itself
-					if (!f.getFileName().contains(".java") && !f.getFileName().contains(".py")) {
+					if (!f.getFileName().contains(".java") && !f.getFileName().contains(".py") && !f.getFileName().contains(".ipynb")) {
 						continue;
 					}
 					logger.info("FILE: " + f.getFileName());

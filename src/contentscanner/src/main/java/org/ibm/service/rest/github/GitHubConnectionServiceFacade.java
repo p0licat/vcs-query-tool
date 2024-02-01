@@ -1,6 +1,7 @@
 package org.ibm.service.rest.github;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,13 @@ public class GitHubConnectionServiceFacade {
 	}
 
 	public HttpResponse<String> getResponseFromEndpoint_repoContentsAtContentsUrl(String username, String contentsUrl,
-			String apiKey) throws IOException, InterruptedException {
+			String apiKey) throws IOException, InterruptedException, URISyntaxException {
 		this.gitHubConnectionService.URL = contentsUrl;
 		HttpResponse<String> response = this.gitHubConnectionService.getRawResponseFromMainUrl(apiKey);
 		return response;
 	}
 
-	public HttpResponse<String> getResponseFromEndpoint_directDownloadUrl(String downloadUrl, String authKey) throws IOException, InterruptedException {
+	public HttpResponse<String> getResponseFromEndpoint_directDownloadUrl(String downloadUrl, String authKey) throws IOException, InterruptedException, URISyntaxException {
 		this.gitHubConnectionService.URL = downloadUrl;
 		HttpResponse<String> response = this.gitHubConnectionService.getRawResponseFromMainUrl(authKey);
 		return response;

@@ -1,10 +1,15 @@
 package org.ibm.service.rest.github;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import org.ibm.model.contentscanner.dto.RepoContentsFromGithubReplyDTO;
@@ -45,9 +50,11 @@ public class GitHubConnectionService {
 		return response;
 	}
 	
-	public HttpResponse<String> getRawResponseFromMainUrl(String authKey) throws IOException, InterruptedException {
+	public HttpResponse<String> getRawResponseFromMainUrl(String authKey) throws IOException, InterruptedException, URISyntaxException {
+		java.net.URL url = new URL(URLDecoder.decode(this.URL, StandardCharsets.UTF_8));
+		java.net.URI uri = new java.net.URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(java.net.URI.create(this.URL))
+				.uri(java.net.URI.create(uri.toString()))
 				.header("Content-Type", "application/json")
 				.header("Authorization", "token "+authKey.toString().trim())
 				.build();

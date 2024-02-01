@@ -16,6 +16,7 @@ import org.ibm.config.servicemesh.ServiceMeshResourceManager;
 import org.ibm.exceptions.ConfigurationProviderArgumentError;
 import org.ibm.exceptions.reposervice.RepoServicePersistenceError;
 import org.ibm.jpaservice.contentsgatherer.ContentsGathererService;
+import org.ibm.model.contents.ContentFile;
 import org.ibm.model.deserializers.GetDetailsOfUserDeserializer;
 import org.ibm.model.deserializers.ScanReposOfUserDeserializerFromEndpointReply;
 import org.ibm.model.deserializers.contentservice.model.ContentNode;
@@ -148,6 +149,16 @@ public class SpringjpaApplication {
 		return new PopulateUserRepositoriesEndpointResponseDTO(nodeList, Set.of(""));
 	}
 
+	@GetMapping("/getAllUrlsOfPythonFiles")
+	public List<String> getAllUrlsOfPythonFiles() {
+		List<ContentFile> localStore = this.fileService.getAllPythonFiles();
+		List<String> urlResultSet = new ArrayList<>();
+		for (var i : localStore) {
+			urlResultSet.add(i.getDownloadUrl());
+		}
+		return urlResultSet;
+	}
+
 	@PostMapping("/refreshContents")
 	public RefreshAllRepoContentsDTO refreshContents() throws IOException, InterruptedException, ConfigurationProviderArgumentError {
 		
@@ -206,7 +217,7 @@ public class SpringjpaApplication {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = GetReposDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "User not found or db persistence error.", content = @Content), })*/
 	public GetReposDTO scanRepos(String username) throws IOException, InterruptedException, ConfigurationProviderArgumentError {
-		String scanReposUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8080" + "/scanReposOfUser?username=" + username;
+		String scanReposUrl = "http://" + this.meshResources.getResourceValue("networkAddr") + ":" + "8084" + "/scanReposOfUser?username=" + username;
 		String response = this.makeRequestToMicroservice(scanReposUrl).body();
 		ObjectMapper mapper = this.getMapperFor__scanReposOfUserDeserializer();
 		var deserializedResponse = mapper.readValue(response, RequestUserRepositoriesDTO.class);
