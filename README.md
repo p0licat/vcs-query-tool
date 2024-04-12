@@ -2,7 +2,16 @@
 
 # vcs-query-tool
 
+Full stack application to crawl the source code of repositories.
+
 Framework written in #Java which eases management of multiple VCS.
+
+The data is stored by JPA as a Schema containing encoded contents of the files, and can be further used by syntax analyzers, which was the original purpose of the project.
+
+![screenshot](Images/running-1.PNG)
+![screenshot](Images/func-2.PNG)
+![screenshot](Images/func-3.PNG)
+![screenshot](Images/func-4.PNG)
 
 # Background
 
